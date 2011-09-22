@@ -185,10 +185,11 @@ class Page extends MY_Controller {
 	public function delete()
 	{
 		
-			if ($this->ci->userdata['group']['name'] == 'Admin')
-			{
-				$this->session->set_flashdata('error', 'You do not have appropriate permissions for this action.');
-			}
+		if ($this->userdata['group']['name'] != 'Admin')
+		{
+			$this->session->set_flashdata('error', 'You do not have appropriate permissions for this action.');
+			redirect('feed/page');
+		}
 		if (! $this->page_model->delete($this->uri->segment(3, null)))
 		{
 			$error = "Couldn't delete page.";

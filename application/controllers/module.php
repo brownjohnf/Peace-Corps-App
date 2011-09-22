@@ -218,10 +218,10 @@ Description:	Number:	Description:	Number:
 	<p>1 multiple choice questions & 2 short answer/practical questions</p>';
 				$data['resources'] = array(
 										   'Documents' => array(
-																'http://pcsenegal.org/download.php?file=library/Lesson%20Plan%20-%20Basic%20Garden%20Bed%20Prep.doc&extension=doc&id=799&embed=library&title=Lesson%20Plan%20-%20Basic%20Garden%20Bed%20Prep' => 'Lesson Plan',
-																'http://pcsenegal.org/download.php?file=library/Flipchart%20Guide%20-%20BASIC%20GARDEN%20BED%20PREP.doc&extension=doc&id=796&embed=library&title=Flipchart%20Guide%20-%20Basic%20Garden%20Bed%20Prep' => 'Flipchart Guide',
-																'http://pcsenegal.org/download.php?file=library/Tech%20TDA%20-%20Basic%20Garden%20Bed%20Prep.doc&extension=doc&id=797&embed=library&title=Tech%20TDA%20-%20Basic%20Garden%20Bed%20Prep' => 'Tech TDA',
-																'http://pcsenegal.org/download.php?file=library/Tech%20Handout%20-%20Basic%20Garden%20Bed%20Prep.doc&extension=doc&id=798&embed=library&title=Tech%20Handout%20-%20Basic%20Garden%20Bed%20Prep' => 'Tech Handout'
+																'http://pcsenegal.org/download.php?file=library/Lesson%20Plan%20-%20Basic%20Garden%20Bed%20Prep.doc&extension=doc&id=799&embed=library&title=Lesson%20Plan%20-%20Basic%20Garden%20Bed%20Prep' => 'Lesson Plan [download]',
+																'http://pcsenegal.org/download.php?file=library/Flipchart%20Guide%20-%20BASIC%20GARDEN%20BED%20PREP.doc&extension=doc&id=796&embed=library&title=Flipchart%20Guide%20-%20Basic%20Garden%20Bed%20Prep' => 'Flipchart Guide [download]',
+																'http://pcsenegal.org/download.php?file=library/Tech%20TDA%20-%20Basic%20Garden%20Bed%20Prep.doc&extension=doc&id=797&embed=library&title=Tech%20TDA%20-%20Basic%20Garden%20Bed%20Prep' => 'Tech TDA [download]',
+																'http://pcsenegal.org/download.php?file=library/Tech%20Handout%20-%20Basic%20Garden%20Bed%20Prep.doc&extension=doc&id=798&embed=library&title=Tech%20Handout%20-%20Basic%20Garden%20Bed%20Prep' => 'Tech Handout [download]'
 															   ),
 										   'Links' => array(
 															'http://www.agriculture.gouv.sn/' => 'Ministry of Agriculture',
@@ -231,15 +231,15 @@ Description:	Number:	Description:	Number:
 															   'http://itunes.apple.com/gb/podcast/instructional-videos/id367648546' => 'Visit our podcast to find informational videos on this and many other topics'
 															   ),
 										   'Presentations' => array(
-																	'link' => 'Powerpoint'
+																	'http://pcsenegal.org/download.php?file=library/07.%20Steps%20to%20Successful%20School,%20Community,%20and%20Family%20Gardens/gardening_presentation.pptx&extension=pptx&id=408&embed=library/07.%20Steps%20to%20Successful%20School,%20Community,%20and%20Family%20Gardens&title=gardening_presentation' => 'Gardening [download]'
 																	),
 										   'How-to Videos' => array(
 																	'Double Digging' => '<iframe width="440" height="253" src="http://www.youtube.com/embed/Uc4A-sOSPcA?rel=0&wmode=Opaque" frameborder="0" allowfullscreen></iframe>'
 																	),
 										   'Manuals' => array(
-															  'http://pcsenegal.org/download.php?file=library/urban_agriculture.pdf&extension=pdf&id=784&embed=library&title=Urban%20Agriculture' => 'Urban Agriculture Manual',
-															  'http://pcsenegal.org/download.php?file=library/uag_project_plan_april2009.doc&extension=doc&id=785&embed=library&title=Urban%20Ag%20Project%20Plan,%20revised%20April%202009' => 'Urban Ag Project Plan',
-															  'http://pcsenegal.org/download.php?file=library/Urban_Ag_Brochure.pdf&extension=pdf&id=594&embed=library&title=Urban_Ag_Brochure' => 'Urban Ag Brochure'
+															  'http://pcsenegal.org/download.php?file=library/urban_agriculture.pdf&extension=pdf&id=784&embed=library&title=Urban%20Agriculture' => 'Urban Agriculture Manual [download]',
+															  'http://pcsenegal.org/download.php?file=library/uag_project_plan_april2009.doc&extension=doc&id=785&embed=library&title=Urban%20Ag%20Project%20Plan,%20revised%20April%202009' => 'Urban Ag Project Plan [download]',
+															  'http://pcsenegal.org/download.php?file=library/Urban_Ag_Brochure.pdf&extension=pdf&id=594&embed=library&title=Urban_Ag_Brochure' => 'Urban Ag Brochure [download]'
 															  ),
 										   'Case Studies' => array(
 																   'page/view/organic-gardening-training' => 'Organic Gardening Training',
@@ -482,7 +482,7 @@ Description:	Number:	Description:	Number:
 				$data['backtrack'] = array('resource' => 'Resources', 'module' => 'Modules', 'module/view/live-fencing' => 'Live Fencing');
 				$data['resources'] = array(
 										   'Documents' => array(
-																'http://pcsenegal.org/download.php?file=library/Live_Fencing_Pocket_Manual.pdf&extension=pdf&id=793&embed=library&title=Live%20Fencing%20Pocket%20Manual' => 'Full Lesson Plan'),
+																'http://pcsenegal.org/download.php?file=library/Live_Fencing_Pocket_Manual.pdf&extension=pdf&id=793&embed=library&title=Live%20Fencing%20Pocket%20Manual' => 'Full Lesson Plan [download]'),
 										   'Links' => array(
 															'http://www.environnement.gouv.sn/rubrique.php3?id_rubrique=20' => '<em>Eaus et Forets</em> Senegal (Water and Forest Management)',
 															'http://www.facebook.com/groups/158506604235841/' => 'Peace Corps Senegal Agriculture Group [Facebook]'
