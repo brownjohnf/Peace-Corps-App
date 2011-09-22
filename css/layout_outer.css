@@ -1,0 +1,132 @@
+@charset "UTF-8";
+* {
+	margin: 0;
+	padding: 0;
+	border: none;
+}
+
+html, body {
+	height: 100%;
+}
+
+body {
+	margin: 0; /* it's good practice to zero the margin and padding of the body element to account for differing browser defaults */
+	padding: 0;
+	text-align: center; /* this centers the container in IE 5* browsers. The text is then set to the left aligned default in the #container selector */
+	overflow-x: hidden;
+}
+#outer_container {
+	margin: 00px 0 -250px 0;
+	border: 0px solid #000000;
+	text-align: left; /* this overrides the text-align: center on the body element. */
+	min-height: 100%;
+	height: 100%;
+	height: auto !important;
+	position: relative;
+	padding-top: 50px;
+}
+#header_outer, #header_inner {
+	z-index: 10;
+	height: 50px;
+	overflow: hidden;
+}
+
+#header_outer {
+	position: fixed;
+	width: 100%;
+	top: 0;
+	left: 0;
+}
+
+#footer_outer {
+	height: 250px;
+}
+
+#google_search {
+	padding-top: 10px;
+	width: 560px;
+	margin: 0 auto;
+}
+
+#google_search input[type=text] {
+	width: 548px;
+	position: relative;
+	left: 10px;
+}
+
+#google_search input[type=submit] {
+	position: relative;
+	right: 0px;
+}
+
+#site_title {
+    float: left;
+    height: 30px;
+    padding: 10px 40px 10px 0;
+	display: block;
+	font-size: 20px;
+}
+
+#header_inner, #footer_inner {
+	width: 980px;
+	margin: 0 auto;
+	position: relative;
+}
+
+/* top menu formatting start */
+ul.hmenu {
+	margin: 0;
+	padding: 0;
+}
+
+ul.hmenu li {
+	display: inline;
+	padding: 0;
+	margin: 0;
+}
+
+ul.hmenu li a
+{
+	height: 20px;
+	padding: 15px 12px 15px 12px;
+	float: left;
+	width: auto;
+}
+/* end of horizontal menu formatting */
+
+#user_menu {
+	float: right;
+}
+#main_menu {
+    float: left;
+}
+
+#baobab {
+		position: absolute;
+		top: -200px;
+		right: -100px;
+}
+#user_image {
+	padding: 0;
+}
+#user_image img {
+	
+	width: 50px;
+	height: 50px;
+}
+
+#splash_footer div {
+	width: 286px;
+	margin: 15px;
+	padding: 5px;
+	float: left;
+}
+
+#splash_footer div p {
+	text-align: justify;
+	margin-top: 10px;
+}
+
+#splash_footer div ul {
+	margin-top: 10px;
+}

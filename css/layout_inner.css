@@ -1,0 +1,157 @@
+@charset "UTF-8";
+
+#main_inner { 
+	width: 980px;  /* using 20px less than a full 800px width allows for browser chrome and avoids a horizontal scroll bar */
+	margin: 0 auto; /* the auto margins (in conjunction with a width) center the page */
+	text-align: left; /* this overrides the text-align: center on the body element. */
+	position: relative; /* does nothing, but is needed to absolutely position elements within it */
+}
+#main_outer {
+    margin-top: 10px;
+}
+#leftbar {
+	float: left; /* since this element is floated, a width must be given */
+	width: 199px; /* the actual width of this div, in standards-compliant browsers, or standards mode in Internet Explorer will include the padding and border in addition to the width */
+	border-right: 1px solid #eee;
+}
+#leftbar div {
+	margin-bottom: 20px;
+}
+#rightbar {
+	float: right; /* since this element is floated, a width must be given */
+	width: 180px; /* the actual width of this div, in standards-compliant browsers, or standards mode in Internet Explorer will include the padding and border in addition to the width */
+}
+.content ul {
+    padding-left: 40px;
+    margin: 10px;
+	list-style: none;
+}
+.content ol {
+	padding-left: 40px;
+	margin: 10px;
+	list-style: decimal;
+}
+.floatright { /* this class can be used to float an element right in your page. The floated element must precede the element it should be next to on the page. */
+	float: right;
+	margin-left: 8px;
+}
+.floatleft { /* this class can be used to float an element left in your page */
+	float: left;
+	margin-right: 8px;
+}
+.clearfloat { /* this class should be placed on a div or break element and should be the final element before the close of a container that should fully contain a float */
+	clear:both;
+	height:0;
+	font-size: 1px;
+	line-height: 0px;
+}
+
+/* beginning of vmenu settings */
+#leftbar ul {
+	list-style: none;
+	padding: 0;
+}
+
+#leftbar .controls a {
+	display: block;
+	
+}
+
+#leftbar .controls {
+	
+	float: right;
+	margin: 2px 0 0 0;
+}
+
+#leftbar .controls img {
+	height: 18px;
+}
+
+#leftbar a.top {
+	padding: 4px 4px 4px 30px;
+	margin-top: 4px;
+	font-size: 17px;
+}
+#leftbar a.mid {
+    padding: 3px 4px 1px 45px;
+	margin-top: 3px;
+	font-size: 15px;
+}
+#leftbar a.bot {
+    padding: 1px 4px 1px 60px;
+	margin-top: 1px;
+	font-size: 13px;
+}
+#leftbar ul li a {
+	display: block;
+}
+#leftbar ul li a.menu_anchor:hover {
+    background-color: #d3d3d3;
+	text-decoration: none;
+}
+/* end of vmenu settings */
+
+#bottom_of_page {
+	height: 450px;
+}
+
+#page_form input[type=text], textarea {
+    width: 548px;
+}
+
+#page_view, #page_form, #feed_view, #photo_form, #profile_view, #blank_view, #module_view, #user_form, #blog_view, #module_list_view {
+    margin: 0 200px 0 220px;
+    width: 560px;
+    overflow: hidden;
+}
+#table_view, #user_list_view {
+	margin: 20px;
+	overflow: auto;
+}
+#page_form label, #photo_form label, #user_form label {
+    display: block;
+    margin-top: 10px;
+}
+#page_form select, #photo_form select, #user_form select, #user_form input {
+    width: 50%;
+}
+#backtrack {
+    margin-bottom: 10px;
+}
+#logo {
+	width: 180px;
+	height: 180px;
+	margin: 0 10px 10px 10px;
+}
+#rightbar div {
+	margin-bottom: 20px;
+}
+
+#rightbar #profile_photo img {
+	width: 180px;
+	box-shadow: 0 0 5px black;
+}
+#page_view .controls, #page_form .controls, #photo_form .controls, #gallery_view .controls, #user_form .controls {
+    float: right;
+}
+#page_view .controls a img, #page_form .controls a img, #photo_form .controls a img, #gallery_view .controls a img, #user_form .controls a img {
+	height: 22px;
+	margin-left: 5px;
+}
+#gallery_view #gallery img {
+	margin: 8px;
+	box-shadow: 0 0 5px black;
+	float: left;
+}
+#profile_photo_preview {
+	float: right;
+}
+input[name=profile_photo] {
+	width: 50% !important;
+}
+h2 {
+	clear: left;
+}
+#page_form h2 {
+	clear: both;
+}
