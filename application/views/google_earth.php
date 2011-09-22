@@ -1,0 +1,1 @@
+<div id="ws_map" style="height: <?=$height?>px;"></div>
