@@ -1,4 +1,5 @@
 // JavaScript Document
+
 google.load("earth", "1");
 		function init() {
 			google.earth.createInstance('ws_map', initCB, failureCB);

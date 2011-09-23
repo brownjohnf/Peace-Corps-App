@@ -1,3 +1,9 @@
+<?php
+#   Copyright (c) 2011, John F. Brown  This file is
+#   licensed under the Affero General Public License version 3 or later.  See
+#   the COPYRIGHT file.
+?>
+
 		</div><!-- end #outer_container -->
 			<div id="footer_outer">
 				<div id="footer_inner">

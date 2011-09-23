@@ -1,4 +1,8 @@
 <?php
+#   Copyright (c) 2011, John F. Brown  This file is
+#   licensed under the Affero General Public License version 3 or later.  See
+#   the COPYRIGHT file.
+
 class Page extends MY_Controller {
 	
 	function __construct() {
@@ -184,26 +188,31 @@ class Page extends MY_Controller {
 	
 	public function delete()
 	{
-		
 		if ($this->userdata['group']['name'] != 'Admin')
 		{
 			$this->session->set_flashdata('error', 'You do not have appropriate permissions for this action.');
 			redirect('feed/page');
 		}
+		
 		if (! $this->page_model->delete($this->uri->segment(3, null)))
 		{
-			$error = "Couldn't delete page.";
+			$error[] = "Couldn't delete page.";
 		}
 		if (! $this->permission_model->purge_by_page($this->uri->segment(3, null)))
 		{
-			$error = "Couldn't purge page references.";
+			$error[] = "Couldn't purge page references.";
 		}
 		if (! $this->page_model->reset_parent($this->uri->segment(3, null)))
 		{
-			$error = 'Failed to reset pages that pointed to this one. You now have orphaned pages.';
+			$error[] = 'Failed to reset pages that pointed to this one. You now have orphaned pages.';
 		}
+		if (! $this->tag_model->delete(array('source' => 'page', 'source_id' => $this->uri->segment(3))))
+		{
+			$error[] = 'Could not remove tags. Please look into the problem.';
+		}
+		
 		if (isset($error)) {
-			$this->session->set_flashdata('error', $error);
+			$this->session->set_flashdata('error', implode(' ', $error));
 		} else {
 			$this->session->set_flashdata('success', 'Page successfully deleted.');
 		}

@@ -1,4 +1,9 @@
-<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+<?php
+#   Copyright (c) 2011, John F. Brown  This file is
+#   licensed under the Affero General Public License version 3 or later.  See
+#   the COPYRIGHT file.
+
+if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
 class Common_class
 {
@@ -11,9 +16,9 @@ class Common_class
 	{
 		// set the total number of CHARACTERS (excluding the tag itself) you'd like stored per tag
 		$count = 300;
-		$string = strip_tags($raw_string, '<b><i><a>');
+		$string = $raw_string;
 		$regexes[] = '/#!([^#]+)#/';
-		$regexes[] = '/#([^\.,\/\s!<>]+)/';
+		$regexes[] = '/#([^\.,\/\s!<>#]+)/';
 		
 		foreach ($regexes as $regex)
 		{

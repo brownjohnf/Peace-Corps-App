@@ -1,4 +1,9 @@
-<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+<?php
+#   Copyright (c) 2011, John F. Brown  This file is
+#   licensed under the Affero General Public License version 3 or later.  See
+#   the COPYRIGHT file.
+
+if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
 class Page_class
 {
@@ -6,6 +11,7 @@ class Page_class
 		$this->ci =& get_instance();
 		$this->ci->load->model(array('page_model', 'tag_model'));
 		$this->ci->load->library(array('permission_class', 'common_class'));
+		$this->ci->load->helper('markdown');
 	}
 	public function create($data)
 	{
@@ -27,7 +33,7 @@ class Page_class
 			return false;
 		}
 		
-		if ($tags = $this->ci->common_class->parse_tags($data['content']))
+		if ($tags = $this->ci->common_class->parse_tags(strip_tags(Markdown($data['content']), '<b><i><em><ul><a>')))
 		{
 			$input['tags'] = $tags['string'];
 			// set data to be sent to the tag function
@@ -80,7 +86,7 @@ class Page_class
 		$input['content'] = $data['content'];
 		$input['profile_photo'] = $data['profile_photo'];
 		
-		if ($tags = $this->ci->common_class->parse_tags($data['content']))
+		if ($tags = $this->ci->common_class->parse_tags(strip_tags(Markdown($data['content']), '<b><i><em><u><a>')))
 		{
 			$input['tags'] = $tags['string'];
 			// set data to be sent to the tag function
@@ -328,6 +334,8 @@ class Page_class
 	{
 	    $this->ci->load->library('permission_class');
 		$this->ci->load->model('photo_model');
+		$this->ci->load->helper('markdown');
+		
 	    $fields = 'id, title, content, parent_id, tags, profile_photo';
 	    
 	    $query = array('fields' => $fields, 'where' => array('url' => $url), 'limit' => 1);
@@ -338,7 +346,7 @@ class Page_class
 	    $return['id'] = $result['id'];
 	    $return['title'] = $result['title'];
 		$message = $this->ci->common_class->tags_to_links($result['content']);
-	    $return['content'] = $message['text'];
+	    $return['content'] = Markdown($message['text']);
 	    $return['tags'] =  explode('#', trim($result['tags'], '#'));
 	    $return['parent_id'] = $result['parent_id'];
 		

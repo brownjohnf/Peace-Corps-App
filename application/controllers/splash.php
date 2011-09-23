@@ -1,4 +1,8 @@
 <?php
+#   Copyright (c) 2011, John F. Brown  This file is
+#   licensed under the Affero General Public License version 3 or later.  See
+#   the COPYRIGHT file.
+
 class Splash extends MY_Controller {
 	
 	function __construct() {
@@ -8,7 +12,7 @@ class Splash extends MY_Controller {
 
 	public function index()
 	{
-		$this->load->library('menu_class');
+		$this->load->library(array('menu_class', 'common_class'));
 		
 		$data['col1'] = '<h2>Browse</h2>'.$this->menu_class->menu(1, 0);
 		$data['col2'] = '<h2>Contact Us</h2><p>Peace Corps Senegal<br>Almadies Lot N/1 TF 23231<br>BP 2534<br>Dakar Yoff<br>Senegal, West Africa</p><p>admin@pcsenegal.org<br>Phone: +221 33 859 7575<br>Fax: +221 33 859 7580</p>';

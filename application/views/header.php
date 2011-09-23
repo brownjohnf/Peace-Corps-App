@@ -1,4 +1,10 @@
 <?php
+#   Copyright (c) 2011, John F. Brown  This file is
+#   licensed under the Affero General Public License version 3 or later.  See
+#   the COPYRIGHT file.
+?>
+
+<?php
 	$topmenu = array(anchor('','Home', array('name' => 'home')), anchor('feed','Updates', array('name' => 'feed')), anchor('resource','Resources', array('name' => 'resource')), anchor('photo/gallery','Photos', array('name' => 'photo')), anchor('feed/video','Videos', array('name' => 'video')), anchor('feed/blog', 'Blogs'), array('name' => 'blog'));
 ?>
 <body>

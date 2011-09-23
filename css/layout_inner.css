@@ -1,5 +1,11 @@
 @charset "UTF-8";
 
+
+/*   Copyright (c) 2011, John F. Brown  This file is
+  licensed under the Affero General Public License version 3 or later.  See
+   the COPYRIGHT file.
+*/
+
 #main_inner { 
 	width: 980px;  /* using 20px less than a full 800px width allows for browser chrome and avoids a horizontal scroll bar */
 	margin: 0 auto; /* the auto margins (in conjunction with a width) center the page */

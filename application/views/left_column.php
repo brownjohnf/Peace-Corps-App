@@ -1,3 +1,9 @@
+<?php
+#   Copyright (c) 2011, John F. Brown  This file is
+#   licensed under the Affero General Public License version 3 or later.  See
+#   the COPYRIGHT file.
+?>
+
 		<div id="leftbar">
 			<img id="logo" src="<?php echo base_url(); ?>img/pc_logo.png">
 			
@@ -8,6 +14,7 @@
 					<li><?=anchor('feed', 'All', array('class' => 'menu_anchor top'))?></li>
 					<li><?=anchor('feed/page', 'Content', array('class' => 'menu_anchor top'))?></li>
 					<li><?=anchor('feed/blog', 'Blogs', array('class' => 'menu_anchor top'))?></li>
+					<li><?=anchor('feed/tag', 'Recent Tags', array('class' => 'menu_anchor top'))?></li>
 				</ul>
 			</div>
 			<?php endif; ?>

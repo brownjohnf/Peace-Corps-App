@@ -1,4 +1,7 @@
 <?php
+#   Copyright (c) 2011, John F. Brown  This file is
+#   licensed under the Affero General Public License version 3 or later.  See
+#   the COPYRIGHT file.
 
 class Tag_model extends CI_Model {
 
@@ -33,11 +36,12 @@ class Tag_model extends CI_Model {
 		if (! $data) {
 				die('source and source_id required for tag_model->delete');
 		}
+		
 		$this->db->where($data);
+		
 		if (! $this->db->delete('tags')) {
-				die('failed to delet from the tags table');
-		}
-		else {
+				die('failed to delete from the tags table');
+		} else {
 				return true;
 		}
 	}
