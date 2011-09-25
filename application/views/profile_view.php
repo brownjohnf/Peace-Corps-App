@@ -58,6 +58,34 @@
 		</p>
 	</div>
 	
+	<?php if (isset($author_for)): ?>
+	<div>
+		<h3>Authorship</h3>
+		<p>
+			<?=$full_name?> is an author of the following pages:
+		</p>
+		<ul>
+			<?php foreach ($author_for as $page): ?>
+			<li><?php echo anchor('page/view/'.$page['url'], $page['title']); ?></li>
+			<?php endforeach; ?>
+		</ul>
+	</div>
+	<?php endif; ?>
+	
+	<?php if (($this->userdata['group']['name'] == 'Admin' || $this->userdata['id'] == $id) && isset($actor_for)): ?>
+	<div>
+		<h3>Acting Privileges</h3>
+		<p>
+			<?=$full_name?> is an actor for the following pages:
+		</p>
+		<ul>
+			<?php foreach ($actor_for as $page): ?>
+			<li><?php echo anchor('page/view/'.$page['url'], $page['title']).'&nbsp;'.anchor('page/edit/'.$page['id'], 'Edit'); ?></li>
+			<?php endforeach; ?>
+		</ul>
+	</div>
+	<?php endif; ?>
+	
 	<?php if ($this->userdata['group']['name'] == 'Admin'): ?>
 	<div>
 		<h3>Admin</h3>

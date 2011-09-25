@@ -285,13 +285,13 @@ class Page_class
 	    {
 			if (str_word_count($result['content']) > 50)
 			{
-				$message = $this->ci->common_class->tags_to_links(word_limiter(strip_tags($result['content']), 50));
+				$message = $this->ci->common_class->tags_to_links(word_limiter(strip_tags(Markdown($result['content'], '<b><i><u><em>')), 50));
 			    $item['message'] = $message['text'];
 			    $item['message_truncated'] = 'yes';
 			}
 			else
 			{
-				$message = $this->ci->common_class->tags_to_links(strip_tags($result['content']));
+				$message = $this->ci->common_class->tags_to_links(strip_tags(Markdown($result['content']), '<b><i><u><em>'));
 			    $item['message'] = $message['text'];
 			    $item['message_truncated'] = 'no';
 			}

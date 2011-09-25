@@ -8,7 +8,7 @@ class Profile extends MY_Controller {
 	function __construct()
 	{
 	    parent::__construct();
-		$this->load->library('profile_class');
+		$this->load->library(array('permission_class', 'profile_class'));
 	}
 	
 	public function view()
@@ -16,6 +16,15 @@ class Profile extends MY_Controller {
 		// retrieve profile
 		if ($data = $this->profile_class->view($this->uri->segment(3)))
 		{
+			if ($authorship = $this->permission_class->page_by_author($data['id']))
+			{
+				$data['author_for'] = $authorship;
+			}
+			if ($actorship = $this->permission_class->page_by_actor($data['id']))
+			{
+				$data['actor_for'] = $actorship;
+			}
+			
 			$data['title'] = 'Profile';
 			$data['backtrack'] = array('feed/profile' => 'Profiles', 'profile/view/'.$this->uri->segment(3) => $data['full_name']);
 			

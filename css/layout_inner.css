@@ -37,6 +37,18 @@
 	margin: 10px;
 	list-style: decimal;
 }
+.content blockquote {
+	margin: 0 40px;
+	border: 1px solid lightgray;
+	text-align: justify;
+}
+.content code {
+	background-color: lightgray;
+	font-family: monospace;
+}
+.content ul li {
+	mardin-top: 5px;
+}
 .floatright { /* this class can be used to float an element right in your page. The floated element must precede the element it should be next to on the page. */
 	float: right;
 	margin-left: 8px;

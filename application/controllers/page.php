@@ -50,7 +50,7 @@ class Page extends MY_Controller {
 	
 	public function create()
 	{
-		if ($this->userdata['group']['name'] != 'Admin')
+		if ($this->userdata['group']['name'] != 'Admin' && (! $this->permission_class->is_actor(array('page_id' => $this->uri->segment(3, 0), 'user_id' => $this->userdata['id']))))
 		{
 			$this->session->set_flashdata('error', 'You do not have appropriate permissions for this action. [create]');
 			redirect('feed/page');
@@ -71,38 +71,44 @@ class Page extends MY_Controller {
 		if ($this->form_validation->run() == false)
 		{
 			$data = $this->page_class->blank_form();
+			if ($actor_for = $this->permission_class->page_by_actor($this->userdata['id']) && $this->userdata['group']['name'] != 'Admin')
+			{
+				$data['parents'] = array_intersect_key($data['parents'], array($this->uri->segment(3) => 'test'));
+				$data['users'] = array_intersect_key($data['users'], array($this->userdata['id'] => 'test'));
+				//print_r($data);
+			}
 			$data['parent_id'] = $this->uri->segment(3, 0);
-			$data['target'] = 'create';
-		if ($this->input->post('actors')) {
-		    $data['set_actors'] = $this->input->post('actors');
-		}
-		if ($this->input->post('authors')) {
-		    $data['set_authors'] = $this->input->post('authors');
-		}
-	    
-		
-		$data['form_title'] = 'Create New Page';
-		
-		if (isset($history['page']['view'])) {
-			$data['controls'] = anchor('page/view/'.$history['page']['view'], img(base_url().'img/cancel_icon.png'), array('class' => 'cancel'));
-		} else {
-			$data['controls'] = anchor('feed/page', img(base_url().'img/cancel_icon.png'), array('class' => 'cancel'));
-		}
-		
-		// fetch menu, takes id, parent_id properties
-		$left_col['menu'] = $this->menu_class->menu(1, 0);
-		
-		
-		$this->output->set_header("Cache-Control: max-age=3000, public, must-revalidate");
-		
-		$this->load->view('head', array('page_title' => 'Create New Page', 'stylesheets' => array('layout_outer.css', 'layout_inner.css', 'theme.css', 'nyroModal.css'), 'scripts' => array('jquery.nyroModal.js', 'jquery.nyroModal.filters.link.js', 'page_edit.js', 'basic.js','jquery.url.js')));
-		$this->load->view('header');
-		$this->load->view('main_open');
-		$this->load->view('left_column', $left_col);
-		$this->load->view('right_column');
-		$this->load->view('page_form', $data);
-		$this->load->view('main_close');
-		$this->load->view('footer', array('footer' => 'Footer Here'));
+			$data['target'] = 'create/'.$data['parent_id'];
+			if ($this->input->post('actors')) {
+				$data['set_actors'] = $this->input->post('actors');
+			}
+			if ($this->input->post('authors')) {
+				$data['set_authors'] = $this->input->post('authors');
+			}
+			
+			
+			$data['form_title'] = 'Create New Page';
+			
+			if (isset($history['page']['view'])) {
+				$data['controls'] = anchor('page/view/'.$history['page']['view'], img(base_url().'img/cancel_icon.png'), array('class' => 'cancel'));
+			} else {
+				$data['controls'] = anchor('feed/page', img(base_url().'img/cancel_icon.png'), array('class' => 'cancel'));
+			}
+			
+			// fetch menu, takes id, parent_id properties
+			$left_col['menu'] = $this->menu_class->menu(1, 0);
+			
+			
+			$this->output->set_header("Cache-Control: max-age=3000, public, must-revalidate");
+			
+			$this->load->view('head', array('page_title' => 'Create New Page', 'stylesheets' => array('layout_outer.css', 'layout_inner.css', 'theme.css', 'nyroModal.css'), 'scripts' => array('jquery.nyroModal.js', 'jquery.nyroModal.filters.link.js', 'page_edit.js', 'basic.js','jquery.url.js')));
+			$this->load->view('header');
+			$this->load->view('main_open');
+			$this->load->view('left_column', $left_col);
+			$this->load->view('right_column');
+			$this->load->view('page_form', $data);
+			$this->load->view('main_close');
+			$this->load->view('footer', array('footer' => 'Footer Here'));
 		}
 		else
 		{
