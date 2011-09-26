@@ -60,8 +60,8 @@ if ($this->session->flashdata('success'))
 			<?php endforeach; endif; ?>
 		</ul>
 		
+		<?php if (isset($experts)): foreach ($experts as $expert): ?>
 		<h3>Local, field-based experts</h3>
-			<?php if (isset($experts)): foreach ($experts as $expert): ?>
 			<p>
 			<?php echo $expert['name']; ?><br>
 			<?php echo $expert['description']; ?><br><br>
@@ -71,11 +71,13 @@ if ($this->session->flashdata('success'))
 			</p>
 			<?php endforeach; endif; ?>
 		
+		<?php if (isset($social)): ?>
 		<h3>Keep the conversation going</h3>
 		<ul>
-			<?php if (isset($social)): foreach ($social as $link => $group): ?>
+			<?php foreach ($social as $link => $group): ?>
 			<li><?php echo anchor($link, $group, array('target' => '_blank')); ?></li>
-			<?php endforeach; endif; ?>
+			<?php endforeach; ?>
 		</ul>
+		<?php endif; ?>
 	</div>
 </div>

@@ -72,11 +72,9 @@
 
 #leftbar .controls a {
 	display: block;
-	
 }
 
 #leftbar .controls {
-	
 	float: right;
 	margin: 2px 0 0 0;
 }
@@ -85,17 +83,17 @@
 	height: 18px;
 }
 
-#leftbar a.top {
+#leftbar a.top, #leftbar ul.leftmenu li a {
 	padding: 4px 4px 4px 30px;
 	margin-top: 4px;
 	font-size: 17px;
 }
-#leftbar a.mid {
+#leftbar a.mid, #leftbar ul.leftmenu li ul li a {
     padding: 3px 4px 1px 45px;
 	margin-top: 3px;
 	font-size: 15px;
 }
-#leftbar a.bot {
+#leftbar a.bot, #leftbar ul.leftmenu li ul li ul li a {
     padding: 1px 4px 1px 60px;
 	margin-top: 1px;
 	font-size: 13px;
@@ -103,7 +101,7 @@
 #leftbar ul li a {
 	display: block;
 }
-#leftbar ul li a.menu_anchor:hover {
+#leftbar ul li a.menu_anchor:hover, #leftbar ul.leftmenu a:hover {
     background-color: #d3d3d3;
 	text-decoration: none;
 }

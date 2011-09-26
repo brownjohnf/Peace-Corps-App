@@ -20,9 +20,24 @@ class Module_class
 		{
 			foreach ($result as $module)
 			{
-				$return[$module['tier_name']][$result['course_category']][$result['course_number']] = $module;
+				$return[$module['tier_name']][$module['category_name']][$module['course_number']] = $module;
 			}
+			//print_r($return);
 			return $return;
+		}
+	}
+	
+	public function menu()
+	{
+		if ($result = $this->ci->module_model->read())
+		{
+			foreach ($result as $module)
+			{
+				$all_modules[anchor('', $module['tier_name'])][] = anchor('module/view/'.$module['category_name'].'-'.$module['course_number'], strtoupper($module['category_name']).'-'.$module['course_number'].'&nbsp;'.$module['title']);
+			}
+			$return[anchor('module', 'Modules')] = $all_modules;
+			//print_r($return);
+			return ul($return, array('id' => 'module_menu', 'class' => 'leftmenu'));
 		}
 	}
 	
@@ -345,24 +360,25 @@ class Module_class
 	}
 	public function view($url)
 	{
-	    $this->ci->load->library('permission_class');
-		$this->ci->load->model('photo_model');
-		$this->ci->load->helper('markdown');
-		
-	    $fields = 'id, title, content, parent_id, tags, profile_photo';
+		// convert the category name to id
+		if (! $cat_id = $this->ci->module_model->read_categories(array('fields' => 'id', 'where' => array('name like' => $url[0]), 'limit' => '1')))
+		{
+			return false;
+		}
 	    
-	    $query = array('fields' => $fields, 'where' => array('url' => $url), 'limit' => 1);
-	    // get content results
-	    $result = $this->ci->page_model->read($query);
+		// pull module
+		if (! $result = $this->ci->module_model->read(array('where' => array('modules.category_id' => $cat_id['id'], 'modules.course_number' => $url[1]), 'limit' => '1')))
+		{
+			return false;
+		}
 	    
 	    // assign values to return array
 	    $return['id'] = $result['id'];
 	    $return['title'] = $result['title'];
-		$message = $this->ci->common_class->tags_to_links($result['content']);
-	    $return['content'] = Markdown($message['text']);
-	    $return['tags'] =  explode('#', trim($result['tags'], '#'));
-	    $return['parent_id'] = $result['parent_id'];
+		$lesson_plan = $this->ci->common_class->tags_to_links($result['lesson_plan']);
+	    $return['lesson_plan'] = Markdown($lesson_plan['string']);
 		
+		/*
 		if ($result['profile_photo'] != '')
 		{
 			$photo_data = $this->ci->photo_model->read(array('where' => array('imagename' => $result['profile_photo'], 'width' => 180, 'height' => 180), 'limit' => 1));
@@ -372,6 +388,7 @@ class Module_class
 		{
 			$return['profile_photo'] = base_url().'img/blank.png';
 		}
+		*/
 		
 		if ($this->ci->userdata['group']['name'] == 'Admin' || $this->ci->permission_class->is_actor(array('page_id' => $result['id'], 'user_id' => $this->ci->userdata['id'])))
 		{

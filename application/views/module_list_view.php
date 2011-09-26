@@ -29,8 +29,12 @@ if ($this->session->flashdata('success'))
 	<?php foreach ($tiers as $tier => $category): ?>
 	<h2><?=$tier?></h2>
 	<ul>
-		<?php foreach ($category as $module_number => $module): ?>
-		<li><?php echo anchor('', $module['title']); ?></li>
+		<?php foreach ($category as $module_number): ?>
+		
+		<?php foreach ($module_number as $module): ?>
+		<li><?php echo anchor('module/view/'.$module['category_name'].'-'.$module['course_number'], strtoupper($module['category_name']).'-'.$module['course_number'].'&nbsp;'.$module['title']); ?></li>
+		<?php endforeach; ?>
+		
 		<?php endforeach; ?>
 	</ul>
 	<?php endforeach; ?>
