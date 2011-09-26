@@ -259,7 +259,7 @@ class Module extends MY_Controller {
 	    // print the page
 		$this->output->set_header("Cache-Control: max-age=3000, public, must-revalidate");
 		
-		$this->load->view('head', array('page_title' => $data['title'], 'stylesheets' => array('layout_outer.css', 'layout_inner.css', 'theme.css'), 'scripts' => array('basic.js', 'jquery.url.js')));
+		$this->load->view('head', array('page_title' => $data['title'], 'stylesheets' => array('layout_outer.css', 'layout_inner.css', 'theme.css'), 'scripts' => array('resource.js', 'jquery.url.js')));
 		$this->load->view('header');
 		$this->load->view('main_open');
 		$this->load->view('left_column');

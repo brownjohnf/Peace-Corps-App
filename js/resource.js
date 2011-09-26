@@ -9,7 +9,7 @@ $(document).ready(function() {
 	  $('.module_resources li ul').slideUp();
 	  $(this).find('ul').slideDown();
    });
-   $('div.lesson_plan, div.resources, div.network').hide();
+   $('div.resources, div.network').hide();
    
    $('h2.lesson_plan').click(function() {
 	  $('div.resources, div.network').slideUp();
