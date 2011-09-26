@@ -26,11 +26,11 @@ if ($this->session->flashdata('success'))
 	<h1>Available Modules</h1>
 	<p>The following modules are currently online:</p>
 	
-	<?php foreach ($tiers as $tier => $modules): ?>
+	<?php foreach ($tiers as $tier => $category): ?>
 	<h2><?=$tier?></h2>
 	<ul>
-		<?php foreach ($modules as $link => $module): if (is_numeric($link)): $link = 'module'; endif; ?>
-		<li><?php echo anchor($link, $module); ?></li>
+		<?php foreach ($category as $module_number => $module): ?>
+		<li><?php echo anchor('', $module['title']); ?></li>
 		<?php endforeach; ?>
 	</ul>
 	<?php endforeach; ?>
