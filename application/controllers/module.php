@@ -12,7 +12,6 @@ class Module extends MY_Controller {
 	
 	public function index()
 	{
-		$data = $this->module_class->show();
 		$data['title'] = 'Modules';
 		$data['backtrack'] = array('resource' => 'Resources', 'module' => 'Modules');
 		
