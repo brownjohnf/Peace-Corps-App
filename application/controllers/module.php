@@ -150,15 +150,26 @@ class Module extends MY_Controller {
 			redirect('module');
 		}
 		
+		if ($resources = $this->module_class->resource_by_module($data['id']))
+		{
+			if (array_key_exists('social', $resources))
+			{
+				$data['social'] = $resources['social'];
+				unset($resources['social']);
+			}
+			if (array_key_exists('people', $resources))
+			{
+				$data['people'] = $resources['people'];
+				unset($resources['people']);
+			}
+			$data['resources'] = $resources['resources'];
+		}
+		
 		$data['backtrack'] = array('resource' => 'Resources', 'module' => 'Modules', $this->uri->uri_string() => $data['title']);
 		/*
 		switch ($this->uri->segment(3, null))
 		{
 			case 'basic-garden-bed-preparation';
-				$data['title'] = 'Basic Garden Bed Preparation';
-				
-				$data['lesson_plan'] = '<h3>Performance Goals & Objectives</h3>
-<p>Goals: This session is designed as a field technology work session, where volunteers will be instructed on the methods of double digging and proper usage of soil amendments.  This is a field workshop, with the first 20 minutes dedicated to explaining the reasons for and the advantages of double digging and adding appropriate soil amendments. The last 40 minutes are dedicated to hands on practice at double digging.</p>';
 				$data['resources'] = array(
 										   'Documents' => array(
 																'http://pcsenegal.org/download.php?file=library/Lesson%20Plan%20-%20Basic%20Garden%20Bed%20Prep.doc&extension=doc&id=799&embed=library&title=Lesson%20Plan%20-%20Basic%20Garden%20Bed%20Prep' => 'Lesson Plan [download]',
@@ -166,10 +177,6 @@ class Module extends MY_Controller {
 																'http://pcsenegal.org/download.php?file=library/Tech%20TDA%20-%20Basic%20Garden%20Bed%20Prep.doc&extension=doc&id=797&embed=library&title=Tech%20TDA%20-%20Basic%20Garden%20Bed%20Prep' => 'Tech TDA [download]',
 																'http://pcsenegal.org/download.php?file=library/Tech%20Handout%20-%20Basic%20Garden%20Bed%20Prep.doc&extension=doc&id=798&embed=library&title=Tech%20Handout%20-%20Basic%20Garden%20Bed%20Prep' => 'Tech Handout [download]'
 															   ),
-										   'Links' => array(
-															'http://www.agriculture.gouv.sn/' => 'Ministry of Agriculture',
-															'http://www.facebook.com/groups/158506604235841/' => 'Peace Corps Senegal Agriculture Group [Facebook]'
-															),
 										   'Podcasts' => array(
 															   'http://itunes.apple.com/gb/podcast/instructional-videos/id367648546' => 'Visit our podcast to find informational videos on this and many other topics'
 															   ),
@@ -207,9 +214,6 @@ class Module extends MY_Controller {
 											   'email' => 'bas.ndiaye@yahoo.fr'
 											   )
 										 );
-				$data['social'] = array(
-										'http://www.facebook.com/groups/158506604235841/' => 'Peace Corps Senegal | Agriculture Group [Facebook]'
-										);
 				break;
 			case 'live-fencing':
 				$data['title'] = 'Live Fencing';
@@ -220,10 +224,6 @@ class Module extends MY_Controller {
 				$data['resources'] = array(
 										   'Documents' => array(
 																'http://pcsenegal.org/download.php?file=library/Live_Fencing_Pocket_Manual.pdf&extension=pdf&id=793&embed=library&title=Live%20Fencing%20Pocket%20Manual' => 'Full Lesson Plan [download]'),
-										   'Links' => array(
-															'http://www.environnement.gouv.sn/rubrique.php3?id_rubrique=20' => '<em>Eaus et Forets</em> Senegal (Water and Forest Management)',
-															'http://www.facebook.com/groups/158506604235841/' => 'Peace Corps Senegal Agriculture Group [Facebook]'
-															),
 										   'Podcasts' => array(
 															   'http://itunes.apple.com/gb/podcast/instructional-videos/id367648546' => 'Visit our podcast to find informational videos on this and many other topics'),
 										   'Presentations' => array(
@@ -237,10 +237,6 @@ class Module extends MY_Controller {
 															  'http://pcsenegal.org/download.php?file=library/pcsenegal_agroforestry_manual.pdf&extension=pdf&id=369&embed=library&title=pcsenegal_agroforestry_manual' => 'Agroforestry Manual [download]',
 															  'http://pcsenegal.org/download.php?file=library/Live_Fencing_Pocket_Manual.pdf&extension=pdf&id=793&embed=library&title=Live%20Fencing%20Pocket%20Manual' => 'Live Fencing Pocket Manual [download]'),
 										   'Wordlists' => array('Sereer', 'Wolof'));
-				$data['people'] = array(
-										'profile/view/kelley-michael' => 'Michael Kelley, Staff',
-										'profile/view/blass-cassandra' => 'Cassie Blass, Volunteer',
-										'profile/view/constant-ariana' => 'Ariana Constant, Volunteer');
 				$data['experts'] = array(
 										 array(
 											   'name' => 'Alpha Sow',

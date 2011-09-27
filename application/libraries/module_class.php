@@ -408,4 +408,48 @@ class Module_class
 	    return $return;
 	}
 	
+	public function resource_by_module($mod_id)
+	{
+		$this->ci->load->model(array('module_model', 'people_model', 'page_model', 'link_model', 'video_model'));
+		if ($result = $this->ci->module_model->read_resources(array('where' => array('mod_id' => $mod_id))))
+		{
+			foreach ($result as $row)
+			{
+				$types[$row['table']][] = $row['res_id'];
+			}
+			if (array_key_exists('people', $types))
+			{
+				foreach ($types['people'] as $res_id)
+				{
+					$people = $this->ci->people_model->selectUsers(array('where' => array('people.id' => $res_id), 'limit' => '1'));
+					$return['people'][] = anchor('profile/view/'.url_title($people['lname'].'-'.$people['fname'], 'dash', true), $people['fname'].' '.$people['lname']);
+				}
+			}
+			if (array_key_exists('pages', $types))
+			{
+				foreach ($types['pages'] as $res_id)
+				{
+					$page = $this->ci->page_model->read(array('fields' => 'url, title', 'where' => array('id' => $res_id), 'limit' => '1'));
+					$return['resources']['Case Studies'][] = anchor('page/view/'.$page['url'], $page['title']);
+				}
+			}
+			if (array_key_exists('links', $types))
+			{
+				foreach ($types['links'] as $res_id)
+				{
+					$link = $this->ci->link_model->read(array('fields' => 'url, title', 'where' => array('id' => $res_id), 'limit' => '1'));
+					$return['resources']['External Links'][] = anchor($link['url'].'?rel=0&wmode=Opaque', $link['title']);
+				}
+			}
+			if (array_key_exists('videos', $types))
+			{
+				foreach ($types['videos'] as $res_id)
+				{
+					$video = $this->ci->video_model->read(array('fields' => 'title, link', 'where' => array('id' => $res_id), 'limit' => '1'));
+					$return['resources']['Videos'][] = anchor($video['link'].'?rel=0&wmode=Opaque', $video['title']);
+				}
+			}
+			return $return;
+		}
+	}
 }

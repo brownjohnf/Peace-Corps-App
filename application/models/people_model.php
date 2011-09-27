@@ -76,7 +76,7 @@ class People_model extends CI_Model {
 	
 	function selectUsers($data = array())
 	{
-		$default = array('where' => array('people.id like' => '%'), 'order_by' => array('column' => 'people.lname', 'order' => 'asc'));
+		$default = array('where' => array('people.id like' => '%'), 'order_by' => array('column' => 'people.lname', 'order' => 'asc'), 'offset' => 0);
 		$data = array_merge($default, $data);
 		
 		

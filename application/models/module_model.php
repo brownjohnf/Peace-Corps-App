@@ -55,7 +55,28 @@ class Module_model extends CI_Model {
 		} else {
 			return $query->result_array();
 		}
-    	
+	}
+	
+	function read_resources($data = array())
+	{
+		$default = array('where' => array('id like' => '%'), 'order_by' => array('column' => 'id', 'order' => 'asc'), 'offset' => 0);
+		$data = array_merge($default, $data);
+		
+		$this->db->select('*');
+		$this->db->where($data['where']);
+		if (isset($data['limit'])) {
+			$this->db->limit($data['limit'], $data['offset']);
+		}
+		$this->db->from('mod_resources');
+		$this->db->order_by($data['order_by']['column'], $data['order_by']['order']);
+    	$query = $this->db->get();
+		//print_r($query->result_array());
+		
+		if (isset($data['limit']) && $data['limit'] == 1) {
+			return $query->row_array();
+		} else {
+			return $query->result_array();
+		}
 	}
 	
 }
