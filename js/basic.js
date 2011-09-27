@@ -2,10 +2,6 @@
   licensed under the Affero General Public License version 3 or later.  See
    the COPYRIGHT file.
 */
-
-var base_url = 'http://alpha.pcsenegal.org/';
-var upload_dir = 'uploads/';
-
 $(document).ready(function() {
    
    $('.notification').show().delay(10000).slideUp(1000);
@@ -73,25 +69,4 @@ $(document).ready(function() {
 		 $(this).attr('value', 'Search pcsenegal.org using a Google Search');
 	  }
    );
-   
-   $('.module_resources li ul').hide();
-   $('.module_resources li').css('color', '#red').click(function() {
-	  $('.module_resources li ul').slideUp();
-	  $(this).find('ul').slideDown();
-   });
-   $('div.lesson_plan, div.resources, div.network').hide();
-   
-   $('h2.lesson_plan').click(function() {
-	  $('div.resources, div.network').slideUp();
-	  $('div.lesson_plan').slideDown();
-   });
-   $('h2.resources').click(function() {
-	  $('div.lesson_plan, div.network').slideUp();
-	  $('div.resources').slideDown();
-   });
-   $('h2.network').click(function() {
-	  $('div.resources, div.lesson_plan').slideUp();
-	  $('div.network').slideDown();
-   });
-   //alert($current);
 });

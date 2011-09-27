@@ -25,13 +25,8 @@
 			<div>
 				<ul>
 					<li><?=anchor('resource', 'Overview', array('class' => 'menu_anchor top'))?></li>
-					<li><?=anchor('module', 'Modules', array('class' => 'menu_anchor top'))?>
-						<ul>
-							<li><?=anchor('module/view/live-fencing', 'Live Fencing', array('class' => 'menu_anchor mid'))?></li>
-							<li><?=anchor('module/view/basic-garden-bed-preparation', 'Basic Garden Bed Prep', array('class' => 'menu_anchor mid'))?></li>
-						</ul>
-					</li>
 				</ul>
+				<?php echo $this->module_class->menu(); ?>
 			</div>
 			<?php endif; ?>
 			

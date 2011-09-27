@@ -8,6 +8,7 @@ class Resource extends MY_Controller {
 	function __construct()
 	{
 	    parent::__construct();
+		$this->load->library('module_class');
 	}
 	
 	public function index()

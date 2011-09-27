@@ -29,6 +29,8 @@
 	<?php endforeach; ?>
 	
 	<script type="text/javascript" src="<?php echo base_url(); ?>js/jquery.js"></script>
+	<script type="text/javascript" src="<?php echo base_url(); ?>js/config.js"></script>
+	<script type="text/javascript" src="<?php echo base_url(); ?>js/basic.js"></script>
 	
 	<?php foreach ($scripts as $js): ?>
 	<script type="text/javascript" src="<?php echo base_url().'js/'.$js; ?>"></script>
