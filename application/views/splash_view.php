@@ -7,7 +7,7 @@
 		<?php
 			$splash = array(
 							array(
-								  'visual' => '<iframe width="652" height="390" src="http://www.youtube.com/embed/gt4VYGd178I" frameborder="0" allowfullscreen></iframe>',
+								  'visual' => '<iframe width="652" height="390" src="http://www.youtube.com/embed/gt4VYGd178I?rel=0&wmode=Opaque" frameborder="0" allowfullscreen></iframe>',
 								  'width' => '652px',
 								  'title' => 'Welcome Aggies!',
 								  'text' => "Peace Corps Senegal welcomes its newest agriculture stage! Over the next nine weeks, they'll learn a local language, learn about Senegalese culture, and aquire all the skills they'll need to be an effective Volunteer over the next two years.",

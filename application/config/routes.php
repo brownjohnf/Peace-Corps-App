@@ -38,7 +38,7 @@
 |
 */
 
-$route['default_controller'] = 'splash';
+$route['default_controller'] = 'home/splash';
 $route['404_override'] = 'feed/error';
 $route['page'] = 'feed/page';
 $route['tag'] = 'feed/tag';
