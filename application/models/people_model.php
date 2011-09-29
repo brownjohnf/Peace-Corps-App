@@ -76,11 +76,10 @@ class People_model extends CI_Model {
 	
 	function selectUsers($data = array())
 	{
-		$default = array('where' => array('people.id like' => '%'), 'order_by' => array('column' => 'people.lname', 'order' => 'asc'), 'offset' => 0);
+		$default = array('fields' => 'people.*', 'where' => array('people.id like' => '%'), 'order_by' => array('column' => 'people.lname', 'order' => 'asc'), 'offset' => 0);
 		$data = array_merge($default, $data);
 		
-		
-		$this->db->select('people.*, groups.name as group_name, stages.name as stage_name, sectors.name as sector_name, sites.name as site_name');
+		$this->db->select($data['fields'].', groups.name as group_name, stages.name as stage_name, sectors.name as sector_name, sites.name as site_name');
 		$this->db->where($data['where']);
 		if (isset($data['limit'])) {
 			$this->db->limit($data['limit'], $data['offset']);

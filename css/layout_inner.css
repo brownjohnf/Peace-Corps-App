@@ -120,9 +120,14 @@
     width: 560px;
     overflow: hidden;
 }
-#table_view, #user_list_view {
+#user_list_view {
 	margin: 20px;
 	overflow: auto;
+}
+#table_view {
+	margin: 0 0 0 220px;
+	width: 760px;
+	overflow: hidden;
 }
 #page_form label, #photo_form label, #user_form label {
     display: block;

@@ -13,7 +13,7 @@ class User extends MY_Controller {
 	{
 		$this->load->model('people_model');
 		
-		if ($this->uri->segment(4, false))
+		if ($this->uri->segment(4))
 		{
 			$data['table'] = $this->people_model->selectUsers(array('where' => array('people.'.$this->uri->segment(3) => $this->uri->segment(4))));
 		}

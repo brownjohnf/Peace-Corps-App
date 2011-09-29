@@ -42,6 +42,7 @@
 					<li><?=anchor('page/create', 'New Page', array('class' => 'menu_anchor top'))?></li>
 					<li><?=anchor('photo/add', 'Add Photo', array('class' => 'menu_anchor top'))?></li>
 					<li><?=anchor('user/view', 'User Admin', array('class' => 'menu_anchor top'))?></li>
+					<li><?=anchor('resource/type_view', 'Resource Types', array('class' => 'menu_anchor top'))?></li>
 			    </ul>
 			</div>
 			<?php endif; ?>

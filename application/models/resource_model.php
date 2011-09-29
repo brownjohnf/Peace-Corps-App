@@ -3,27 +3,24 @@
 #   licensed under the Affero General Public License version 3 or later.  See
 #   the COPYRIGHT file.
 
-class Module_model extends CI_Model {
+class Resource_model extends CI_Model {
 
-	public function __construct() {
-		
+	public function __construct()
+	{
 		parent::__construct();
-		
 	}
 	
-	function read($data = array())
+	function read_type($data = array())
 	{
-		$default = array('where' => array('modules.id like' => '%'), 'order_by' => array('column' => 'modules.course_number', 'order' => 'asc'), 'offset' => 0);
+		$default = array('fields' => '*', 'where' => array('id like' => '%'), 'order_by' => array('column' => 'name', 'order' => 'asc'), 'offset' => 0);
 		$data = array_merge($default, $data);
 		
-		$this->db->select('modules.*, mod_categories.name as category_name, tiers.name as tier_name');
+		$this->db->select($data['fields']);
 		$this->db->where($data['where']);
 		if (isset($data['limit'])) {
 			$this->db->limit($data['limit'], $data['offset']);
 		}
-		$this->db->from('modules');
-		$this->db->join('mod_categories', 'mod_categories.id = modules.category_id', 'left');
-		$this->db->join('tiers', 'tiers.id = modules.tier_id', 'left');
+		$this->db->from('res_types');
 		$this->db->order_by($data['order_by']['column'], $data['order_by']['order']);
     	$query = $this->db->get();
 		

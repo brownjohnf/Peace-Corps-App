@@ -5,24 +5,21 @@
 
 if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-class Module_class
+class Resource_class
 {
 	public function __construct() {
 		$this->ci =& get_instance();
-		$this->ci->load->model(array('module_model', 'tag_model'));
-		$this->ci->load->library(array('permission_class', 'common_class'));
-		$this->ci->load->helper('markdown');
+		$this->ci->load->model(array('resource_model'));
 	}
 	
-	public function show()
+	public function type_view()
 	{
-		if ($result = $this->ci->module_model->read())
+		if ($result = $this->ci->resource_model->read_type())
 		{
-			foreach ($result as $module)
+			foreach ($result as $row)
 			{
-				$return[$module['tier_name']][$module['category_name']][$module['course_number']] = $module;
+				$return[] = array('Controls' => anchor('resource/type_delete', 'Delete').'&nbsp;|&nbsp;'.anchor('resource/type_edit/'.$row['id'], 'Edit'), 'Resource Type' => $row['name'], 'Description' => $row['description']);
 			}
-			//print_r($return);
 			return $return;
 		}
 	}
