@@ -83,25 +83,25 @@
 	height: 18px;
 }
 
-#leftbar ul.leftmenu li a {
+#leftbar ul.leftmenu > li > a {
 	padding: 4px 4px 4px 30px;
 	margin-top: 4px;
 	font-size: 17px;
 }
-#leftbar ul.leftmenu li ul li a {
+#leftbar ul.leftmenu > li > ul > li > a {
     padding: 3px 4px 1px 45px;
 	margin-top: 3px;
 	font-size: 15px;
 }
-#leftbar ul.leftmenu li ul li ul li a {
+#leftbar ul.leftmenu > li > ul > li > ul > li > a {
     padding: 1px 4px 1px 60px;
 	margin-top: 1px;
 	font-size: 13px;
 }
-#leftbar ul li a {
+#leftbar ul.leftmenu a {
 	display: block;
 }
-#leftbar ul.leftmenu a {
+#leftbar ul.leftmenu li > a {
 	border: 1px solid #fff;
 }
 #leftbar ul.leftmenu a:hover {

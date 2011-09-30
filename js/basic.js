@@ -8,7 +8,7 @@ $(document).ready(function() {
    var $url = $.url();
    var $current = 'a[href="' + $url.attr('source') + '"]';
    var name = 'a[name="' + $url.segment(1) + '"]';
-   $("#leftbar " + $current).css('background-color', '#cae1ff');
+   $("#leftbar " + $current).css('background-color', '#cae1ff').css('border', '1px solid #ccc');
    $("#main_menu " + name).css('color', '#fff');
    $(".feed_block .body .message " + $current).css('color', 'red');
    $(".controls").hide();
