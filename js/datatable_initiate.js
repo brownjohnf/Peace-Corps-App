@@ -4,6 +4,8 @@
 */
 
 $(document).ready(function() {
-						   $('#datatable').dataTable();
-						   }
-						   );
+	$('#datatable').dataTable({
+	  "iDisplayLength": 25,
+	  "bLengthChange": true
+	});
+});

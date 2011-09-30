@@ -23,12 +23,12 @@ if ($this->session->flashdata('success'))
 	<? endforeach; ?>
 	</div>
 	
-	<table>
-		<head>
+	<table id="datatable">
+		<thead>
 		<?php foreach ($table[0] as $key => $value): ?>
 			<th><?=$key?></th>
 		<?php endforeach; ?>
-		</head>
+		</thead>
 	<?php foreach ($table as $row): ?>
 		<tr>
 		<?php foreach ($row as $header => $column): ?>

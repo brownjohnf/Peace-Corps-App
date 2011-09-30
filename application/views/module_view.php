@@ -28,26 +28,26 @@ if ($this->session->flashdata('success'))
 		<?=$lesson_plan?>
 	</div>
 	
-	<?php if (isset($resources)): ?>
+	<?php if (isset($resources['resources'])): ?>
 	<h2 class="resources">Resources</h2>
 	<div class="resources">
 		<p>The following resources are currently online as part of this module (click to expand):</p>
-		<?php echo ul($resources); ?>
+		<?php echo ul($resources['resources']); ?>
 	</div>
 	<?php endif; ?>
 	
-	<?php if (isset($people)): ?>
-	<h2 class="network">Network</h2>
+	<?php if (isset($resources['people']) || isset($resources['resources']['Social Networking'])): ?>
+	<h2 class="network">Keep the conversation going</h2>
 	<div class="network">
+		<?php if (isset($resources['people'])): ?>
 		<p>The following people are available for more information:</p>
-		<?php echo ul($people); ?>
-	</div>
-	<?php endif; ?>
+		<?php echo ul($resources['people']); ?>
+		<?php endif; ?>
 		
-	<?php if (isset($social)): ?>
-	<h2>Keep the conversation going</h2>
-	<div>
-		<?php echo ul($social); ?>
+		<?php if (isset($resources['resources']['Social Networking'])): ?>
+		<p>Join the discussion on one of these social networks:</p>
+		<?php echo ul($resources['resources']['Social Networking']); ?>
+		<?php endif; ?>
 	</div>
 	<?php endif; ?>
 </div>
