@@ -32,9 +32,6 @@ class Page extends MY_Controller {
 	    $data['backtrack'] = $this->common_class->backtrack($data['parent_id'], 'pages');
 	    $data['backtrack'][$url] = $data['title'];
 	    
-	    // retrieve the left-side menu
-	    $left_col['menu'] = $this->page_class->menu($data['id'], $data['parent_id']);
-	    
 	    // print the page
 		$this->output->set_header("Cache-Control: max-age=300, public, must-revalidate");
 		
@@ -94,10 +91,6 @@ class Page extends MY_Controller {
 			} else {
 				$data['controls'] = anchor('feed/page', img(base_url().'img/cancel_icon.png'), array('class' => 'cancel'));
 			}
-			
-			// fetch menu, takes id, parent_id properties
-			$left_col['menu'] = $this->page_class->menu(1, 0);
-			
 			
 			$this->output->set_header("Cache-Control: max-age=3000, public, must-revalidate");
 			
@@ -166,8 +159,6 @@ class Page extends MY_Controller {
 			
 			
 			$data['controls'] = anchor('page/view/'.$data['url'], img(base_url().'img/cancel_icon.png'), array('class' => 'cancel'));
-		
-			$left_col['menu'] = $this->page_class->menu(1, 0);
 			
 			$this->load->view('head', array('page_title' => 'Edit Page', 'stylesheets' => array('layout_outer.css', 'layout_inner.css', 'theme.css', 'nyroModal.css'), 'scripts' => array('jquery.nyroModal.js', 'jquery.nyroModal.filters.link.js', 'page_edit.js', 'basic.js', 'jquery.url.js')));
 			$this->load->view('header');

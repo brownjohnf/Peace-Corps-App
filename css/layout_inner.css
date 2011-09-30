@@ -101,8 +101,12 @@
 #leftbar ul li a {
 	display: block;
 }
+#leftbar ul.leftmenu a {
+	border: 1px solid #fff;
+}
 #leftbar ul.leftmenu a:hover {
-    background-color: #d3d3d3;
+    background-color: whitesmoke;
+	border: 1px solid #ccc;
 	text-decoration: none;
 }
 /* end of vmenu settings */

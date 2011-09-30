@@ -10,11 +10,11 @@
 			<?php if ($this->uri->segment(1, null) == 'feed'): ?>
 			<h2>Updates</h2>
 			<div>
-				<ul>
-					<li><?=anchor('feed', 'All', array('class' => 'menu_anchor top'))?></li>
-					<li><?=anchor('feed/page', 'Content', array('class' => 'menu_anchor top'))?></li>
-					<li><?=anchor('feed/blog', 'Blogs', array('class' => 'menu_anchor top'))?></li>
-					<li><?=anchor('feed/tag', 'Recent Tags', array('class' => 'menu_anchor top'))?></li>
+				<ul class="leftmenu">
+					<li><?=anchor('feed', 'All')?></li>
+					<li><?=anchor('feed/page', 'Content')?></li>
+					<li><?=anchor('feed/blog', 'Blogs')?></li>
+					<li><?=anchor('feed/tag', 'Recent Tags')?></li>
 				</ul>
 			</div>
 			<?php endif; ?>
@@ -23,8 +23,8 @@
 			<?php if ($this->uri->segment(1, null) == 'resource' || $this->uri->segment(1, null) == 'module'): ?>
 			<h2>Resources</h2>
 			<div>
-				<ul>
-					<li><?=anchor('resource', 'Overview', array('class' => 'menu_anchor top'))?></li>
+				<ul class="leftmenu">
+					<li><?=anchor('resource', 'Overview')?></li>
 				</ul>
 				<?php echo $this->module_class->menu(); ?>
 			</div>
@@ -38,11 +38,11 @@
 			<?php if ($this->userdata['group']['name'] == 'Admin'): ?>
 			<h2>Admin</h2>
 			<div>
-			    <ul>
-					<li><?=anchor('page/create', 'New Page', array('class' => 'menu_anchor top'))?></li>
-					<li><?=anchor('photo/add', 'Add Photo', array('class' => 'menu_anchor top'))?></li>
-					<li><?=anchor('user/view', 'User Admin', array('class' => 'menu_anchor top'))?></li>
-					<li><?=anchor('resource/type_view', 'Resource Types', array('class' => 'menu_anchor top'))?></li>
+			    <ul class="leftmenu">
+					<li><?=anchor('page/create', 'New Page')?></li>
+					<li><?=anchor('photo/add', 'Add Photo')?></li>
+					<li><?=anchor('user/view', 'User Admin')?></li>
+					<li><?=anchor('resource/type_view', 'Resource Types')?></li>
 			    </ul>
 			</div>
 			<?php endif; ?>
