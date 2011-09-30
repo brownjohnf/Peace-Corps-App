@@ -38,7 +38,10 @@ class Blog extends MY_Controller {
 			die($data);
 		}
 		
-		$data = $this->blog_class->view($names);
+		if (! $data = $this->blog_class->view($names))
+		{
+			redirect('feed/blog');
+		}
 		$data['title'] = $data['fname'].'&nbsp;'.$data['lname']."'s Recent Blog Posts";
 		$data['backtrack'] = array('feed/blog' => 'Blogs', 'profile/view/'.url_title($data['lname'].'-'.$data['fname'], 'dash', true) => $data['fname'].'&nbsp;'.$data['lname']);
 		$data['controls'] = null;

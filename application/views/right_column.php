@@ -19,7 +19,7 @@
 				<h2><?=$name?></h2>
 				<p>
 					<?php echo anchor('profile/view/'.$this->uri->segment(3, null), 'View Profile'); ?><br>
-					<?php echo anchor(url_prep($blog_url), 'Go to blog', array('target' => '_blank')); ?><br>
+					<?php echo anchor(prep_url($blog_url), 'Go to blog', array('target' => '_blank')); ?><br>
 					<?php if ($this->userdata['group']['name'] == 'Admin'): echo anchor('user/edit/'.$this->userdata['id'], 'Edit User'); endif; ?>
 				</p>
 			</div>

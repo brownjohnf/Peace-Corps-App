@@ -25,8 +25,8 @@ class Blog_class
 			$tags = $this->ci->common_class->tags_to_links('blog #description here');
 			$item['message'] = $tags['text'];
 			$item['message_truncated'] = 'no';
-			$item['subject'] = anchor('profile/view/'.strtolower($result['lname'].'-'.$result['fname']), $result['fname'].'&nbsp;'.$result['lname']).',&nbsp;'.$result['group_name'];
-			$item['full_url'] = prep_url($result['blog_address']);
+			$item['subject'] = anchor('profile/view/'.url_title($result['lname'].'-'.$result['fname'], 'dash', true), $result['fname'].'&nbsp;'.$result['lname']).',&nbsp;'.$result['group_name'];
+			$item['full_url'] = base_url().'blog/view/'.url_title($result['lname'].'-'.$result['fname'], 'dash', true);
 			$item['author'] = $result['blog_name'];
 			$item['tags'] = $tags['array'];
 			
@@ -38,7 +38,7 @@ class Blog_class
 				$item['profile_photo'] = base_url().'img/blank.png';
 			}
 
-			$a = get_headers($item['full_url'], 1);
+			$a = get_headers(prep_url($result['blog_address']), 1);
 			
 			if (array_key_exists('Last-Modified', $a))
 			{
@@ -66,11 +66,13 @@ class Blog_class
 		
 	    // get profile info
 	    if (! $result = $this->ci->people_model->selectUsers($query)) {
+			$this->ci->session->set_flashdata('error', 'No user was found by that name.');
 			return false;
 			die();
 		}
 		
 		if (! $result['blog_address']) {
+			$this->ci->session->set_flashdata('error', 'This user does not have a blog.');
 			return false;
 			die();
 		}
@@ -109,6 +111,7 @@ class Blog_class
 					$data[$count]['subject'] = null;
 					$data[$count]['tags'] = null;
 					$data[$count]['elapsed'] = null;
+					$data[$count]['controls'] = null;
 					$count++;
 				}
 				break;
@@ -126,11 +129,18 @@ class Blog_class
 					$data[$count]['subject'] = null;
 					$data[$count]['tags'] = null;
 					$data[$count]['elapsed'] = $this->ci->common_class->elapsed_time(strtotime($item->pubDate)).'&nbsp;ago';
+					$data[$count]['controls'] = null;
 					$count++;
 				}
 				break;
 			default:
-				$data = "Sorry, we don't recognize this type of blog.";
+				$count = 0;
+				$data[$count]['content'] = "<p>Sorry, we don't recognize this type of blog.</p>";
+				$data[$count]['title'] = 'Unknown Blog Type';
+				$data[$count]['subject'] = null;
+				$data[$count]['tags'] = null;
+				$data[$count]['elapsed'] = null;
+				$data[$count]['controls'] = null;
 		}
 		//print_r($rss);
 		$return['blog_data'] = $data;
