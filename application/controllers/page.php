@@ -97,7 +97,7 @@ class Page extends MY_Controller {
 			$this->load->view('head', array('page_title' => 'Create New Page', 'stylesheets' => array('layout_outer.css', 'layout_inner.css', 'theme.css', 'nyroModal.css'), 'scripts' => array('jquery.nyroModal.js', 'jquery.nyroModal.filters.link.js', 'page_edit.js', 'basic.js','jquery.url.js')));
 			$this->load->view('header');
 			$this->load->view('main_open');
-			$this->load->view('left_column', $left_col);
+			$this->load->view('left_column');
 			$this->load->view('right_column');
 			$this->load->view('page_form', $data);
 			$this->load->view('main_close');
@@ -163,7 +163,7 @@ class Page extends MY_Controller {
 			$this->load->view('head', array('page_title' => 'Edit Page', 'stylesheets' => array('layout_outer.css', 'layout_inner.css', 'theme.css', 'nyroModal.css'), 'scripts' => array('jquery.nyroModal.js', 'jquery.nyroModal.filters.link.js', 'page_edit.js', 'basic.js', 'jquery.url.js')));
 			$this->load->view('header');
 			$this->load->view('main_open');
-			$this->load->view('left_column', $left_col);
+			$this->load->view('left_column');
 			$this->load->view('right_column');
 			$this->load->view('page_form', $data);
 			$this->load->view('main_close');
