@@ -32,7 +32,7 @@
 			
 			<h2>Browse</h2>
 			<div class="left_menu">
-			    <?php if (isset($menu)): echo $menu; else: echo $this->menu_class->menu(1, 0); endif;?>
+			    <?php echo $this->page_class->menu(1, 0); ?>
 			</div>
 			
 			<?php if ($this->userdata['group']['name'] == 'Admin'): ?>

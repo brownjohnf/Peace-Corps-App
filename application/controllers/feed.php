@@ -8,7 +8,6 @@ class Feed extends MY_Controller {
 	function __construct() {
 	    parent::__construct();
 		$this->load->library('page_class');
-		$this->load->library('menu_class');
 		$this->load->library('common_class');
 	}
 
@@ -31,7 +30,7 @@ class Feed extends MY_Controller {
 		//print_r($data['feed']);
 	    
 		$data['backtrack'] = array('feed' => 'Feed');
-		$left_col['menu'] = $this->menu_class->menu(1, 0);
+		$left_col['menu'] = $this->page_class->menu(1, 0);
 		
 		$this->load->view('head', array('page_title' => 'Updates', 'stylesheets' => array('layout_outer.css', 'layout_inner.css', 'theme.css'), 'scripts' => array('basic.js', 'jquery.url.js')));
 		$this->load->view('header');
@@ -56,7 +55,7 @@ class Feed extends MY_Controller {
 		$data['feed'] = $blogs_chunks[0];
 	    
 		$data['backtrack'] = array('feed' => 'Feed', 'feed/blog' => 'Blogs');
-		$left_col['menu'] = $this->menu_class->menu(1, 0);
+		$left_col['menu'] = $this->page_class->menu(1, 0);
 		
 		$this->load->view('head', array('page_title' => 'Recently Updated Blogs', 'stylesheets' => array('layout_outer.css', 'layout_inner.css', 'theme.css'), 'scripts' => array('basic.js', 'jquery.url.js')));
 		$this->load->view('header');
@@ -84,7 +83,7 @@ class Feed extends MY_Controller {
 		$tags['tags'] = array_unique($tags['tags']);
 	    
 		$data['backtrack'] = array('feed' => 'Feed', 'feed/page' => 'Pages');
-		$left_col['menu'] = $this->menu_class->menu(1, 0);
+		$left_col['menu'] = $this->page_class->menu(1, 0);
 		
 		$this->load->view('head', array('page_title' => 'Page Updates', 'stylesheets' => array('layout_outer.css', 'layout_inner.css', 'theme.css'), 'scripts' => array('basic.js', 'jquery.url.js')));
 		$this->load->view('header');
@@ -112,7 +111,7 @@ class Feed extends MY_Controller {
 		$tags['tags'] = array_unique($tags['tags']);
 	    
 		$data['backtrack'] = array('feed' => 'Feed', 'feed/page' => 'Pages');
-		$left_col['menu'] = $this->menu_class->menu(1, 0);
+		$left_col['menu'] = $this->page_class->menu(1, 0);
 		
 		$this->load->view('head', array('page_title' => 'Page Updates', 'stylesheets' => array('layout_outer.css', 'layout_inner.css', 'theme.css'), 'scripts' => array('basic.js', 'jquery.url.js')));
 		$this->load->view('header');
@@ -142,7 +141,7 @@ class Feed extends MY_Controller {
 		$tags['tags'] = array_unique($tags['tags']);
 		
 		$data['backtrack'] = array('feed' => 'Feed', 'feed/tag' => 'Tags');
-		$left_col['menu'] = $this->menu_class->menu(1, 0);
+		$left_col['menu'] = $this->page_class->menu(1, 0);
 		
 		$this->load->view('head', array('page_title' => 'Tag Updates', 'stylesheets' => array('layout_outer.css', 'layout_inner.css', 'theme.css'), 'scripts' => array('basic.js', 'jquery.url.js')));
 		$this->load->view('header');
@@ -158,7 +157,7 @@ class Feed extends MY_Controller {
 		
 		$data['backtrack'] = array('feed' => 'Feed', 'feed/video' => 'Videos');
 		$data['data'] = "<h1>Coming Soon: Video Updates</h1><p>Sorry, but we haven't quite finished this part yet! Come back soon to check out the latest videos from the production houses of Peace Corps Senegal.</p>";
-		$left_col['menu'] = $this->menu_class->menu(1, 0);
+		$left_col['menu'] = $this->page_class->menu(1, 0);
 		
 		$this->load->view('head', array('page_title' => 'Coming Soon: Video Updates', 'stylesheets' => array('layout_outer.css', 'layout_inner.css', 'theme.css'), 'scripts' => array('basic.js', 'jquery.url.js')));
 		$this->load->view('header');

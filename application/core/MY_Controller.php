@@ -7,7 +7,7 @@ class MY_Controller extends CI_Controller
 		
 		$this->load->database();
 		$this->load->helper(array('url', 'file', 'array', 'html'));
-		$this->load->library(array('auth', 'form_validation', 'menu_class', 'common_class'));
+		$this->load->library(array('auth', 'form_validation', 'page_class', 'common_class'));
 		$this->load->model('facebook_model');
 		
 		//print_r($this->session->userdata('fb_data'));

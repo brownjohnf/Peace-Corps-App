@@ -83,17 +83,17 @@
 	height: 18px;
 }
 
-#leftbar a.top, #leftbar ul.leftmenu li a {
+#leftbar ul.leftmenu li a {
 	padding: 4px 4px 4px 30px;
 	margin-top: 4px;
 	font-size: 17px;
 }
-#leftbar a.mid, #leftbar ul.leftmenu li ul li a {
+#leftbar ul.leftmenu li ul li a {
     padding: 3px 4px 1px 45px;
 	margin-top: 3px;
 	font-size: 15px;
 }
-#leftbar a.bot, #leftbar ul.leftmenu li ul li ul li a {
+#leftbar ul.leftmenu li ul li ul li a {
     padding: 1px 4px 1px 60px;
 	margin-top: 1px;
 	font-size: 13px;
@@ -101,7 +101,7 @@
 #leftbar ul li a {
 	display: block;
 }
-#leftbar ul li a.menu_anchor:hover, #leftbar ul.leftmenu a:hover {
+#leftbar ul.leftmenu a:hover {
     background-color: #d3d3d3;
 	text-decoration: none;
 }
@@ -149,6 +149,12 @@
 }
 #page_view .controls, #page_form .controls, #photo_form .controls, #gallery_view .controls, #user_form .controls {
     float: right;
+	margin: 0;
+	padding: 0;
+}
+#page_view .edit a, #page_form .controls a, #photo_form .controls a, #gallery_view .controls a, #user_form .controls a {
+	margin: 0;
+	padding: 0;
 }
 #page_view .controls a img, #page_form .controls a img, #photo_form .controls a img, #gallery_view .controls a img, #user_form .controls a img {
 	height: 22px;
