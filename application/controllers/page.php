@@ -38,7 +38,7 @@ class Page extends MY_Controller {
 		$this->load->view('head', array('page_title' => $data['title'], 'stylesheets' => array('layout_outer.css', 'layout_inner.css', 'theme.css'), 'scripts' => array('basic.js', 'jquery.url.js')));
 		$this->load->view('header');
 		$this->load->view('main_open');
-		$this->load->view('left_column', $left_col);
+		$this->load->view('left_column');
 		$this->load->view('right_column', array('authors' => $data['authors'], 'tags' => $data['tags'], 'profile_photo' => $data['profile_photo']));
 		$this->load->view('page_view', $data);
 		$this->load->view('main_close');

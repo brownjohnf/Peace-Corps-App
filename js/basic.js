@@ -12,12 +12,20 @@ $(document).ready(function() {
    $("#main_menu " + name).css('color', '#fff');
    $(".feed_block .body .message " + $current).css('color', 'red');
    $(".controls").hide();
-   $(".left_menu ul li, .feed_block, #page_view, #page_form, #photo_form, #gallery_view, #user_form").hover(
+   $(".feed_block, #page_view, #page_form, #photo_form, #gallery_view, #user_form").hover(
 	  function() {
 		 $(this).find(".controls").show();
 	  },
 	  function() {
 		 $(this).find(".controls").hide();
+	  }
+   );
+   $("ul.leftmenu li > a").hover(
+	  function() {
+		 $(this).siblings(".controls").show();
+	  },
+	  function() {
+		 $(this).siblings(".controls").hide();
 	  }
    );
    $("a.edit img").hover(
