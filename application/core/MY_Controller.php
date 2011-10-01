@@ -38,7 +38,7 @@ class MY_Controller extends CI_Controller
 				$this->userdata = array('group' => array('id' => 0, 'name' => 'Guest'), 'fname' => 'Guest', 'lname' => 'Guest', 'flname' => 'Guest', 'lfname' => 'Guest', 'id' => 0);
 			}
 			$this->user_menu[] = anchor('', img('https://graph.facebook.com/'.$this->fb_data['uid'].'/picture'), array('id' => 'user_image'));
-			$this->user_menu[] = anchor('', $this->fb_data['me']['name'].', '.$this->userdata['group']['name']);
+			$this->user_menu[] = anchor('profile/view/'.$this->userdata['url'], $this->fb_data['me']['name'].', '.$this->userdata['group']['name']);
 		}
 		//echo '<pre>'; print_r($this->fb_data); echo '</pre>';
 		
