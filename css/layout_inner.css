@@ -27,6 +27,9 @@
 	float: right; /* since this element is floated, a width must be given */
 	width: 180px; /* the actual width of this div, in standards-compliant browsers, or standards mode in Internet Explorer will include the padding and border in addition to the width */
 }
+.content {
+	text-align: left;
+}
 .content ul {
     padding-left: 40px;
     margin: 10px;

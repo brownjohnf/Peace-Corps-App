@@ -165,6 +165,7 @@ class Photo extends MY_Controller {
 			$data['photos'][] = array('src' => base_url().'uploads/'.$result['filename'].$result['extension'], 'height' => '180px', 'width' => '180px', 'id' => $result['filename'].$result['extension'], 'class' => 'gallery_photo', 'onClick' => "pick_photo('".$result['imagename']."');");
 		}
 		
+		$data['controls'] = null;
 		$data['title'] = 'Select a Photo';
 		
 		$this->load->view('gallery_view', $data);
