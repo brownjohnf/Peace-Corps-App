@@ -29,7 +29,7 @@
 <?php echo form_input('profile_photo', set_value('profile_photo', $profile_photo)); ?><br />
 
 <label>Mark as updated</label>
-<?php echo form_checkbox('updated', 'yes', set_checkbox('updated', 'yes', true)); ?>&nbsp;If checked, this page will appear in feeds as updated.
+<?php echo form_checkbox('updated', '1', set_checkbox('updated', '1', true)); ?>&nbsp;If checked, this page will appear in feeds as updated.
 
 
 <h2>Sharing</h2>

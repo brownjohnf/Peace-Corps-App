@@ -155,7 +155,7 @@ class Page extends MY_Controller {
 	    $this->form_validation->set_rules('title', 'Page Title', 'required');
 	    $this->form_validation->set_rules('description', 'Description', 'required');
 	    $this->form_validation->set_rules('content', 'Content', 'required');
-	    $this->form_validation->set_rules('updated', 'Updated', 'required');
+	    $this->form_validation->set_rules('updated', 'Updated', 'is_natural');
 	    $this->form_validation->set_rules('group_id', 'Group', 'required');
 	    $this->form_validation->set_rules('parent_id', 'Parent', 'required');
 	    $this->form_validation->set_rules('profile_photo', 'Profile Photo', 'required');

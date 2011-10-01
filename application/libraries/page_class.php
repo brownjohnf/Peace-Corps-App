@@ -110,7 +110,7 @@ class Page_class
 		}
 		
 		// if the page is marked as updated, set the current time
-		if ($data['updated'] == 'yes') {
+		if (array_key_exists('updated', $data)) {
 			$input['updated'] = time();
 		}
 		
