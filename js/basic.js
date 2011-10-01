@@ -20,7 +20,7 @@ $(document).ready(function() {
 		 $(this).find(".controls").hide();
 	  }
    );
-   $("ul.leftmenu li").hover(
+   $("#leftbar ul.leftmenu li").hover(
 	  function() {
 		 $('.controls').hide();
 		 $(this).find(".controls:first").show();

@@ -21,6 +21,10 @@ body {
 	text-align: center; /* this centers the container in IE 5* browsers. The text is then set to the left aligned default in the #container selector */
 	overflow-x: hidden;
 }
+table {
+	border-spacing: 0;
+	border: none;
+}
 #outer_container {
 	margin: 00px 0 -250px 0;
 	border: 0px solid #000000;
@@ -116,16 +120,22 @@ ul.hmenu li a
 	padding: 0;
 }
 #user_image img {
-	
 	width: 50px;
 	height: 50px;
 }
 
 #splash_footer div {
-	width: 286px;
-	margin: 15px;
-	padding: 5px;
+	width: 310px;
+	margin: 0 12px 0 0;
+	padding: 0 12px 0 0;
+	border-right: 1px solid #333;
 	float: left;
+}
+
+#splash_footer div:last-child {
+	margin: 0px;
+	padding: 0px;
+	border: none;
 }
 
 #splash_footer div p {
@@ -135,4 +145,10 @@ ul.hmenu li a
 
 #splash_footer div ul {
 	margin-top: 10px;
+	padding: 0;
+	list-style: none;
+}
+
+#splash_footer div h2 {
+	border: none;
 }

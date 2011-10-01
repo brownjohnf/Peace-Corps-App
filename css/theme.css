@@ -208,11 +208,6 @@ div.tags a, div.authors a, div.actors a, .feed_tags {
 	color: #fff;
 }
 
-#splash_footer ul {
-	padding-left: 20px;
-	list-style: none;
-}
-
 #splash_footer ul li .controls {
 	display: none;
 }

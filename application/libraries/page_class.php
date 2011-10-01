@@ -377,7 +377,7 @@ class Page_class
 		
 	    return $return;
 	}
-	public function menu($id, $parent_id)
+	public function menu()
 	{
 		// new approach
 		$ps1 = $this->ci->page_model->read(array('fields' => 'id, title, url', 'where' => array('parent_id' => 0)));
