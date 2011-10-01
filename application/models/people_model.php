@@ -176,7 +176,7 @@ class People_model extends CI_Model {
 		return true;
 	}
 	
-	function updateUser($data)
+	function update($data)
 	{
 		$this->db->where('id', $data['id']);
 		$this->db->update('people', $data);

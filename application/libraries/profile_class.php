@@ -27,6 +27,7 @@ class Profile_class
 		
 	    // assign values to return array
 		$return['full_name'] = $result['fname'].'&nbsp;'.$result['lname'];
+		$return['url_name'] = url_title($result['lname'].'-'.$result['fname'], 'dash', true);
 		$return['group'] = $result['group_name'];
 		$return['project'] = $result['project'];
 		$return['email'] = $result['email'];
@@ -36,7 +37,7 @@ class Profile_class
 		$return['local_name'] = $result['local_name'];
 		$return['site_name'] = $result['site_name'];
 		$return['blog_name'] = $result['blog_name'];
-		$return['blog_address'] = $result['blog_address'];
+		$return['blog_address'] = prep_url($result['blog_address']);
 		$return['blog_description'] = $result['blog_description'];
 		$return['id'] = $result['id'];
 		
@@ -48,11 +49,6 @@ class Profile_class
 			$return['profile_photo'] = 'http://graph.facebook.com/'.$result['fb_id'].'/picture?type=large';
 		} else {
 			$return['profile_photo'] = base_url().'img/blank.png';
-		}
-		
-		if ($result['blog_address']) {
-			$return['blog_address'] = $result['blog_address'];
-			$return['blog_name'] = $result['blog_name'];
 		}
 		
 	    return $return;

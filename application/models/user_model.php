@@ -32,14 +32,16 @@ class User_model extends CI_Model {
 	public function update($data)
 	{
 	    $data['edited'] = time();
-	    $this->db->where('id', $data['id']);
+		$id = $data['id'];
+		unset($data['id']);
+	    $this->db->where('id', $id);
 	    if ($this->db->update('people', $data))
 	    {
-		return $data['id'];
+			return $id;
 	    }
 	    else
 	    {
-		return false;
+			return false;
 	    }
 	}
 	public function reset_parent($parent_id)

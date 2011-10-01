@@ -8,7 +8,7 @@ class MY_Controller extends CI_Controller
 		$this->load->database();
 		$this->load->helper(array('url', 'file', 'array', 'html'));
 		$this->load->library(array('auth', 'form_validation', 'page_class', 'common_class'));
-		$this->load->model('facebook_model');
+		$this->load->model(array('facebook_model'));
 		
 		//print_r($this->session->userdata('fb_data'));
 		
@@ -35,7 +35,7 @@ class MY_Controller extends CI_Controller
 			else
 			{
 				$this->session->set_userdata('notice', "You are signed in, but not currently registered with us. Consider registering to receive our latest Facebook notices and updates.");
-				$this->userdata = array('group' => array('id' => 0, 'name' => 'Guest'), 'fname' => 'Guest', 'lname' => 'Guest', 'flname' => 'Guest', 'lfname' => 'Guest', 'id' => 0);
+				//$this->userdata = array('group' => array('id' => 0, 'name' => 'Guest'), 'fname' => 'Guest', 'lname' => 'Guest', 'flname' => 'Guest', 'lfname' => 'Guest', 'id' => 0);
 			}
 			$this->user_menu[] = anchor('', img('https://graph.facebook.com/'.$this->fb_data['uid'].'/picture'), array('id' => 'user_image'));
 			$this->user_menu[] = anchor('profile/view/'.$this->userdata['url'], $this->fb_data['me']['name'].', '.$this->userdata['group']['name']);

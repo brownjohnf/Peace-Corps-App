@@ -78,6 +78,7 @@ class Blog_class
 		}
 		
 		$return = $result;
+		$return['blog_address'] = prep_url($result['blog_address']);
 		
 		if (isset($result['fb_id']) && is_numeric($result['fb_id'])) {
 			$return['social'][] = anchor('http://facebook.com/profile.php?id='.$result['fb_id'], 'Facebook', array('target' => '_blank'));

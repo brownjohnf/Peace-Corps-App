@@ -53,7 +53,7 @@
 			<?php endif; ?>
 			
 			<?php if ($blog_address): ?>
-			<?php echo anchor($blog_address, $blog_name, array('target' => '_blank')); ?>&nbsp;[blog]
+			<?php echo anchor('blog/view/'.$url_name, $blog_name); ?>&nbsp;[blog]
 			<?php endif; ?>
 		</p>
 	</div>

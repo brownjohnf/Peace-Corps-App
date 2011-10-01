@@ -11,30 +11,29 @@ class Auth
 		
 		$this->ci =& get_instance();
 		
-		$this->ci->load->model('people_model');
-		$this->ci->load->model('logs_model');
+		$this->ci->load->model(array('people_model', 'user_model', 'logs_model'));
 		
 	}
 	
 	public function is_user()
 	{
-		if ($result = $this->ci->people_model->selectUsers(array('where' => array('email' => $this->ci->fb_data['me']['email']))))
+		if ($result = $this->ci->people_model->selectUsers(array('where' => array('email' => $this->ci->fb_data['me']['email']), 'limit' => 1)))
 		{
-			//print_r($result);
-			if (count($result) > 0)
+			$this->ci->userdata = array('group' => array('id' => $result['group_id'], 'name' => $result['group_name']), 'fname' => $result['fname'], 'lname' => $result['lname'], 'flname' => $result['fname'].' '.$result['lname'], 'lfname' => $result['lname'].', '.$result['fname'], 'id' => $result['id'], 'url' => url_title($result['lname'].'-'.$result['fname'], 'dash', true));
+			//print_r($this->ci->userdata);
+			
+			if ($result['fb_id'] != $this->ci->fb_data['uid'])
 			{
-				$this->ci->userdata = array('group' => array('id' => $result[0]['group_id'], 'name' => $result[0]['group_name']), 'fname' => $result[0]['fname'], 'lname' => $result[0]['lname'], 'flname' => $result[0]['fname'].' '.$result[0]['lname'], 'lfname' => $result[0]['lname'].', '.$result[0]['fname'], 'id' => $result[0]['id'], 'url' => url_title($result[0]['lname'].'-'.$result[0]['fname'], 'dash', true));
-				//print_r($this->ci->userdata);
-				return true;
+				if (! $id = $this->ci->user_model->update(array('id' => $result['id'], 'fb_id' => $this->ci->fb_data['uid'])))
+				{
+					$this->ci->session->set_flashdata('error', 'There was an error editing your Facebook ID in the database. Please contact admin. [auth/29]');
+				}
 			}
-			else
-			{
-				$this->ci->userdata = array('group' => array('id' => 0, 'name' => 'Guest'), 'fname' => 'Guest', 'lname' => 'Guest', 'flname' => 'Guest', 'lfname' => 'Guest', 'id' => 0);
-				return false;
-			}
+			return true;
 		}
 		else
 		{
+			$this->ci->userdata = array('group' => array('id' => 0, 'name' => 'Guest'), 'fname' => 'Guest', 'lname' => 'Guest', 'flname' => 'Guest', 'lfname' => 'Guest', 'id' => 0);
 			return false;
 		}
 	}

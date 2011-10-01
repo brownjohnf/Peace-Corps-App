@@ -50,6 +50,7 @@ class Blog extends MY_Controller {
 		$data2['user_info'] = 'yes';
 		$data2['blog_url'] = $data['blog_address'];
 		$data2['name'] = $data['fname'].'&nbsp;'.$data['lname'];
+		$data2['id'] = $data['id'];
 		//print_r($data);
 		
 	    // print the blog posts
