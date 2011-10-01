@@ -19,9 +19,9 @@ class Permission_class
 	    {
 		    foreach ($raw_auth as $auth)
 		    {
-				$person = $this->ci->people_model->read(array('fields' => 'fname, lname', 'where' => array('id' => $auth['user_id']), 'limit' => '1'));
-				$authors[$auth['user_id']]['name'] = $person['fname'].'&nbsp;'.$person['lname'];
-				$authors[$auth['user_id']]['url'] = url_title($person['lname'].'-'.$person['fname'], 'dash', true);
+				$user = $this->ci->people_model->read(array('fields' => 'fname, lname', 'where' => array('id' => $auth['user_id']), 'limit' => '1'));
+				$authors[$auth['user_id']]['name'] = $user['fname'].'&nbsp;'.$user['lname'];
+				$authors[$auth['user_id']]['url'] = url_title($user['lname'].'-'.$user['fname'], 'dash', true);
 		    }
 		    return $authors;
 		
@@ -38,11 +38,11 @@ class Permission_class
 	    {
 		    foreach ($raw_act as $act)
 		    {
-				$person = $this->ci->people_model->read(array('fields' => 'fname, lname', 'where' => array('id' => $act['user_id']), 'limit' => '1'));
-				$authors[$act['user_id']]['name'] = $person['fname'].'&nbsp;'.$person['lname'];
-				$authors[$act['user_id']]['url'] = url_title($person['lname'].'-'.$person['fname'], 'dash', true);
+				$user = $this->ci->people_model->read(array('fields' => 'fname, lname', 'where' => array('id' => $act['user_id']), 'limit' => '1'));
+				$actors[$act['user_id']]['name'] = $user['fname'].'&nbsp;'.$user['lname'];
+				$actors[$act['user_id']]['url'] = url_title($user['lname'].'-'.$user['fname'], 'dash', true);
 		    }
-		    return $authors;
+		    return $actors;
 		
 	    }
 	    else

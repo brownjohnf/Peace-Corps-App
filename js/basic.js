@@ -20,12 +20,13 @@ $(document).ready(function() {
 		 $(this).find(".controls").hide();
 	  }
    );
-   $("ul.leftmenu li > a").hover(
+   $("ul.leftmenu li").hover(
 	  function() {
-		 $(this).siblings(".controls").show();
+		 $('.controls').hide();
+		 $(this).find(".controls:first").show();
 	  },
 	  function() {
-		 $(this).siblings(".controls").hide();
+		 $(this).find(".controls").hide();
 	  }
    );
    $("a.edit img").hover(
