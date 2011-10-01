@@ -40,7 +40,7 @@
 <?php echo form_dropdown('group_id', $groups, set_value('group_id', $group_id)); ?><br />
 
 <label>Actors (These users will be able to act for the page.)</label>
-<?php echo form_multiselect('actors[]', $users, $set_actors); ?><br />
+<?php echo form_multiselect('actors[]', $users, $set_actors, $locked); ?><br />
 
 <h2>Credits</h2>
 <label>Author(s)*</label><?php echo form_multiselect('authors[]', $users, $set_authors); ?><br />

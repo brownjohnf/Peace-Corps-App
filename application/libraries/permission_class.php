@@ -59,10 +59,9 @@ class Permission_class
 		{
 			foreach ($result as $page)
 			{
-				$page = $this->ci->page_model->read(array('fields' => 'id, title, url, group_id, description, updated', 'limit' => '1', 'where' => array('id' => $page['page_id'])));
-				$return[$page['updated']] = $page;
+				$return[$page['page_id']] = $this->ci->page_model->read(array('fields' => 'id, title, url, group_id, description, updated', 'limit' => '1', 'where' => array('id' => $page['page_id'])));
 			}
-			krsort($return);
+			//print_r($return);
 			return $return;
 		}
 	}
@@ -75,10 +74,8 @@ class Permission_class
 		{
 			foreach ($result as $page)
 			{
-				$page = $this->ci->page_model->read(array('fields' => 'id, title, url, group_id, description, updated', 'limit' => '1', 'where' => array('id' => $page['page_id'])));
-				$return[$page['updated']] = $page;
+				$return[$page['page_id']] = $this->ci->page_model->read(array('fields' => 'id, title, url, group_id, description, updated', 'limit' => '1', 'where' => array('id' => $page['page_id'])));
 			}
-			krsort($return);
 			return $return;
 		}
 	}

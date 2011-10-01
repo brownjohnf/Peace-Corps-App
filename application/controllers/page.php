@@ -52,6 +52,15 @@ class Page extends MY_Controller {
 			$this->session->set_flashdata('error', 'You do not have appropriate permissions for this action. [create]');
 			redirect('feed/page');
 		}
+		if ($this->userdata['group']['name'] != 'Admin')
+		{
+			$locked = 'disabled';
+		}
+		else
+		{
+			$locked = null;
+		}
+		
 	    $this->load->helper('form');
 	    $this->load->helper('url');
 	    $this->load->library('form_validation');
@@ -68,11 +77,9 @@ class Page extends MY_Controller {
 		if ($this->form_validation->run() == false)
 		{
 			$data = $this->page_class->blank_form();
-			if ($actor_for = $this->permission_class->page_by_actor($this->userdata['id']) && $this->userdata['group']['name'] != 'Admin')
+			if (($actor_for = $this->permission_class->page_by_actor($this->userdata['id'])) && $this->userdata['group']['name'] != 'Admin')
 			{
-				$data['parents'] = array_intersect_key($data['parents'], array($this->uri->segment(3) => 'test'));
-				$data['users'] = array_intersect_key($data['users'], array($this->userdata['id'] => 'test'));
-				//print_r($data);
+				$data['parents'] = array_intersect_key($data['parents'], $actor_for);
 			}
 			$data['parent_id'] = $this->uri->segment(3, 0);
 			$data['target'] = 'create/'.$data['parent_id'];
@@ -82,6 +89,7 @@ class Page extends MY_Controller {
 			if ($this->input->post('authors')) {
 				$data['set_authors'] = $this->input->post('authors');
 			}
+			$data['locked'] = $locked;
 			
 			
 			$data['form_title'] = 'Create New Page';
@@ -130,6 +138,14 @@ class Page extends MY_Controller {
 			$this->session->set_flashdata('error', 'You do not have appropriate permissions for this action. [edit]');
 			redirect('feed/page');
 		}
+		elseif ($this->userdata['group']['name'] != 'Admin')
+		{
+			$locked = 'disabled';
+		}
+		else
+		{
+			$locked = null;
+		}
 	    
 	    $this->load->helper('form');
 	    $this->load->helper('url');
@@ -148,6 +164,11 @@ class Page extends MY_Controller {
 		if ($this->form_validation->run() == false)
 		{
 			$data = $this->page_class->full_form($this->uri->segment(3));
+			if (($actor_for = $this->permission_class->page_by_actor($this->userdata['id'])) && $this->userdata['group']['name'] != 'Admin')
+			{
+				$data['parents'] = array_intersect_key($data['parents'], $actor_for);
+			}
+			$data['locked'] = $locked;
 	        $data['target'] = 'edit/'.$this->uri->segment(3);
 			$data['form_title'] = 'Edit Page';
 			if ($this->input->post('actors')) {
