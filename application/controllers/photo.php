@@ -29,15 +29,8 @@ class Photo extends MY_Controller {
 	
 	public function upload()
 	{
-		$config['upload_path'] = 'uploads';
-		//print $config['upload_path'];
-		$config['allowed_types'] = 'gif|jpg|png';
-		$config['max_size']	= '0';
-		$config['max_width']  = '0';
-		$config['max_height']  = '0';
-		$config['file_name'] = md5($this->session->userdata('session_id').rand());
-		//print $this->session->userdata('session_id').'-'.rand().'<br>';
-		$this->load->library('upload', $config);
+		$this->load->config('photo');
+		$this->load->library('upload');
 
 		if ( ! $this->upload->do_upload())
 		{
@@ -46,11 +39,11 @@ class Photo extends MY_Controller {
 		}
 		else
 		{
+			$this->load->library('image_lib');
+			
 			$upload_info = $this->upload->data();
 			$original = $upload_info['full_path'];
 			$imagename = md5($this->session->userdata('session_id').rand());
-			
-			$this->load->library('image_lib');
 			
 			// crop the original down to a square
 			if (! $square_info = $this->photo_class->crop($upload_info))

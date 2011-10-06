@@ -50,7 +50,7 @@
 	
 			<div id ="social">
 				<h2>Share</h2>
-				<!--
+				<!-- Diaspora* share button -->
 				<div style="width:31px;height:31px;border:#333 3px solid;-moz-border-radius:6px;-webkit-border-radius:6px;border-radius:6px; cursor:pointer;box-shadow:1px 1px 4px rgb(204,204,204);" onMouseOver="init();" onMouseOut="stop();" onClick="getPodName();">
 					<canvas width="27" height="27" id="canvas" style="margin:2px 0 0 2px;"></canvas>
 				</div>
@@ -95,7 +95,7 @@
 				};
 				function shareOnD(_2){f="https://"+_2+"/bookmarklet?url="+encodeURIComponent(window.location.href)+"&title="+encodeURIComponent(document.title)+"&notes="+encodeURIComponent(""+(window.getSelection?window.getSelection():document.getSelection?document.getSelection():document.selection.createRange().text))+"&v=1&";a=function(){if(!window.open(f+"noui=1&jump=doclose","diasporav1","location=yes,links=no,scrollbars=no,toolbar=no,width=620,height=350")){location.href=f+"jump=yes";}};if(/Firefox/.test(navigator.userAgent)){setTimeout(a,0);}else{a();}};window.Modernizr=function(a,b,c){function w(a,b){return !!~(""+a).indexOf(b);};function v(a,b){return typeof a===b;};function u(a,b){return t(prefixes.join(a+";")+(b||""));};function t(a){j.cssText=a;};var d="2.0.6",e={},f=b.documentElement,g=b.head||b.getElementsByTagName("head")[0],h="modernizr",i=b.createElement(h),j=i.style,k,l=Object.prototype.toString,m={},n={},o={},p=[],q,r={}.hasOwnProperty,s;!v(r,c)&&!v(r.call,c)?s=function(a,b){return r.call(a,b);}:s=function(a,b){return b in a&&v(a.constructor.prototype[b],c);},m.canvas=function(){var a=b.createElement("canvas");return !!a.getContext&&!!a.getContext("2d");},m.localstorage=function(){try{return !!localStorage.getItem;}catch(a){return !1;}};for(var x in m){s(m,x)&&(q=x.toLowerCase(),e[q]=m[x](),p.push((e[q]?"":"no-")+q));}t(""),i=k=null,e._version=d;return e;}(this,this.document);if(Modernizr.localstorage&&Modernizr.canvas){asterisk.onload=function(){ctx.drawImage(asterisk,0,0);};}else{alert("Sorry. Your browser does not support html5!");}
 				</script>
-				-->
+				<!-- END Dispora* share button -->
 				
 				<!-- facebook like interface -->
 				<div id="fb-root"></div>
