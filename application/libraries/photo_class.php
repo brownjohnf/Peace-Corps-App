@@ -19,7 +19,6 @@ class Photo_class
 		$config['source_image']	= $upload_info['full_path'];
 		$config['maintain_ratio'] = false;
 		
-		
 		// if landscape
 		if ($upload_info['image_width'] > $upload_info['image_height'])
 		{
