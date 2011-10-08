@@ -29,6 +29,7 @@ class Photo extends MY_Controller {
 	
 	public function upload()
 	{
+		ini_set("memory_limit","128M");
 		$this->load->config('photo');
 		$this->load->library('upload');
 
@@ -40,12 +41,6 @@ class Photo extends MY_Controller {
 		else
 		{
 			$this->load->library('image_lib');
-			
-			// set a variable with all info about the uploaded photo
-			$upload_info = $this->upload->data();
-			
-			// set a random number, to ensure unique filenames
-			$new_name = md5($this->session->userdata('session_id').rand());
 			
 			// set an array of sizes to be created
 			$photos = array(
@@ -59,7 +54,7 @@ class Photo extends MY_Controller {
 			// process each photo
 			foreach ($photos as $photo)
 			{
-				$success = $this->photo_class->create($this->upload->data(), $new_name, $photo);
+				$success = $this->photo_class->create($this->upload->data(), $photo);
 			}
 			
 			/*
