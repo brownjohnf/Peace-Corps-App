@@ -41,10 +41,22 @@ class Photo extends MY_Controller {
 		{
 			$this->load->library('image_lib');
 			
+			// set a variable with all info about the uploaded photo
 			$upload_info = $this->upload->data();
-			$original = $upload_info['full_path'];
-			$imagename = md5($this->session->userdata('session_id').rand());
 			
+			// set a random number, to ensure unique filenames
+			$new_name = md5($this->session->userdata('session_id').rand());
+			
+			// set an array of sizes to be created
+			$photos = array(array('width' => 50, 'height' => 50, 'name' => '_thumb'), array('width' => 180, 'height' => 180, 'name' => '_sm'), array('width' => 180, 'height' => null, 'name' => '_180w'), array('width' => null, 'height' => 180, 'name' => '_180h'), array('width' => 980, 'height' => null, 'name' => '_lrg'));
+			
+			// process each photo
+			foreach ($photos as $photo)
+			{
+				$success = $this->photo_class->create($this->upload->data(), $new_name, $photo);
+			}
+			
+			/*
 			// crop the original down to a square
 			if (! $square_info = $this->photo_class->crop($upload_info))
 			{
@@ -84,9 +96,10 @@ class Photo extends MY_Controller {
 				$this->session->set_flashdata('error', 'Photo was successfully uploaded, cropped and resized, but the original image could not be resized to 980. Please correct the problem, and try again.'.print_r($this->upload->data(), true));
 				redirect('photo/add');
 			}
+			*/
 				
-			$this->session->set_flashdata('success', 'You have successfully uploaded your photo. Its unique identifier is '.$imagename.'.');
-			redirect('photo/add');
+			$this->session->set_flashdata('success', $success);
+			redirect('photo/gallery');
 			
 		}
 	}
