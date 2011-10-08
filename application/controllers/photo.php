@@ -48,7 +48,13 @@ class Photo extends MY_Controller {
 			$new_name = md5($this->session->userdata('session_id').rand());
 			
 			// set an array of sizes to be created
-			$photos = array(array('width' => 50, 'height' => 50, 'name' => '_thumb'), array('width' => 180, 'height' => 180, 'name' => '_sm'), array('width' => 180, 'height' => null, 'name' => '_180w'), array('width' => null, 'height' => 180, 'name' => '_180h'), array('width' => 980, 'height' => null, 'name' => '_lrg'));
+			$photos = array(
+							array('width' => 50, 'height' => 50, 'name' => '_thumb'),
+							array('width' => 180, 'height' => 180, 'name' => '_sm'),
+							array('width' => 180, 'height' => null, 'name' => '_180w'),
+							array('width' => null, 'height' => 180, 'name' => '_180h'),
+							array('width' => 980, 'height' => null, 'name' => '_lrg')
+							);
 			
 			// process each photo
 			foreach ($photos as $photo)
@@ -98,7 +104,7 @@ class Photo extends MY_Controller {
 			}
 			*/
 				
-			$this->session->set_flashdata('success', $success);
+			$this->session->set_flashdata('success', print_r($success, true));
 			redirect('photo/gallery');
 			
 		}

@@ -19,6 +19,7 @@ class Photo_class
 		$config['source_image']	= $upload_info['full_path'];
 		$config['maintain_ratio'] = false;
 		
+		
 		// if landscape
 		if ($upload_info['image_width'] > $upload_info['image_height'])
 		{
@@ -126,11 +127,19 @@ class Photo_class
 		$config['source_image']	= $data['full_path'];
 		$config['new_image'] = $new_name.$target['name'].$data['file_ext'];
 		
+		print abs($target['width'] / $target['height'] - $data['image_width'] / $data['image_height']).' '.$target['name'].' <br>';
+		
 		if (is_null($target['height']) || is_null($target['width'])) // if only the width or height is set, do a soft resize, without a crop
 		{
 			$config['image_library'] = 'gd2';
-			$config['width'] = $target['width'];
-			$config['height'] = $target['height'];
+			if ($target['width']) {
+				$config['width'] = $target['width'];
+				print 'width';
+			}
+			if ($target['height']) {
+				$config['height'] = $target['height'];
+				print 'height';
+			}
 		
 			$this->ci->image_lib->clear();
 			$this->ci->image_lib->initialize($config);
@@ -158,6 +167,8 @@ class Photo_class
 				$slice = ($upload_info['image_width'] - $target['height']) / 2;
 				$config['x_axis'] = $target['width'] + $slice;
 				$config['source_image']	= $upload_info['file_path'].$config['new_image'];
+				$config['maintain_ratio'] = false;
+				unset($config['height']);
 				
 				$this->ci->image_lib->clear();
 				$this->ci->image_lib->initialize($config);
@@ -191,6 +202,8 @@ class Photo_class
 				$slice = ($data['image_height'] - $target['width']) / 2;
 				$config['y_axis'] = $target['height'] + $slice;
 				$config['source_image']	= $data['file_path'].$config['new_image'];
+				$config['maintain_ratio'] = false;
+				unset($config['width']);
 				
 				$this->ci->image_lib->clear();
 				$this->ci->image_lib->initialize($config);
@@ -235,6 +248,8 @@ class Photo_class
 		$input['imagename'] = $config['new_image'];
 		$input['owner_id'] = $this->ci->userdata['id'];
 		$input['added'] = time();
+		
+		unset($config);
 		
 		if (! $this->ci->photo_model->create($input))
 		{
