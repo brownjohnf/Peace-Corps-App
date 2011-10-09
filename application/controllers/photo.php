@@ -14,6 +14,11 @@ class Photo extends MY_Controller {
 	
 	public function add()
 	{
+		if (! $this->auth->is_user())
+		{
+			$this->session->set_flashdata('error', 'You do not have appropriate permissions for this action. [upload photo]');
+			redirect('photo/gallery');
+		}
 		$data['form_title'] = 'Upload Photo';
 		$data['user_id'] = $this->userdata['id'];
 		
@@ -29,6 +34,11 @@ class Photo extends MY_Controller {
 	
 	public function upload()
 	{
+		if (! $this->auth->is_user())
+		{
+			$this->session->set_flashdata('error', 'You do not have appropriate permissions for this action. [upload photo]');
+			redirect('photo/gallery');
+		}
 		ini_set("memory_limit","128M");
 		$this->load->config('photo');
 		$this->load->library('upload');
@@ -134,6 +144,7 @@ class Photo extends MY_Controller {
 		$this->load->view('footer', array('footer' => 'Footer Here'));
 	}
 	
+	// this is like the gallery function, but displays all photos, at 180px height
 	public function show_all()
 	{
 		$this->load->model('photo_model');
@@ -163,6 +174,7 @@ class Photo extends MY_Controller {
 		$this->load->view('footer', array('footer' => 'Footer Here'));
 	}
 	
+	// for use in the modal, is a basic gallery, no header, footer, etc.
 	public function select_photo()
 	{
 		$this->load->model('photo_model');
@@ -178,6 +190,7 @@ class Photo extends MY_Controller {
 		$this->load->view('gallery_view', $data);
 	}
 	
+	// for ajax requests using the page edit photo select tool
 	function ajax_image()
 	{
 		$imagename = $this->input->post('img');
