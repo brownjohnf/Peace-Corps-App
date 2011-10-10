@@ -43,8 +43,10 @@ a#site_title, a#site_title:hover {
 	background: #222;
 	box-shadow: 0 0 5px black;
 }
-#footer_outer {
+#footer_upper {
     background: #eee;
+	border-style: solid;
+	border-color: #ccc;
 }
 .content h1, .content h2, .content h3, #rightbar h2, #splash_footer h2 {
     color: #3f8fba;

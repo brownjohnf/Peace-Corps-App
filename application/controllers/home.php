@@ -59,4 +59,94 @@ class Home extends MY_Controller {
 		$this->load->view('main_close');
 		$this->load->view('footer', array('footer' => 'Footer Here'));
 	}
+	
+	public function disclaimer()
+	{
+		$data['title'] = 'Disclaimer';
+		$data['data'] = '<h1>Disclaimer</h1><p>The contents of this web site do not reflect in any way the positions of the U.S. Government or the United States Peace Corps. This web site is managed and supported by Peace Corps Senegal Volunteers and our supporters. It is not a U.S. Government web site.</p>';
+		
+	    // print the page
+		$this->output->set_header("Cache-Control: max-age=300, public, must-revalidate");
+		
+		$this->load->view('head', array('page_title' => $data['title'], 'stylesheets' => array('layout_outer.css', 'layout_inner.css', 'theme.css'), 'scripts' => array('basic.js', 'jquery.url.js')));
+		$this->load->view('header');
+		$this->load->view('main_open');
+		$this->load->view('left_column');
+		$this->load->view('right_column');
+		$this->load->view('blank_view', $data);
+		$this->load->view('main_close');
+		$this->load->view('footer');
+	}
+	
+	public function privacy()
+	{
+		$data['title'] = 'Privacy Policy';
+		$data['data'] = "<h1>Privacy Policy</h1><p>Peace Corps Senegal will never give, sell, or in any way communicate any personal information to anyone, save with the owner of said information's express permission.</p>";
+		
+	    // print the page
+		$this->output->set_header("Cache-Control: max-age=300, public, must-revalidate");
+		
+		$this->load->view('head', array('page_title' => $data['title'], 'stylesheets' => array('layout_outer.css', 'layout_inner.css', 'theme.css'), 'scripts' => array('basic.js', 'jquery.url.js')));
+		$this->load->view('header');
+		$this->load->view('main_open');
+		$this->load->view('left_column');
+		$this->load->view('right_column');
+		$this->load->view('blank_view', $data);
+		$this->load->view('main_close');
+		$this->load->view('footer');
+	}
+	
+	public function support()
+	{
+		$data['title'] = 'Support Us';
+		$data['data'] = '<h1>Support Us</h1><p>This site is powered by the open source Peace Corps App Project. If you would like to contribute funds, time, or energy to the effort, please contact us through github, at <a href="https://github.com/brownjohnf/Peace-Corps-App" target="_blank">https://github.com/brownjohnf/Peace-Corps-App</a>.</p>';
+		
+	    // print the page
+		$this->output->set_header("Cache-Control: max-age=300, public, must-revalidate");
+		
+		$this->load->view('head', array('page_title' => $data['title'], 'stylesheets' => array('layout_outer.css', 'layout_inner.css', 'theme.css'), 'scripts' => array('basic.js', 'jquery.url.js')));
+		$this->load->view('header');
+		$this->load->view('main_open');
+		$this->load->view('left_column');
+		$this->load->view('right_column');
+		$this->load->view('blank_view', $data);
+		$this->load->view('main_close');
+		$this->load->view('footer');
+	}
+	
+	public function security()
+	{
+		$data['title'] = 'Security';
+		$data['data'] = '<h1>Security</h1><p>All content hosted through this application is safe and secure. For more information please view our '.anchor('privacy', 'Privacy Policy').'.</p>';
+		
+	    // print the page
+		$this->output->set_header("Cache-Control: max-age=300, public, must-revalidate");
+		
+		$this->load->view('head', array('page_title' => $data['title'], 'stylesheets' => array('layout_outer.css', 'layout_inner.css', 'theme.css'), 'scripts' => array('basic.js', 'jquery.url.js')));
+		$this->load->view('header');
+		$this->load->view('main_open');
+		$this->load->view('left_column');
+		$this->load->view('right_column');
+		$this->load->view('blank_view', $data);
+		$this->load->view('main_close');
+		$this->load->view('footer');
+	}
+	
+	public function about()
+	{
+		$data['title'] = 'About';
+		$data['data'] = '<h1>About</h1><p>This website is running the open source Peace Corps App, currently in pre-alpha release.</p><h2>License</h2><p>PC Web App is copyright John F. Brown, 2011, and files herein are licensed under the Affero General Public License version 3, the text of which can be found in GNU-AGPL-3.0, or any later version of the AGPL, unless otherwise noted.  Components of PC Web App, including CodeIgniter, PHP Markdown and JQuery, are licensed separately. All unmodified files from these and other sources retain their original copyright and license notices: see the relevant individual files.</p><h2>Authors</h2><ul><li>'.anchor('https://diasp.org/u/brownjohnf', 'John F. Brown').'</li></ul>';
+		
+	    // print the page
+		$this->output->set_header("Cache-Control: max-age=300, public, must-revalidate");
+		
+		$this->load->view('head', array('page_title' => $data['title'], 'stylesheets' => array('layout_outer.css', 'layout_inner.css', 'theme.css'), 'scripts' => array('basic.js', 'jquery.url.js')));
+		$this->load->view('header');
+		$this->load->view('main_open');
+		$this->load->view('left_column');
+		$this->load->view('right_column');
+		$this->load->view('blank_view', $data);
+		$this->load->view('main_close');
+		$this->load->view('footer');
+	}
 }
