@@ -24,10 +24,12 @@
 					
 					<div class="footer_column">Icons courtesy of Neurovit.</div>
 					<div class="footer_column">&nbsp;</div>
-					<div class="footer_column">All content and design protected under Creative Commons Copyright. &copy;2011 Peace Corps Senegal.<br><br>The contents of this web site do not reflect in any way the positions of the U.S. Government or the United States Peace Corps. This web site is managed and supported by Peace Corps Senegal Volunteers and our supporters. It is not a U.S. Government web site.</div>
+					<div class="footer_column"><?php echo '<h2>Browse</h2>'.$this->page_class->menu(); ?></div>
 					
 					
-					<br class="clearfloat" />
+					<div style="clear:both;">
+						All content and design protected under Creative Commons Copyright. &copy;2011 Peace Corps Senegal.<br><br>The contents of this web site do not reflect in any way the positions of the U.S. Government or the United States Peace Corps. This web site is managed and supported by Peace Corps Senegal Volunteers and our supporters. It is not a U.S. Government web site.
+					</div>
 				</div><!-- END footer_inner -->
 			</div><!-- end #footer -->
 </body>

@@ -56,7 +56,7 @@
 					<div style="float:left;width:31px;height:31px;border:#333 3px solid;-moz-border-radius:6px;-webkit-border-radius:6px;border-radius:6px; cursor:pointer;box-shadow:1px 1px 4px rgb(204,204,204);margin-right:5px;" onMouseOver="init();" onMouseOut="stop();" onClick="getPodName();">
 						<canvas width="27" height="27" id="canvas" style="margin:2px 0 0 2px;"></canvas>
 					</div>
-					Share on Diaspora*
+					Share on <a href="https://joindiaspora.com/" target="_blank">Diaspora*</a>
 					<br class="clearfloat" />
 				</div>
 				<script>

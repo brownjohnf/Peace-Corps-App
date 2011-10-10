@@ -54,16 +54,6 @@
 							</table>
 						</li>
 						<?php endforeach; ?>
-						<!--<li><img src="<?php echo base_url(); ?>img/splash_1.jpg"></li>
-						<li><img src="<?php echo base_url(); ?>img/splash_2.jpg"></li>
-						<li><img src="<?php echo base_url(); ?>img/splash_3.jpg"></li>
-						<li><img src="<?php echo base_url(); ?>img/splash_4.jpg"></li>
-						<li><img src="<?php echo base_url(); ?>img/splash_5.jpg"></li>
-						<li><img src="<?php echo base_url(); ?>img/splash_6.jpg"></li>
-						<li><img src="<?php echo base_url(); ?>img/splash_7.jpg"></li>
-						<li><img src="<?php echo base_url(); ?>img/splash_8.jpg"></li>
-						<li><img src="<?php echo base_url(); ?>img/splash_9.jpg"></li>
-						<li><img src="<?php echo base_url(); ?>img/splash_10.jpg"></li>-->
 					</ul>
 				</div>
 			</div>
