@@ -11,7 +11,7 @@
 	<div id="outer_container">
 		<div id="header_outer">
 			<div id="header_inner">
-				<a id="site_title" href="<?php echo base_url(); ?>"><span id="pc">Peace Corps</span>&nbsp;<span id="title_separator">|</span>&nbsp;<span id="country">Senegal</span></a>
+				<a id="site_title" href="<?php echo base_url(); ?>"><span id="pc">Peace Corps</span>&nbsp;<span id="title_separator">|</span>&nbsp;<span id="country">Senegal</span><sub>&nbsp;alpha</sub></a>
 				<ul class="hmenu" id="main_menu">
 					<?php foreach ($topmenu as $item): ?>
 					<li><?php echo $item; ?></li>

@@ -25,6 +25,11 @@ table {
 	border-spacing: 0;
 	border: none;
 }
+
+#footer_outer {
+    border-top: 1px solid #999;
+}
+
 #outer_container {
 	margin: 00px 0 -250px 0;
 	border: 0px solid #000000;
@@ -124,7 +129,7 @@ ul.hmenu li a
 	height: 50px;
 }
 
-#splash_footer div {
+#splash_footer div, #footer_inner div.footer_column {
 	width: 310px;
 	margin: 0 12px 0 0;
 	padding: 0 12px 0 0;
@@ -132,23 +137,23 @@ ul.hmenu li a
 	float: left;
 }
 
-#splash_footer div:last-child {
+#splash_footer div:last-child, #footer_inner div:last-child {
 	margin: 0px;
 	padding: 0px;
 	border: none;
 }
 
-#splash_footer div p {
+#splash_footer div p, #footer_inner div.footer_column p {
 	text-align: justify;
 	margin-top: 10px;
 }
 
-#splash_footer div ul {
+#splash_footer div ul, #footer_inner div.footer_column ul {
 	margin-top: 10px;
 	padding: 0;
 	list-style: none;
 }
 
-#splash_footer div h2 {
+#splash_footer div h2, #footer_inner div.footer_column h2 {
 	border: none;
 }

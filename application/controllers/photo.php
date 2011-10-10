@@ -14,6 +14,11 @@ class Photo extends MY_Controller {
 	
 	public function add()
 	{
+		if (! $this->auth->is_user())
+		{
+			$this->session->set_flashdata('error', 'You do not have appropriate permissions for this action. [upload photo]');
+			redirect('photo/gallery');
+		}
 		$data['form_title'] = 'Upload Photo';
 		$data['user_id'] = $this->userdata['id'];
 		
@@ -29,15 +34,14 @@ class Photo extends MY_Controller {
 	
 	public function upload()
 	{
-		$config['upload_path'] = 'uploads';
-		//print $config['upload_path'];
-		$config['allowed_types'] = 'gif|jpg|png';
-		$config['max_size']	= '0';
-		$config['max_width']  = '0';
-		$config['max_height']  = '0';
-		$config['file_name'] = md5($this->session->userdata('session_id').rand());
-		//print $this->session->userdata('session_id').'-'.rand().'<br>';
-		$this->load->library('upload', $config);
+		if (! $this->auth->is_user())
+		{
+			$this->session->set_flashdata('error', 'You do not have appropriate permissions for this action. [upload photo]');
+			redirect('photo/gallery');
+		}
+		ini_set("memory_limit","128M");
+		$this->load->config('photo');
+		$this->load->library('upload');
 
 		if ( ! $this->upload->do_upload())
 		{
@@ -46,12 +50,24 @@ class Photo extends MY_Controller {
 		}
 		else
 		{
-			$upload_info = $this->upload->data();
-			$original = $upload_info['full_path'];
-			$imagename = md5($this->session->userdata('session_id').rand());
-			
 			$this->load->library('image_lib');
 			
+			// set an array of sizes to be created
+			$photos = array(
+							array('width' => 50, 'height' => 50, 'name' => '_thumb'),
+							array('width' => 180, 'height' => 180, 'name' => '_sm'),
+							array('width' => 180, 'height' => null, 'name' => '_180w'),
+							array('width' => null, 'height' => 180, 'name' => '_180h'),
+							array('width' => 980, 'height' => null, 'name' => '_lrg')
+							);
+			
+			// process each photo
+			foreach ($photos as $photo)
+			{
+				$success = $this->photo_class->create($this->upload->data(), $photo);
+			}
+			
+			/*
 			// crop the original down to a square
 			if (! $square_info = $this->photo_class->crop($upload_info))
 			{
@@ -91,9 +107,10 @@ class Photo extends MY_Controller {
 				$this->session->set_flashdata('error', 'Photo was successfully uploaded, cropped and resized, but the original image could not be resized to 980. Please correct the problem, and try again.'.print_r($this->upload->data(), true));
 				redirect('photo/add');
 			}
+			*/
 				
-			$this->session->set_flashdata('success', 'You have successfully uploaded your photo. Its unique identifier is '.$imagename.'.');
-			redirect('photo/add');
+			$this->session->set_flashdata('success', print_r($success, true));
+			redirect('photo/gallery');
 			
 		}
 	}
@@ -127,6 +144,7 @@ class Photo extends MY_Controller {
 		$this->load->view('footer', array('footer' => 'Footer Here'));
 	}
 	
+	// this is like the gallery function, but displays all photos, at 180px height
 	public function show_all()
 	{
 		$this->load->model('photo_model');
@@ -156,6 +174,7 @@ class Photo extends MY_Controller {
 		$this->load->view('footer', array('footer' => 'Footer Here'));
 	}
 	
+	// for use in the modal, is a basic gallery, no header, footer, etc.
 	public function select_photo()
 	{
 		$this->load->model('photo_model');
@@ -171,6 +190,7 @@ class Photo extends MY_Controller {
 		$this->load->view('gallery_view', $data);
 	}
 	
+	// for ajax requests using the page edit photo select tool
 	function ajax_image()
 	{
 		$imagename = $this->input->post('img');

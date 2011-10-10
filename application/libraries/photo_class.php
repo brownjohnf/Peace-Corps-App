@@ -12,30 +12,12 @@ class Photo_class
 		$this->ci->load->model('photo_model');
 	}
 	
-	public function add_to_album($array) {
-		$input['filename'] = $array['raw_name'];
-		$input['mime'] = $array['file_type'];
-		$input['extension'] = $array['file_ext'];
-		$input['size'] = $array['file_size'];
-		$input['width'] = $array['image_width'];
-		$input['height'] = $array['image_height'];
-		$input['imagename'] = $array['imagename'];
-		$input['owner_id'] = $this->ci->userdata['id'];
-		$input['added'] = time();
-		
-		return $this->ci->photo_model->create($input);
-	}
-	
 	public function crop($upload_info)
 	{
-		$new_name = md5($this->ci->session->userdata('session_id').rand());
-		//print $this->ci->session->userdata('session_id').'-'.rand();
-		//print $new_name;
-		$config['image_library'] = 'gd2';
+		$config['image_library'] = 'ImageMagick';
+		$config['library_path'] = $this->ci->config->item('imagemagick_path');
 		$config['source_image']	= $upload_info['full_path'];
-		//print $config['source_image'];
 		$config['maintain_ratio'] = false;
-		$config['new_image'] = $upload_info['file_path'].$new_name.$upload_info['file_ext'];
 		
 		// if landscape
 		if ($upload_info['image_width'] > $upload_info['image_height'])
@@ -50,19 +32,18 @@ class Photo_class
 			$this->ci->image_lib->initialize($config);
 			if ( ! $this->ci->image_lib->crop())
 			{
-				echo $this->ci->image_lib->display_errors();
+				echo $this->ci->image_lib->display_errors().' first landscape crop';
 			}
 			
 			$config['x_axis'] = -$slice;
 			$config['width'] = $upload_info['image_height'];
-			$config['source_image'] = $config['new_image'];
 			unset($config['new_image']);
 			
 			$this->ci->image_lib->clear();
 			$this->ci->image_lib->initialize($config);
 			if ( ! $this->ci->image_lib->crop())
 			{
-				echo $this->ci->image_lib->display_errors();
+				echo $this->ci->image_lib->display_errors().' second landscape crop';
 			}
 			$upload_info['image_width'] = $upload_info['image_height'];
 		}
@@ -84,8 +65,6 @@ class Photo_class
 			
 			$config['y_axis'] = -$slice;
 			$config['height'] = $upload_info['image_width'];
-			$config['source_image'] = $config['new_image'];
-			unset($config['new_image']);
 			
 			$this->ci->image_lib->clear();
 			$this->ci->image_lib->initialize($config);
@@ -96,7 +75,6 @@ class Photo_class
 			$upload_info['image_height'] = $upload_info['image_width'];
 		}
 		$upload_info['full_path'] = $config['source_image'];
-		$upload_info['raw_name'] = $new_name;
 		return $upload_info;
 	}
 	
@@ -140,5 +118,153 @@ class Photo_class
 			redirect('photo/add');
 		}
 		return $upload_info;
+	}
+	
+	public function create($data = array(), $target = array())
+	{
+		// set the original file and full name for the new file
+		$config['source_image']	= $data['full_path'];
+		$config['new_image'] = $data['raw_name'].$target['name'].$data['file_ext'];
+		$config['maintain_ratio'] = false;
+		
+		//print '<p>'.abs($target['width'] / $target['height'] - $data['image_width'] / $data['image_height']).' '.$target['name'];
+		
+		if (is_null($target['height']) || is_null($target['width'])) // if only the width or height is set, do a soft resize, without a crop
+		{
+			$config['image_library'] = 'gd2';
+			if ($target['width']) {
+				$config['width'] = $target['width'];
+				$config['height'] = $data['image_height'] * ($target['width'] / $data['image_width']);
+				//print 'width only';
+			}
+			if ($target['height']) {
+				$config['height'] = $target['height'];
+				$config['width'] = $data['image_width'] * ($target['height'] / $data['image_height']);
+				//print 'height only';
+			}
+		
+			$this->ci->image_lib->clear();
+			$this->ci->image_lib->initialize($config);
+			
+			if ( ! $this->ci->image_lib->resize())
+			{
+				die($this->ci->image_lib->display_errors());
+			}
+		}
+		elseif (abs($target['width'] / $target['height'] - $data['image_width'] / $data['image_height']) > .1) // if the aspect ratio of the photo is not almost exactly what is specified, resize to the small dimension, then crop the photo to the final size
+		{
+			if ($data['image_width'] > $data['image_height'])
+			{
+				//print 'w>h';
+				$config['image_library'] = 'gd2';
+				$config['height'] = $target['height'];
+				$config['width'] = $data['image_width'] * ($target['height'] / $data['image_height']);
+			
+				$this->ci->image_lib->clear();
+				$this->ci->image_lib->initialize($config);
+				
+				if ( ! $this->ci->image_lib->resize())
+				{
+					die($this->ci->image_lib->display_errors().'<- landscape resize<br>');
+				}
+				
+				$slice = ($data['image_width'] - $target['height']) / 2;
+				$config['x_axis'] = $target['width'];
+				$config['width'] = $target['width'];
+				$config['source_image']	= $data['file_path'].$config['new_image'];
+				unset($config['height']);
+				
+				$this->ci->image_lib->clear();
+				$this->ci->image_lib->initialize($config);
+				if ( ! $this->ci->image_lib->crop())
+				{
+					die($this->ci->image_lib->display_errors().'<- first landscape crop<br>');
+				}
+				/*
+				$config['x_axis'] = -$target['width'];
+				
+				$this->ci->image_lib->clear();
+				$this->ci->image_lib->initialize($config);
+				if ( ! $this->ci->image_lib->crop())
+				{
+					die($this->ci->image_lib->display_errors().'<- second landscape crop<br>');
+				}
+				*/
+			}
+			elseif ($data['image_width'] <= $data['image_width'])
+			{
+				//print ' w<=h';
+				$config['image_library'] = 'gd2';
+				$config['width'] = $target['width'];
+				$config['height'] = $data['image_height'] * ($target['width'] / $data['image_width']);
+			
+				$this->ci->image_lib->clear();
+				$this->ci->image_lib->initialize($config);
+				
+				if ( ! $this->ci->image_lib->resize())
+				{
+					die($this->ci->image_lib->display_errors().'<- portrait resize<br>');
+				}
+				
+				$slice = ($data['image_height'] - $target['width']) / 2;
+				$config['y_axis'] = $target['height'];
+				$config['height'] = $target['height'];
+				$config['source_image']	= $data['file_path'].$config['new_image'];
+				unset($config['width']);
+				
+				$this->ci->image_lib->clear();
+				$this->ci->image_lib->initialize($config);
+				if ( ! $this->ci->image_lib->crop())
+				{
+					die($this->ci->image_lib->display_errors().'<- first portrait crop<br>');
+				}
+				/*
+				$config['y_axis'] = -$target['height'];
+				
+				$this->ci->image_lib->clear();
+				$this->ci->image_lib->initialize($config);
+				if ( ! $this->ci->image_lib->crop())
+				{
+					die($this->ci->image_lib->display_errors().'<- second portrait crop<br>');
+				}
+				*/
+			}
+		}
+		else // otherwise, just do a hard resize
+		{
+			//print 'hard resize';
+			$config['image_library'] = 'gd2';
+			$config['width'] = $target['width'];
+			$config['height'] = $target['height'];
+		
+			$this->ci->image_lib->clear();
+			$this->ci->image_lib->initialize($config);
+			
+			if ( ! $this->ci->image_lib->resize())
+			{
+				die($this->ci->image_lib->display_errors());
+			}
+		}
+		
+		$meta = getimagesize($data['file_path'].$config['new_image']);
+		$input['filename'] = $data['raw_name'].$target['name'];
+		$input['mime'] = $data['file_type'];
+		$input['extension'] = $data['file_ext'];
+		$input['size'] = filesize($data['file_path'].$config['new_image']);
+		$input['width'] = $meta[0];
+		$input['height'] = $meta[1];
+		$input['imagename'] = $config['new_image'];
+		$input['owner_id'] = $this->ci->userdata['id'];
+		$input['added'] = time();
+		//print '</p>';
+		unset($config);
+		
+		if (! $this->ci->photo_model->create($input))
+		{
+			$this->ci->session->set_flashdata('error', 'Photo was successfully uploaded, cropped and resized, but database was not updated. They are now out of sync. Please delete the photo, correct the problem, and try again.'.print_r($input, true).print_r($data, true));
+			return false;
+			die();
+		}
+		return $input;
 	}
 }

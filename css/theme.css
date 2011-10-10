@@ -34,21 +34,17 @@ ul.hmenu li a:hover {
 a#site_title, a#site_title:hover {
 	text-decoration: none;
 }
+
+#header_inner a > sub {
+	color: green;
+}
+
 #header_outer {
 	background: #222;
 	box-shadow: 0 0 5px black;
 }
 #footer_outer {
     background: #eee;
-    border-top: 1px solid #999;
-}
-#footer_inner p {
-	text-shadow: 1px -1px #fff;
-	width: 245px;
-	float: left;
-	margin: 0;
-	padding: 0;
-	text-align: justify;
 }
 .content h1, .content h2, .content h3, #rightbar h2, #splash_footer h2 {
     color: #3f8fba;
