@@ -280,7 +280,7 @@ class Page_class
 	    $fields = 'id, updated, title, description, content, url, tags, profile_photo';
 	    
 	    // get content results
-	    $results = $this->ci->page_model->read(array('fields' => $fields, 'where' => array('id like' => $id)));
+	    $results = $this->ci->page_model->read(array('fields' => $fields, 'where' => array('id like' => $id), 'limit' => 10));
 	    foreach ($results as $result)
 	    {
 			if (str_word_count($result['content']) > 50)

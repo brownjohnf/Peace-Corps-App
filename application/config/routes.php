@@ -42,6 +42,11 @@ $route['default_controller'] = 'home/splash';
 $route['404_override'] = 'feed/error';
 $route['page'] = 'feed/page';
 $route['tag'] = 'feed/tag';
+$route['privacy'] = 'home/privacy';
+$route['disclaimer'] = 'home/disclaimer';
+$route['support'] = 'home/support';
+$route['about'] = 'home/about';
+$route['security'] = 'home/security';
 
 
 /* End of file routes.php */
