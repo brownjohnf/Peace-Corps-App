@@ -61,7 +61,7 @@
 				<div id="footer_lower">
 					<div id="footer_lower_inner">
 						<div id="legal">
-							<?php echo anchor('disclaimer', 'Disclaimer').anchor('privacy', 'Privacy Policy').anchor('support', 'Support').anchor('security', 'Security').anchor('about', 'About'); if ((! $this->fb_data['uid']) or (! $this->fb_data['me'])): echo anchor($this->fb_data['logoutUrl'], 'Log Out'); endif; ?>
+							<?php echo anchor('disclaimer', 'Disclaimer').anchor('privacy', 'Privacy Policy').anchor('support', 'Support').anchor('security', 'Security').anchor('about', 'About'); if ( $this->fb_data['uid'] || $this->fb_data['me']): echo anchor($this->fb_data['logoutUrl'], 'Log Out'); endif; ?>
 							<br />Content &copy;2011 Peace Corps Senegal. Design &copy;2011 John F. Brown. Icons courtesy of Neurovit.
 						</div>
 						<div id="powered">
