@@ -8,7 +8,8 @@
 			<div id="footer_outer">
 				<div id="footer_upper">
 					<div id="footer_upper_inner">
-						<img src="<?php echo base_url(); ?>img/baobab.png" id="baobab" />
+						<img id="baskets" src="<?php echo base_url(); ?>img/baskets.png" />
+						<img id="baobab" src="<?php echo base_url(); ?>img/baobab.png" />
 						<img id="watermark" src="<?php echo base_url(); ?>img/pc_logo_watermark.png" />
 						
 						<div id="google_search"><!-- Google search -->
