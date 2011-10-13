@@ -115,12 +115,12 @@ class Page extends MY_Controller {
 		{
 		    if ($url = $this->page_class->create($this->input->post()))
 		    {
-			$this->session->set_flashdata('success', 'Page successfully created.');
+				$this->session->set_flashdata('success', 'Page successfully created.');
 		        redirect('page/view/'.$url);
 		    }
 		    else
 		    {
-			die("we've hit a serious database error trying to create a page. ask Jack. [010]");
+				die("we've hit a serious database error trying to create a page. ask Jack. [010]");
 		    }
 		}
 	}

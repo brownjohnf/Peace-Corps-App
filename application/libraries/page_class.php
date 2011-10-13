@@ -9,9 +9,9 @@ class Page_class
 {
 	public function __construct() {
 		$this->ci =& get_instance();
-		$this->ci->load->model(array('page_model', 'tag_model'));
-		$this->ci->load->library(array('permission_class', 'common_class'));
-		$this->ci->load->helper('markdown');
+		$this->ci->load->model(array('page_model', 'tag_model', 'permission_model', 'photo_model'));
+		$this->ci->load->library(array('permission_class', 'common_class', 'tag_class'));
+		$this->ci->load->helper(array('markdown', 'text'));
 	}
 	public function create($data)
 	{
@@ -33,9 +33,8 @@ class Page_class
 			return false;
 		}
 		
-		if ($tags = $this->ci->common_class->parse_tags(strip_tags(Markdown($data['content']), '<b><i><em><ul><a>')))
+		if ($tags = $this->ci->tag_class->parse_tags(strip_tags(Markdown($data['content']), '<b><i><em><ul><a>')))
 		{
-			$input['tags'] = $tags['string'];
 			// set data to be sent to the tag function
 			$tag_input = array('source' => 'page', 'source_id' => $page_id, 'to_add' => $tags['array']);
 			
@@ -86,9 +85,8 @@ class Page_class
 		$input['content'] = $data['content'];
 		$input['profile_photo'] = $data['profile_photo'];
 		
-		if ($tags = $this->ci->common_class->parse_tags(strip_tags(Markdown($data['content']), '<b><i><em><u><a>')))
+		if ($tags = $this->ci->tag_class->parse_tags(strip_tags(Markdown($data['content']), '<b><i><em><u><a>')))
 		{
-			$input['tags'] = $tags['string'];
 			// set data to be sent to the tag function
 			$tag_input = array('source' => 'page', 'source_id' => $data['id'], 'to_add' => $tags['array']);
 			
@@ -237,8 +235,6 @@ class Page_class
 	}
 	public function full_form($id)
 	{
-		$this->ci->load->model('photo_model');
-		
 	    // fetch the page data
 	    $page = $this->ci->page_model->read(array('fields' => 'id, parent_id, title, content, description, group_id, profile_photo, url', 'where' => array('id' => $id), 'limit' => 1));
 	    // fetch empty data and list populations
@@ -274,9 +270,6 @@ class Page_class
 	}
 	public function feed($id = '%')
 	{
-	    $this->ci->load->library('common_class');
-		$this->ci->load->model('photo_model');
-	    $this->ci->load->helper('text');
 	    $fields = 'id, updated, title, description, content, url, tags, profile_photo';
 	    
 	    // get content results
@@ -285,13 +278,13 @@ class Page_class
 	    {
 			if (str_word_count($result['content']) > 50)
 			{
-				$message = $this->ci->common_class->tags_to_links(word_limiter(strip_tags(Markdown($result['content'], '<b><i><u><em>')), 50));
+				$message = $this->ci->tag_class->tags_to_links(word_limiter(strip_tags(Markdown($result['content'], '<b><i><u><em>')), 50));
 			    $item['message'] = $message['text'];
 			    $item['message_truncated'] = 'yes';
 			}
 			else
 			{
-				$message = $this->ci->common_class->tags_to_links(strip_tags(Markdown($result['content']), '<b><i><u><em>'));
+				$message = $this->ci->tag_class->tags_to_links(strip_tags(Markdown($result['content']), '<b><i><u><em>'));
 			    $item['message'] = $message['text'];
 			    $item['message_truncated'] = 'no';
 			}
@@ -314,8 +307,19 @@ class Page_class
 			
 			$item['full_url'] = 'page/view/'.$result['url'];
 			$item['author'] = $result['title'];
-			$item['tags'] = explode('#', trim($result['tags'], '#'));
-			//print_r($item['tags']);
+			
+			if ($tags = $this->ci->tag_model->read(array('fields' => 'tag', 'where' => array('source' => 'page', 'source_id' => $result['id']))))
+			{
+				foreach ($tags as $tag)
+				{
+					$item['tags'][] = $tag['tag'];
+				}
+			}
+			else
+			{
+				$tags = null;
+			}
+			
 			$item['elapsed'] = $this->ci->common_class->elapsed_time($result['updated']).' ago';
 			if ($this->ci->userdata['group']['name'] == 'Admin' || $this->ci->permission_class->is_actor(array('page_id' => $result['id'], 'user_id' => $this->ci->userdata['id'])))
 			{
@@ -332,10 +336,6 @@ class Page_class
 	}
 	public function view($url)
 	{
-	    $this->ci->load->library('permission_class');
-		$this->ci->load->model('photo_model');
-		$this->ci->load->helper('markdown');
-		
 	    $fields = 'id, title, content, parent_id, tags, profile_photo';
 	    
 	    $query = array('fields' => $fields, 'where' => array('url' => $url), 'limit' => 1);
@@ -345,9 +345,10 @@ class Page_class
 	    // assign values to return array
 	    $return['id'] = $result['id'];
 	    $return['title'] = $result['title'];
-		$message = $this->ci->common_class->tags_to_links($result['content']);
+		$message = $this->ci->tag_class->tags_to_links($result['content']);
 	    $return['content'] = Markdown($message['text']);
-	    $return['tags'] =  explode('#', trim($result['tags'], '#'));
+	    //$return['tags'] = explode('#', trim($result['tags'], '#'));
+		$return['tags'] = $message['array'];
 	    $return['parent_id'] = $result['parent_id'];
 		
 		if ($result['profile_photo'] != '')

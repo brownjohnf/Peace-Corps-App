@@ -16,13 +16,22 @@ class Blog_class
 	
 	public function feed()
 	{
+		$this->ci->load->model('tag_model');
 		// grab all users with blogs
 		$results = $this->ci->people_model->selectUsers(array('where' => array('blog_address !=' => '')));
 		
 		// populate the standard feed harness
 		foreach ($results as $result)
 		{
-			$tags = $this->ci->common_class->tags_to_links('blog #description here');
+			if ($result['blog_description'])
+			{
+				$tags = $this->ci->tag_class->tags_to_links($result['blog_description']);
+			}
+			else
+			{
+				$tags = $this->ci->tag_class->tags_to_links('There is currently no #description registered.');
+			}
+			
 			$item['message'] = $tags['text'];
 			$item['message_truncated'] = 'no';
 			$item['subject'] = anchor('profile/view/'.url_title($result['lname'].'-'.$result['fname'], 'dash', true), $result['fname'].'&nbsp;'.$result['lname']).',&nbsp;'.$result['group_name'];
