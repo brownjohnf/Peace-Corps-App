@@ -23,6 +23,10 @@ class Page_class
 	    $input['content'] = $data['content'];
 	    $input['profile_photo'] = $data['profile_photo'];
 		
+		if ($this->ci->userdata['group']['name'] != 'Admin')
+		{
+			$data['actors'][] = $this->ci->userdata['id'];
+		}
 		
 	    $input['updated'] = time();
 	    $input['created'] = time();
@@ -317,7 +321,7 @@ class Page_class
 			}
 			else
 			{
-				$tags = null;
+				$item['tags'] = null;
 			}
 			
 			$item['elapsed'] = $this->ci->common_class->elapsed_time($result['updated']).' ago';
@@ -346,6 +350,7 @@ class Page_class
 	    $return['id'] = $result['id'];
 	    $return['title'] = $result['title'];
 		$message = $this->ci->tag_class->tags_to_links($result['content']);
+		
 	    $return['content'] = Markdown($message['text']);
 	    //$return['tags'] = explode('#', trim($result['tags'], '#'));
 		$return['tags'] = $message['array'];
