@@ -18,7 +18,7 @@ if ($this->session->flashdata('success'))
 	<?php if (isset($backtrack)): ?>
 	<div id="backtrack">
 	<?php foreach ($backtrack as $key => $value): ?>
-		<?php echo anchor($key, $value); ?>&nbsp;>&nbsp;
+		<?php echo anchor($key, $value).'&nbsp;&gt; '; ?>
 	<? endforeach; ?>
 	</div>
 	<?php endif; ?>

@@ -17,7 +17,7 @@
 	?>
 	<div id="backtrack">
 	<?php foreach ($backtrack as $key => $value): ?>
-		<?php echo anchor('page/view/'.$key, $value); ?>&nbsp;>&nbsp;
+		<?php echo anchor($key, $value).'&nbsp;&gt; '; ?>
 	<? endforeach; ?>
 	</div>
 

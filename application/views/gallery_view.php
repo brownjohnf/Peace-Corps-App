@@ -17,6 +17,13 @@
         $history = $this->session->userdata('history');
     ?>
 
+	<?php if (isset($backtrack)): ?>
+	<div id="backtrack">
+	<?php foreach ($backtrack as $key => $value): ?>
+		<?php echo anchor($key, $value).'&nbsp;&gt; '; ?>
+	<? endforeach; ?>
+	</div>
+	<?php endif; ?>
 <h1>
     <?=$title?>
     <div class="controls">
