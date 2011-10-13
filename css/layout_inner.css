@@ -110,7 +110,7 @@
 #leftbar ul.leftmenu li > a {
 	border: 1px solid #fff;
 }
-#leftbar ul.leftmenu a:hover {
+#leftbar ul.leftmenu > li > a:hover {
     background-color: whitesmoke;
 	border: 1px solid #ccc;
 	text-decoration: none;
