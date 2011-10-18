@@ -58,6 +58,7 @@ class Photo extends MY_Controller {
 							array('width' => 180, 'height' => 180, 'name' => '_sm'),
 							array('width' => 180, 'height' => null, 'name' => '_180w'),
 							array('width' => null, 'height' => 180, 'name' => '_180h'),
+							array('width' => 658, 'height' => 390, 'name' => '_splash'),
 							array('width' => 980, 'height' => null, 'name' => '_lrg')
 							);
 			
@@ -66,48 +67,6 @@ class Photo extends MY_Controller {
 			{
 				$success = $this->photo_class->create($this->upload->data(), $photo);
 			}
-			
-			/*
-			// crop the original down to a square
-			if (! $square_info = $this->photo_class->crop($upload_info))
-			{
-				$this->session->set_flashdata('error', 'Photo was successfully uploaded, but could not be cropped. Please correct the problem, and try again.'.print_r($this->upload->data(), true));
-				redirect('photo/add');
-			}
-			//print $square;
-			// reduce the square image to 180
-			if (! $this->photo_class->resize($square_info, 180, 180, true, $imagename))
-			{
-				$this->session->set_flashdata('error', 'Photo was successfully uploaded and cropped, but the cropped image could not be resized to 180. Please correct the problem, and try again.'.print_r($this->upload->data(), true));
-				redirect('photo/add');
-			}
-			// reduce the square image to 75, without copying
-			if (! $this->photo_class->resize($square_info, 75, 75, false, $imagename))
-			{
-				$this->session->set_flashdata('error', 'Photo was successfully uploaded and cropped, but the cropped image could not be resized to 75. Please correct the problem, and try again.'.print_r($this->upload->data(), true));
-				redirect('photo/add');
-			}
-			//print $original;
-			$upload_info['full_path'] = $original;
-			// reduce the original upload to 250
-			if (! $this->photo_class->resize($upload_info, 250, 250, true, $imagename))
-			{
-				$this->session->set_flashdata('error', 'Photo was successfully uploaded, cropped and resized, but the original image could not be resized to 980. Please correct the problem, and try again.'.print_r($this->upload->data(), true));
-				redirect('photo/add');
-			}
-			// reduce the original upload to 180, not copying
-			if (! $this->photo_class->resize($upload_info, 180, 180, true, $imagename))
-			{
-				$this->session->set_flashdata('error', 'Photo was successfully uploaded, cropped and resized, but the original image could not be resized to 980. Please correct the problem, and try again.'.print_r($this->upload->data(), true));
-				redirect('photo/add');
-			}
-			// reduce the original upload to 980
-			if (! $this->photo_class->resize($upload_info, 980, 900, false, $imagename))
-			{
-				$this->session->set_flashdata('error', 'Photo was successfully uploaded, cropped and resized, but the original image could not be resized to 980. Please correct the problem, and try again.'.print_r($this->upload->data(), true));
-				redirect('photo/add');
-			}
-			*/
 				
 			$this->session->set_flashdata('success', print_r($success, true));
 			redirect('photo/gallery');
