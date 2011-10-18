@@ -48,7 +48,7 @@ a#site_title, a#site_title:hover {
 	border-style: solid;
 	border-color: #ccc;
 }
-.content h1, .content h2, .content h3, #rightbar h2, #splash_footer h2 {
+.content h1, .content h2, .content h3, #rightbar h2 {
     color: #3f8fba;
     border-bottom: 1px solid #a9a9a9;
 }
@@ -175,20 +175,6 @@ div.tags a, div.authors a, div.actors a, .feed_tags {
 	background-color: #bcd3df;
 	border: 1px solid #3F8FBA;
 }
-#splash_container {
-	height: 1000px;
-	background: #222;
-}
-#slider_container {
-	background-color: black;
-}
-#splash_footer {
-	color: #d3d3d3;
-	margin: 0 auto;
-	width: 980px;
-	padding: 10px 0 10px 0;
-	height: 400px;
-}
 #module_view .resource_header {
 	color: darkred;
 	cursor: pointer;
@@ -198,14 +184,6 @@ div.tags a, div.authors a, div.actors a, .feed_tags {
 	text-decoration: underline;
 }
 
-#slpash_footer h2 {
-	color: #3f8fba;
-}
-
-#splash_footer ul li a {
-	color: #fff;
-}
-
-#splash_footer ul li .controls {
-	display: none;
+.splash_text h1 {
+	color: black;
 }

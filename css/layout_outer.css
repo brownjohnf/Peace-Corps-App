@@ -177,35 +177,25 @@ ul.hmenu li a
 	height: 50px;
 }
 
-#splash_container h1 {
+.splash_text h1 {
 	margin-bottom: 10px;
 }
-
-#splash_footer div {
-	width: 310px;
-	margin: 0 12px 0 0;
-	padding: 0 12px 0 0;
-	border-right: 1px solid #333;
-	float: left;
-}
-
-#splash_footer div:last-child {
-	margin: 0px;
-	padding: 0px;
-	border: none;
-}
-
-#splash_footer div p {
+.splash_text p {
 	text-align: justify;
-	margin-top: 10px;
 }
-
-#splash_footer div ul {
-	margin-top: 10px;
-	padding: 0;
-	list-style: none;
+.splash_text {
+	color: black;
+	margin: 0px;
 }
-
-#splash_footer div h2 {
-	border: none;
+#splash_text_right {
+	padding: 12px 0 12px 12px;
+}
+#splash_text_left {
+	padding: 12px 12px 12px 0px;
+}
+#slider_container {
+	background-color: #999;
+}
+#splash_footer_clear {
+	height: 300px;
 }

@@ -10,7 +10,7 @@
 								  'visual' => '<iframe width="658" height="390" src="http://www.youtube.com/embed/gt4VYGd178I?rel=0&wmode=Opaque" frameborder="0" allowfullscreen></iframe>',
 								  'width' => '658px',
 								  'title' => 'Welcome Aggies!',
-								  'text' => "Peace Corps Senegal welcomes its newest agriculture stage! Over the next nine weeks, they'll learn a local language, learn about Senegalese culture, and aquire all the skills they'll need to be an effective Volunteer over the next two years.",
+								  'text' => "Peace Corps Senegal welcomes its newest agriculture stage! Over the next nine weeks, they'll learn a local language, learn about Senegalese culture, and aquire all the skills they'll need to be an effective Volunteer for the next two years.",
 								  'link' => anchor('http://youtube.com/user/pcsenegaladmin', 'Visit our YouTube Channel >', array('target' => '_blank'))
 								  ),
 							array(
@@ -32,9 +32,9 @@
 							<table>
 								<tr>
 								<?php if (rand() % 2): ?>
-									<td style="color: #fff; padding: 12px 12px 12px 0px; margin: 0px;">
+									<td class="splash_text" id="splash_text_left">
 										<h1><?=$slide['title']?></h1>
-										<p style="text-align: justify;"><?=$slide['text']?></p>
+										<p><?=$slide['text']?></p>
 										<p><?=$slide['link']?></p>
 									</td>
 									<td width="<?=$slide['width']?>">
@@ -44,9 +44,9 @@
 									<td width="<?=$slide['width']?>">
 										<?=$slide['visual']?>
 									</td>
-									<td style="color: #fff; padding: 12px 0 12px 12px; margin: 0;">
+									<td class="splash_text" id="splash_text_right">
 										<h1><?=$slide['title']?></h1>
-										<p style="text-align: justify;"><?=$slide['text']?></p>
+										<p><?=$slide['text']?></p>
 										<p><?=$slide['link']?></p>
 									</td>
 								<?php endif; ?>
@@ -57,17 +57,13 @@
 					</ul>
 				</div>
 			</div>
-			<div id="splash_footer">
-				<div>
-					<?=$col1?>
-				</div>
-				<div>
-					<?=$col2?>
-				</div>
-				<div>
-					<?=$col3?>
-				</div>
+		</div>
+		<div id="splash_content">
+			<div>
+				<h2>We've got a new look!</h2>
+				<p>And the content to match! You'll find the new site more informative, less cluttered, and easier to navigate. Plus, log in with Facebook to receive updates about content, contact Volunteers and Staff, and more!</p>
+				<p>For the best experience, make sure you're using an up-to-date, standards-compliant browser. Such browsers include Mozilla Firefox, Google Chrome, and Safari. At this point in time, we do not recommend the use of Internet Explorer.</p>
 			</div>
 		</div>
-	</body>
-</html>
+		<div id="splash_footer_clear">
+		</div>

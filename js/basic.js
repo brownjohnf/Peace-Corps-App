@@ -8,7 +8,17 @@ $(document).ready(function() {
    var $url = $.url();
    var $current = 'a[href="' + $url.attr('source') + '"]';
    var name = 'a[name="' + $url.segment(1) + '"]';
-   $("#leftbar " + $current).css('background-color', '#cae1ff').css('border', '1px solid #ccc');
+   $('#leftbar ul#page_menu > li > ul').hide();
+   $("#leftbar " + $current).css('background-color', '#cae1ff').css('border', '1px solid #ccc').closest('ul.leftmenu > li').children('ul').show();
+   $('#leftbar ul#page_menu > li').hoverIntent(
+	  function() {
+		 $(this).find('ul').addClass('currently_open').slideDown();
+	  },
+	  function() {
+		 $('.currently_open').slideUp().removeClass('currently_open');
+		 $("#leftbar " + $current).closest('ul.leftmenu > li').children('ul').slideDown();
+	  }
+   );
    $("#main_menu " + name).css('color', '#fff');
    $(".feed_block .body .message " + $current).css('color', 'red');
    $(".controls").hide();

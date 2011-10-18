@@ -383,62 +383,41 @@ class Page_class
 		
 	    return $return;
 	}
-	public function menu()
+	
+	private function _menu_r($parent_id, $maxdepth = 0, $curdepth = 0)
 	{
-		// new approach
-		$ps1 = $this->ci->page_model->read(array('fields' => 'id, title, url', 'where' => array('parent_id' => 0)));
-		foreach ($ps1 as $p1)
+		$pages = $this->ci->page_model->read(array('fields' => 'id, title, url', 'where' => array('parent_id' => $parent_id)));
+		foreach ($pages as $page)
 		{
 			if ($this->ci->userdata['group']['name'] == 'Admin')
 			{
-				$controls = '<div class="controls">'.anchor('page/edit/'.$p1['id'], img('img/edit_icon_black.png'), array('class' => 'edit')).'</div>';
+				$controls = '<div class="controls">'.anchor('page/edit/'.$page['id'], img('img/edit_icon_black.png'), array('class' => 'edit')).'</div>';
 			}
 			else
 			{
 				$controls = null;
 			}
-			$return2[] = $controls.anchor('page/view/'.$p1['url'], $p1['title']);
-		}
-		sort($return2);
-		
-		if ($p1 = $this->ci->page_model->read(array('fields' => 'id, title, url', 'where' => array('url' => $this->ci->uri->segment(3, null)), 'limit' => 1)))
-		{
-			if ($this->ci->userdata['group']['name'] == 'Admin') {
-				$controls = '<div class="controls">'.anchor('page/edit/'.$p1['id'], img('img/edit_icon_black.png'), array('class' => 'edit')).'</div>';
-			} else {
-				$controls = null;
-			}
-			if ($ps2 = $this->ci->page_model->read(array('fields' => 'id, title, url', 'where' => array('parent_id' => $p1['id']))))
+			
+			if ($this->ci->page_model->read(array('fields' => 'id, title, url', 'where' => array('parent_id' => $page['id']))) && $curdepth < $maxdepth)
 			{
-				foreach ($ps2 as $p2)
-				{
-					if ($this->ci->userdata['group']['name'] == 'Admin') {
-						$controls2 = '<div class="controls">'.anchor('page/edit/'.$p2['id'], img('img/edit_icon_black.png'), array('class' => 'edit')).'</div>';
-					} else {
-						$controls2 = null;
-					}
-					if ($ps3 = $this->ci->page_model->read(array('fields' => 'id, title, url', 'where' => array('parent_id' => $p2['id']))))
-					{
-						foreach ($ps3 as $p3)
-						{
-							if ($this->ci->userdata['group']['name'] == 'Admin') {
-								$controls3 = '<div class="controls">'.anchor('page/edit/'.$p3['id'], img('img/edit_icon_black.png'), array('class' => 'edit')).'</div>';
-							} else {
-								$controls3 = null;
-							}
-							$return2[$controls.anchor('page/view/'.$p1['url'], $p1['title'])][$controls2.anchor('page/view/'.$p2['url'], $p2['title'])][] = $controls3.anchor('page/view/'.$p3['url'], $p3['title']);
-						}
-					}
-					else
-					{
-						$return2[$controls.anchor('page/view/'.$p1['url'], $p1['title'])][] = $controls2.anchor('page/view/'.$p2['url'], $p2['title']);
-					}
-				}
-				$key = array_search($controls.anchor('page/view/'.$p1['url'], $p1['title']), $return2);
-				unset($return2[$key]);
+				$menu[$controls.anchor('page/view/'.$page['url'], $page['title'])] = $this->_menu_r($page['id'], $maxdepth, $curdepth + 1);
+			}
+			else
+			{
+				$menu[] = $controls.anchor('page/view/'.$page['url'], $page['title']);
 			}
 		}
-	    return ul($return2, array('id' => 'page_menu', 'class' => 'leftmenu'));
+		return $menu;
 	}
 	
+	public function menu($depth = null, $parent_id = 0)
+	{
+		if (is_null($depth))
+		{
+			$depth = 99999;
+		}
+		// new approach
+		$return = $this->_menu_r($parent_id, $depth);
+	    return ul($return, array('id' => 'page_menu', 'class' => 'leftmenu'));
+	}
 }

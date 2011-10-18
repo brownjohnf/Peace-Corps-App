@@ -90,19 +90,29 @@
 }
 
 #leftbar ul.leftmenu > li > a {
-	padding: 4px 4px 4px 30px;
-	margin-top: 4px;
+	padding: 4px 4px 4px 15px;
+	margin-top: 3px;
 	font-size: 17px;
 }
 #leftbar ul.leftmenu > li > ul > li > a {
-    padding: 3px 4px 1px 45px;
-	margin-top: 3px;
+    padding: 3px 4px 1px 30px;
+	margin-top: 2px;
 	font-size: 15px;
 }
 #leftbar ul.leftmenu > li > ul > li > ul > li > a {
-    padding: 1px 4px 1px 60px;
+    padding: 1px 4px 1px 45px;
 	margin-top: 1px;
 	font-size: 13px;
+}
+#leftbar ul.leftmenu > li > ul > li > ul > li > ul > li > a {
+    padding: 1px 4px 1px 60px;
+	margin-top: 1px;
+	font-size: 11px;
+}
+#leftbar ul.leftmenu > li > ul > li > ul > li > ul > li ul > li > a {
+    padding: 1px 4px 1px 75px;
+	margin-top: 1px;
+	font-size: 11px;
 }
 #leftbar ul.leftmenu a {
 	display: block;
@@ -110,7 +120,7 @@
 #leftbar ul.leftmenu li > a {
 	border: 1px solid #fff;
 }
-#leftbar ul.leftmenu > li > a:hover {
+#leftbar ul.leftmenu li > a:hover {
     background-color: whitesmoke;
 	border: 1px solid #ccc;
 	text-decoration: none;
@@ -191,4 +201,25 @@ h2 {
 }
 #page_form h2 {
 	clear: both;
+}
+#splash_container {
+	height: 390px;
+}
+#splash_content {
+	width: 980px;
+	margin: 0 auto;
+}
+#splash_content > div {
+	margin: 10px 0 10px 0;
+	padding: 10px;
+	border: 1px solid #999;
+	border-radius: 10px;
+}
+#splash_content > div p {
+	margin-bottom: 10px;
+	text-align: justify;
+}
+#splash_content > div h2 {
+	margin-bottom: 10px;
+	color: #3f8fba;
 }

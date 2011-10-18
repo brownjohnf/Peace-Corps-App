@@ -30,6 +30,7 @@
 	
 	<script type="text/javascript" src="<?php echo base_url(); ?>js/jquery.js"></script>
 	<script type="text/javascript" src="<?php echo base_url(); ?>js/jquery.url.js"></script>
+	<script type="text/javascript" src="<?php echo base_url(); ?>js/hover_intent.js"></script>
 	<script type="text/javascript" src="<?php echo base_url(); ?>js/config.js"></script>
 	<script type="text/javascript" src="<?php echo base_url(); ?>js/basic.js"></script>
 	
