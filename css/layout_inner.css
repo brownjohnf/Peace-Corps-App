@@ -118,7 +118,7 @@
 	display: block;
 }
 #leftbar ul.leftmenu li > a {
-	border: 1px solid #fff;
+	border: 1px  #fff;
 }
 #leftbar ul.leftmenu li > a:hover {
     background-color: whitesmoke;

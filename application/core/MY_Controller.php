@@ -42,12 +42,11 @@ class MY_Controller extends CI_Controller
 		}
 		//echo '<pre>'; print_r($this->userdata); echo '</pre>';
 		
-		/* alert tests 
-		$this->session->set_flashdata('alert', 'This is a test-generated alert.');
-		$this->session->set_userdata('message', 'This is a test-generated message.');
-		$this->session->set_flashdata('error', 'This is a test-generated error.');
-		$this->session->set_flashdata('success', 'This is a test-generated success.');
-		$this->session->unset_userdata('message');*/
+		// alert tests 
+		$this->session->set_flashdata('message', 'Visibility selection has been added to the page form.<br>Grayed-out menu items are items that are currently set to invisible. Eventually they will be turned off.<br>You can now add page links in the page form. Currently, only other pages are available.');
+		//$this->session->set_flashdata('error', 'This is a test-generated error.');
+		//$this->session->set_flashdata('success', 'This is a test-generated success.');
+		//$this->session->unset_userdata('message');
 		
     }
 }

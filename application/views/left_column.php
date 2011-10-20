@@ -43,6 +43,7 @@
 					<li><?=anchor('photo/add', 'Add Photo')?></li>
 					<li><?=anchor('user/view', 'User Admin')?></li>
 					<li><?=anchor('resource/type_view', 'Resource Types')?></li>
+					<li><?=anchor('page/tree', 'Page Tree')?></li>
 			    </ul>
 			</div>
 			<?php endif; ?>

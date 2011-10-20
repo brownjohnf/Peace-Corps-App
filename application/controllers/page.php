@@ -39,7 +39,7 @@ class Page extends MY_Controller {
 		$this->load->view('header');
 		$this->load->view('main_open');
 		$this->load->view('left_column');
-		$this->load->view('right_column', array('authors' => $data['authors'], 'tags' => $data['tags'], 'profile_photo' => $data['profile_photo']));
+		$this->load->view('right_column', array('authors' => $data['authors'], 'tags' => $data['tags'], 'profile_photo' => $data['profile_photo'], 'links' => $data['links']));
 		$this->load->view('page_view', $data);
 		$this->load->view('main_close');
 		$this->load->view('footer', array('footer' => 'Footer Here'));
@@ -69,7 +69,8 @@ class Page extends MY_Controller {
 	    $this->form_validation->set_rules('title', 'Page Title', 'required');
 	    $this->form_validation->set_rules('description', 'Description', 'required');
 	    $this->form_validation->set_rules('content', 'Content', 'required');
-	    $this->form_validation->set_rules('updated', 'Updated', 'required');
+	    $this->form_validation->set_rules('updated', 'Updated', 'is_natural');
+	    $this->form_validation->set_rules('visibility', 'visibility', 'required');
 	    $this->form_validation->set_rules('group_id', 'Group', 'required');
 	    $this->form_validation->set_rules('parent_id', 'Parent', 'required');
 	    $this->form_validation->set_rules('profile_photo', 'Profile Photo', 'required');
@@ -89,10 +90,14 @@ class Page extends MY_Controller {
 			if ($this->input->post('authors')) {
 				$data['set_authors'] = $this->input->post('authors');
 			}
+			if ($this->input->post('links')) {
+				$data['set_links'] = $this->input->post('links');
+			}
 			$data['locked'] = $locked;
 			
 			
 			$data['form_title'] = 'Create New Page';
+			$data['backtrack'] = array('' => 'Home', 'feed/page' => 'Page', 'page/create' => 'Create');
 			
 			if (isset($history['page']['view'])) {
 				$data['controls'] = anchor('page/view/'.$history['page']['view'], img(base_url().'img/cancel_icon.png'), array('class' => 'cancel'));
@@ -156,6 +161,7 @@ class Page extends MY_Controller {
 	    $this->form_validation->set_rules('description', 'Description', 'required');
 	    $this->form_validation->set_rules('content', 'Content', 'required');
 	    $this->form_validation->set_rules('updated', 'Updated', 'is_natural');
+	    $this->form_validation->set_rules('visibility', 'Visibility', 'required');
 	    $this->form_validation->set_rules('group_id', 'Group', 'required');
 	    $this->form_validation->set_rules('parent_id', 'Parent', 'required');
 	    $this->form_validation->set_rules('profile_photo', 'Profile Photo', 'required');
@@ -177,9 +183,13 @@ class Page extends MY_Controller {
 			if ($this->input->post('authors')) {
 			    $data['set_authors'] = $this->input->post('authors');
 			}
+			if ($this->input->post('links')) {
+			    $data['set_links'] = $this->input->post('links');
+			}
 			
 			
 			$data['controls'] = anchor('page/view/'.$data['url'], img(base_url().'img/cancel_icon.png'), array('class' => 'cancel'));
+			$data['backtrack'] = array('' => 'Home', 'feed/page' => 'Pages', 'page/view/'.$data['url'] => $data['title'], 'page/edit/'.$this->uri->segment(3) => 'Edit');
 			
 			$this->load->view('head', array('page_title' => 'Edit Page', 'stylesheets' => array('layout_outer.css', 'layout_inner.css', 'theme.css', 'nyroModal.css'), 'scripts' => array('jquery.nyroModal.js', 'jquery.nyroModal.filters.link.js', 'page_edit.js', 'basic.js', 'jquery.url.js')));
 			$this->load->view('header');
@@ -228,6 +238,10 @@ class Page extends MY_Controller {
 		{
 			$error[] = 'Could not remove tags. Please look into the problem.';
 		}
+		if (! $this->page_model->delete_page_links(array('page_id' => $this->uri->segment(3))))
+		{
+			$error[] = 'Could not remove page links. Please look into the problem.';
+		}
 		
 		if (isset($error)) {
 			$this->session->set_flashdata('error', implode(' ', $error));
@@ -236,5 +250,21 @@ class Page extends MY_Controller {
 		}
 		
 		redirect('feed/page');
+	}
+	
+	public function tree()
+	{
+		$data['data'] = $this->page_class->menu();
+		$data['title'] = 'Page Tree';
+		$data['backtrack'] = array('' => 'Home', 'feed/page' => 'Pages', 'page/tree' => 'Page Tree');
+		
+		$this->load->view('head', array('page_title' => $data['title'], 'stylesheets' => array('layout_outer.css', 'layout_inner.css', 'theme.css'), 'scripts' => array('basic.js', 'jquery.url.js')));
+		$this->load->view('header');
+		$this->load->view('main_open');
+		$this->load->view('left_column');
+		$this->load->view('right_column');
+		$this->load->view('basic_view', $data);
+		$this->load->view('main_close');
+		$this->load->view('footer', array('footer' => 'Footer Here'));
 	}
 }

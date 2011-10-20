@@ -22,6 +22,7 @@ class Page_class
 	    $input['description'] = $data['description'];
 	    $input['content'] = $data['content'];
 	    $input['profile_photo'] = $data['profile_photo'];
+	    $input['visibility'] = $data['visibility'];
 		
 		if ($this->ci->userdata['group']['name'] != 'Admin')
 		{
@@ -74,6 +75,18 @@ class Page_class
 			}
 		}
 		
+		if (isset($data['links']))
+		{
+			foreach ($data['links'] as $link)
+			{
+				if (! $this->ci->page_model->create_page_link(array('page_id' => $page_id, 'link_id' => $link)))
+				{
+					$this->ci->session->set_flashdata('error', 'Failed to add record to page_links table while adding content. [078]');
+					return false;
+				}
+			}
+		}
+		
 		
 		return $input['url'];
 	}
@@ -88,6 +101,7 @@ class Page_class
 		$input['description'] = $data['description'];
 		$input['content'] = $data['content'];
 		$input['profile_photo'] = $data['profile_photo'];
+		$input['visibility'] = $data['visibility'];
 		
 		if ($tags = $this->ci->tag_class->parse_tags(strip_tags(Markdown($data['content']), '<b><i><em><u><a>')))
 		{
@@ -201,6 +215,48 @@ class Page_class
 			}
 		}
 		
+		// update/delete/add links to other pages
+		if ($cur_links = $this->ci->page_model->read_page_links(array('where' => array('page_id' => $data['id']))))
+		{
+			foreach ($cur_links as $link)
+			{
+				$current_links[] = $link['link_id'];
+			}
+			if (isset($data['links']))
+			{
+				$links_to_add = array_diff($data['links'], $current_links);
+				$links_to_del = array_diff($current_links, $data['links']);
+			}
+			else
+			{
+				$links_to_del = $current_links;
+			}
+		
+			foreach ($links_to_del as $link)
+			{
+				if (! $this->ci->page_model->delete_page_link(array('page_id' => $data['id'], 'link_id' => $link)))
+				{
+					$this->ci->session->set_flashdata('error', 'Failed to remove link while updating content. [011]');
+					return false;
+				}
+			}
+		}
+		elseif (isset($data['links']))
+		{
+			$links_to_add = $data['links'];
+		}
+		if (isset($links_to_add))
+		{
+			foreach ($links_to_add as $link)
+			{
+				if (! $this->ci->page_model->create_page_link(array('page_id' => $data['id'], 'link_id' => $link)))
+				{
+					$this->ci->session->set_flashdata('error', 'Failed to add link while updating content. [012]');
+					return false;
+				}
+			}
+		}
+		// end link edits
 		
 		return $input['url'];
 	}
@@ -212,8 +268,10 @@ class Page_class
 	    $data['id'] = null;
 	    $data['set_authors'] = null;
 	    $data['set_actors'] = null;
+		$data['set_links'] = null;
 		$data['profile_photo'] = null;
 		$data['group_id'] = null;
+		$data['visibility'] = 1;
 		
 		
 		$data['profile_photo_info'] = array('src' => base_url().'img/blank.png', 'height' => 75, 'id' => 'profile_photo_preview');
@@ -234,13 +292,15 @@ class Page_class
 	    foreach ($parents as $parent) {
 			$data['parents'][$parent['id']] = $parent['title'];
 	    }
+		$data['links'] = $data['parents'];
+		unset($data['links'][0]);
 	    
 	    return $data;
 	}
 	public function full_form($id)
 	{
 	    // fetch the page data
-	    $page = $this->ci->page_model->read(array('fields' => 'id, parent_id, title, content, description, group_id, profile_photo, url', 'where' => array('id' => $id), 'limit' => 1));
+	    $page = $this->ci->page_model->read(array('fields' => 'id, parent_id, title, content, description, group_id, profile_photo, url, visibility', 'where' => array('id' => $id), 'limit' => 1));
 	    // fetch empty data and list populations
 	    $blank_data = $this->blank_form();
 	    // merge the two, to create a populated set of data, with list options
@@ -267,6 +327,16 @@ class Page_class
 			foreach ($actors as $actor_id => $actor)
 			{
 			    $data['set_actors'][] = $actor_id;
+			}
+	    }
+	    
+	    // grab page links
+	    if ($links = $this->ci->page_model->read_page_links(array('where' => array('page_id' => $data['id']))))
+	    {
+			// add them to the set_actors array
+			foreach ($links as $link)
+			{
+			    $data['set_links'][] = $link['link_id'];
 			}
 	    }
 	    
@@ -381,14 +451,39 @@ class Page_class
 	    // retrieve actors
 	    $return['actors'] = $this->ci->permission_class->actors($result['id']);
 		
+		// retrieve page links
+		$return['links'] = $this->ci->page_class->links($result['id']);
+		
 	    return $return;
+	}
+	
+	public function links($page_id)
+	{
+		if ($links = $this->ci->page_model->read_page_links(array('where' => array('page_id' => $page_id))))
+		{
+			foreach ($links as $link)
+			{
+				$return[] = anchor('page/view/'.$link['link_url'], $link['link_title']);
+			}
+			return $return;
+		}
+		return null;
 	}
 	
 	private function _menu_r($parent_id, $maxdepth = 0, $curdepth = 0)
 	{
-		$pages = $this->ci->page_model->read(array('fields' => 'id, title, url', 'where' => array('parent_id' => $parent_id)));
+		$pages = $this->ci->page_model->read(array('fields' => 'id, title, url, visibility', 'where' => array('parent_id' => $parent_id), 'order_by' => array('column' => 'title', 'order' => 'asc')));
 		foreach ($pages as $page)
 		{
+			if (! $page['visibility'])
+			{
+				$class = array('class' => 'invisible');
+			}
+			else
+			{
+				$class = array();
+			}
+			
 			if ($this->ci->userdata['group']['name'] == 'Admin')
 			{
 				$controls = '<div class="controls">'.anchor('page/edit/'.$page['id'], img('img/edit_icon_black.png'), array('class' => 'edit')).'</div>';
@@ -398,13 +493,13 @@ class Page_class
 				$controls = null;
 			}
 			
-			if ($this->ci->page_model->read(array('fields' => 'id, title, url', 'where' => array('parent_id' => $page['id']))) && $curdepth < $maxdepth)
+			if ($this->ci->page_model->read(array('fields' => 'id', 'where' => array('parent_id' => $page['id']))) && $curdepth < $maxdepth)
 			{
-				$menu[$controls.anchor('page/view/'.$page['url'], $page['title'])] = $this->_menu_r($page['id'], $maxdepth, $curdepth + 1);
+				$menu[$controls.anchor('page/view/'.$page['url'], $page['title'], $class)] = $this->_menu_r($page['id'], $maxdepth, $curdepth + 1);
 			}
 			else
 			{
-				$menu[] = $controls.anchor('page/view/'.$page['url'], $page['title']);
+				$menu[] = $controls.anchor('page/view/'.$page['url'], $page['title'], $class);
 			}
 		}
 		return $menu;

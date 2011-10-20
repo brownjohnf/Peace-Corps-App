@@ -133,14 +133,32 @@ class Photo extends MY_Controller {
 		$this->load->view('footer', array('footer' => 'Footer Here'));
 	}
 	
-	// for use in the modal, is a basic gallery, no header, footer, etc.
-	public function select_photo()
+	// for use in profile photo selection modal, is a basic gallery, no header, footer, etc.
+	public function select_profile_photo()
 	{
 		$this->load->model('photo_model');
+		
 		$results = $this->photo_model->read(array('where' => array('width' => 180, 'height' => 180)));
 		foreach ($results as $result)
 		{
-			$data['photos'][] = array('src' => base_url().'uploads/'.$result['filename'].$result['extension'], 'height' => '180px', 'width' => '180px', 'id' => $result['filename'].$result['extension'], 'class' => 'gallery_photo', 'onClick' => "pick_photo('".$result['imagename']."');");
+			$data['photos'][] = array('src' => base_url().'uploads/'.$result['filename'].$result['extension'], 'height' => '180px', 'width' => '180px', 'id' => $result['filename'].$result['extension'], 'class' => 'gallery_photo', 'onClick' => "profile_photo('".$result['imagename']."');");
+		}
+		
+		$data['controls'] = null;
+		$data['title'] = 'Select a Photo';
+		
+		$this->load->view('gallery_view', $data);
+	}
+	
+	// for use in the embedded photo modal, is a basic gallery, no header, footer, etc.
+	public function select_embedded_photo()
+	{
+		$this->load->model('photo_model');
+		
+		$results = $this->photo_model->read(array('where' => "width = '180' OR height = '180'"));
+		foreach ($results as $result)
+		{
+			$data['photos'][] = array('src' => base_url().'uploads/'.$result['filename'].$result['extension'], 'height' => $result['height'], 'width' => $result['width'], 'id' => $result['filename'].$result['extension'], 'class' => 'gallery_photo', 'onClick' => "embed_photo('".base_url().'uploads/'.$result['imagename'].'_180w'.$result['extension']."');");
 		}
 		
 		$data['controls'] = null;

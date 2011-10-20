@@ -47,6 +47,7 @@ $route['disclaimer'] = 'home/disclaimer';
 $route['support'] = 'home/support';
 $route['about'] = 'home/about';
 $route['security'] = 'home/security';
+$route['welcome'] = 'home/welcome';
 
 
 /* End of file routes.php */

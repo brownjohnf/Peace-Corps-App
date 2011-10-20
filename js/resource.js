@@ -14,14 +14,17 @@ $(document).ready(function() {
    $('h2.lesson_plan').click(function() {
 	  $('div.resources, div.network').slideUp();
 	  $('div.lesson_plan').slideDown();
+	  $('body').scrollTop(88);
    });
    $('h2.resources').click(function() {
 	  $('div.lesson_plan, div.network').slideUp();
 	  $('div.resources').slideDown();
+	  $('body').scrollTop(124);
    });
    $('h2.network').click(function() {
 	  $('div.resources, div.lesson_plan').slideUp();
 	  $('div.network').slideDown();
+	  $('body').scrollTop(160);
    });
    //alert($current);
 });

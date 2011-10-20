@@ -25,6 +25,17 @@
 			</div>
 			<?php endif; ?>
 			
+			<?php if (isset($links)): ?>
+			<div class="links">
+				<h2>Suggested Reading</h2>
+				<p>
+					<?php $count = count($links); foreach ($links as $link): ?>
+					<?php echo $link; if ($count > 1) echo '<br />'; $count--;?>
+					<?php endforeach; ?>
+				</p>
+			</div>
+			<?php endif; ?>
+			
 			<?php if (isset($authors)): ?>
 			<div class="authors">
 				<h3>Authors</h3>

@@ -9,6 +9,17 @@ body {
     font: 12px "Helvetica", Arial, sans-serif;
     line-height: 18px;
     color: #222;
+	background-attachment: fixed;
+	/* Safari 4-5, Chrome 1-9 */
+	background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#eee), to(#fff));
+	/* Safari 5.1, Chrome 10+ */
+	background-image: -webkit-linear-gradient(top, #eee, #fff);
+	/* Firefox 3.6+ */
+	background-image: -moz-linear-gradient(top, #eee, #ff);
+	/* IE 10 */
+	background-image: -ms-linear-gradient(top, #eee, #fff);
+	/* Opera 11.10+ */
+	background-image: -o-linear-gradient(top, #eee, #fff);
 }
 a {
     text-decoration: none;
@@ -186,4 +197,8 @@ div.tags a, div.authors a, div.actors a, .feed_tags {
 
 .splash_text h1 {
 	color: black;
+}
+
+.invisible {
+	color: gray;
 }
