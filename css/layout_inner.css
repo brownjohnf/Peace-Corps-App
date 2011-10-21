@@ -131,14 +131,10 @@
 	height: 500px;
 }
 
-#page_form input[type=text], #page_form textarea {
-    width: 548px;
-}
-
-#site_messages_form input[type=text], #site_messages_form textarea {
+#page_form input[type=text], #page_form textarea, #site_messages_form input[type=text], #site_messages_form textarea {
 	width: 748px;
 }
-#page_view, #page_form, #feed_view, #photo_form, #profile_view, #blank_view, #module_view, #user_form, #blog_view, #module_list_view {
+#page_view, #feed_view, #photo_form, #profile_view, #blank_view, #module_view, #user_form, #blog_view, #module_list_view {
     margin: 0 200px 0 220px;
     width: 560px;
     overflow: hidden;
@@ -147,7 +143,7 @@
 	margin: 20px;
 	overflow: auto;
 }
-#table_view, #site_messages_form {
+#table_view, #site_messages_form, #page_form {
 	margin: 0 0 0 220px;
 	width: 760px;
 	overflow: hidden;

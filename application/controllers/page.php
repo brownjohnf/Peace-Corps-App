@@ -111,7 +111,6 @@ class Page extends MY_Controller {
 			$this->load->view('header');
 			$this->load->view('main_open');
 			$this->load->view('left_column');
-			$this->load->view('right_column');
 			$this->load->view('page_form', $data);
 			$this->load->view('main_close');
 			$this->load->view('footer', array('footer' => 'Footer Here'));
@@ -195,7 +194,6 @@ class Page extends MY_Controller {
 			$this->load->view('header');
 			$this->load->view('main_open');
 			$this->load->view('left_column');
-			$this->load->view('right_column');
 			$this->load->view('page_form', $data);
 			$this->load->view('main_close');
 			$this->load->view('footer', array('footer' => 'Footer Here'));
