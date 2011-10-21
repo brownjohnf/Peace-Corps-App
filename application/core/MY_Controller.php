@@ -7,8 +7,12 @@ class MY_Controller extends CI_Controller
 		
 		$this->load->database();
 		$this->load->helper(array('url', 'file', 'array', 'html'));
-		$this->load->library(array('auth', 'form_validation', 'page_class', 'common_class'));
+		$this->load->library(array('auth', 'form_validation', 'page_class', 'common_class', 'admin_class'));
 		$this->load->model(array('facebook_model'));
+		
+		// REDIRECT OPTION
+		//redirect('http://pcsenegal.com');
+		//die();
 		
 		//print_r($this->session->userdata('fb_data'));
 		
@@ -26,6 +30,13 @@ class MY_Controller extends CI_Controller
 		{
 			if ($this->auth->is_user())
 			{
+				if ($messages = $this->admin_class->read_site_messages())
+				{
+					foreach ($messages as $message)
+					{
+						$this->session->set_flashdata($message['type'], $message['content']);
+					}
+				}
 				$this->session->unset_userdata('notice');
 				if ($this->userdata['group']['name'] == 'Admin')
 				{
@@ -43,10 +54,10 @@ class MY_Controller extends CI_Controller
 		//echo '<pre>'; print_r($this->userdata); echo '</pre>';
 		
 		// alert tests 
-		$this->session->set_flashdata('message', 'Visibility selection has been added to the page form.<br>Grayed-out menu items are items that are currently set to invisible. Eventually they will be turned off.<br>You can now add page links in the page form. Currently, only other pages are available.');
+		//$this->session->set_flashdata('message', 'Visibility selection has been added to the page form.<br>Grayed-out menu items are items that are currently set to invisible. Eventually they will be turned off.<br>You can now add page links in the page form. Currently, only other pages are available.');
 		//$this->session->set_flashdata('error', 'This is a test-generated error.');
 		//$this->session->set_flashdata('success', 'This is a test-generated success.');
-		//$this->session->unset_userdata('message');
+		//$this->session->set_flashdata('alert', 'test notice');
 		
     }
 }
