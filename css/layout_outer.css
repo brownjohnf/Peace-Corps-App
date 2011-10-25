@@ -54,7 +54,7 @@ table {
 
 #footer_outer {
 	text-align: left;
-	height: 300px;
+	height: 260px;
 }
 
 #footer_lower_inner > div#legal {
@@ -76,7 +76,7 @@ table {
 }
 
 #outer_container {
-	margin: 00px 0 -300px 0;
+	margin: 0 0 -260px 0;
 	border: 0px solid #000000;
 	text-align: left; /* this overrides the text-align: center on the body element. */
 	min-height: 100%;
@@ -106,11 +106,6 @@ table {
 
 #google_search input[type=text] {
 	width: 768px;
-}
-
-#google_search input[type=submit] {
-	position: relative;
-	right: 0px;
 }
 
 #site_title {
@@ -157,7 +152,7 @@ ul.hmenu li a
 #main_menu {
     float: left;
 }
-
+/*
 #footer_outer img#baobab {
 	position: absolute;
 	top: -200px;
@@ -169,6 +164,7 @@ ul.hmenu li a
 	top: -190px;
 	right: -100px;
 }
+*/
 #user_image {
 	padding: 0;
 }
