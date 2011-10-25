@@ -40,7 +40,7 @@
 			<div>
 			    <ul class="leftmenu">
 					<li><?=anchor('page/create', 'New Page')?></li>
-					<li><?=anchor('photo/add', 'Add Photo')?></li>
+					<li><?=anchor('photo/add', 'Upload Photo')?></li>
 					<li><?=anchor('user/view', 'User Admin')?></li>
 					<li><?=anchor('resource/type_view', 'Resource Types')?></li>
 					<li><?=anchor('page/tree', 'Page Tree')?></li>
