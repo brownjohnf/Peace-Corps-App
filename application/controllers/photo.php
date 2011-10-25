@@ -69,8 +69,7 @@ class Photo extends MY_Controller {
 			}
 				
 			$this->session->set_flashdata('success', print_r($success, true));
-			redirect('photo/gallery');
-			
+			redirect('photo/upload');
 		}
 	}
 	

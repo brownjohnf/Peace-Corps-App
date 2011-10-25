@@ -7,8 +7,8 @@ class Page extends MY_Controller {
 	
 	function __construct() {
 	    parent::__construct();
-		$this->load->library('page_class');
-		$this->load->library(array('common_class'));
+		$this->load->model('page_model');
+		$this->load->library(array('common_class', 'page_class'));
 	}
 	
 	public function index()
@@ -236,7 +236,7 @@ class Page extends MY_Controller {
 		{
 			$error[] = 'Could not remove tags. Please look into the problem.';
 		}
-		if (! $this->page_model->delete_page_links(array('page_id' => $this->uri->segment(3))))
+		if (! $this->page_model->delete_page_link(array('page_id' => $this->uri->segment(3))))
 		{
 			$error[] = 'Could not remove page links. Please look into the problem.';
 		}

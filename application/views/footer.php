@@ -9,8 +9,8 @@
 				<div id="footer_upper">
 					<div id="footer_upper_inner">
 						<?php if ($this->uri->segment(2) == 'splash'): ?>
-						<img id="baskets" src="<?php echo base_url(); ?>img/baskets.png" />
-						<img id="baobab" src="<?php echo base_url(); ?>img/baobab.png" />
+						<!--<img id="baskets" src="<?php echo base_url(); ?>img/baskets.png" />
+						<img id="baobab" src="<?php echo base_url(); ?>img/baobab.png" />-->
 						<?php endif; ?>
 						<img id="watermark" src="<?php echo base_url(); ?>img/pc_logo_watermark.png" />
 						
@@ -20,11 +20,8 @@
 								<input type="hidden" name="oe" value="UTF-8" />
 								<input type="hidden" name="domains" value="http://pcsenegal.org" />
 								<input type="hidden" name="sitesearch" value="http://pcsenegal.org" checked />
-								<div>
 								<!--<input type="submit" name="btnG" value="Google Search" height="50px" />-->
 								<input type="text" name="q" maxlength="200" value="Search pcsenegal.org using Google Search" />
-								<br class="clearfloat"/>
-								</div>
 							</form>
 						</div><!--END Search Google -->
 						
@@ -50,7 +47,7 @@
 							<li>Recently Updated</li>
 							<li>Search</li>
 						</ul>
-						<ul>
+						<ul class="ie_last">
 							<h4>Profiles & Photos</h4>
 							<li>Search</li>
 							<li><?php echo anchor('photo/gallery', 'All Photos'); ?></li>

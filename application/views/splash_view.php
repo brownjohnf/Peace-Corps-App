@@ -7,6 +7,13 @@
 		<?php
 			$splash = array(
 							array(
+								  'visual' => '<iframe width="658" height="390" src="http://www.youtube.com/embed/0ad-aaaVZ-E?rel=0&wmode=Opaque" frameborder="0" allowfullscreen></iframe>',
+								  'width' => '658px',
+								  'title' => 'Kolda Ag Fair A Success!',
+								  'text' => "Peace Corps Senegal organized and executed an agricultural fair in the southern regional capital of Kolda. Combining elements of a farmers market with a food transformation expo, it attracted many local agricultural producers and buyers.",
+								  'link' => anchor('http://youtube.com/user/pcsenegaladmin', 'Visit our YouTube Channel >', array('target' => '_blank'))
+								  ),
+							array(
 								  'visual' => '<iframe width="658" height="390" src="http://www.youtube.com/embed/gt4VYGd178I?rel=0&wmode=Opaque" frameborder="0" allowfullscreen></iframe>',
 								  'width' => '658px',
 								  'title' => 'Welcome Aggies!',

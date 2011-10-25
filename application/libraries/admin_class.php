@@ -18,7 +18,7 @@ class Admin_class
 	{
 		$input['site_message_error'] = $data['error'];
 		$input['site_message_message'] = $data['message'];
-		$input['site_message_notice'] = $data['notice'];
+		$input['site_message_alert'] = $data['alert'];
 		$input['site_message_success'] = $data['success'];
 		$input['id'] = $data['id'];
 		
@@ -32,10 +32,10 @@ class Admin_class
 	public function read_site_messages($id = '%')
 	{
 	    // fetch the message data
-	    $results = $this->ci->admin_model->read_site_settings(array('fields' => 'id, site_message_success, site_message_notice, site_message_error, site_message_message', 'limit' => 1));
+	    $results = $this->ci->admin_model->read_site_settings(array('fields' => 'id, site_message_success, site_message_alert, site_message_error, site_message_message', 'limit' => 1));
 	    
 		$return[] = array('type' => 'success', 'content' => $results['site_message_success'], 'id' => $results['id']);
-		$return[] = array('type' => 'notice', 'content' => $results['site_message_notice'], 'id' => $results['id']);
+		$return[] = array('type' => 'alert', 'content' => $results['site_message_alert'], 'id' => $results['id']);
 		$return[] = array('type' => 'error', 'content' => $results['site_message_error'], 'id' => $results['id']);
 		$return[] = array('type' => 'message', 'content' => $results['site_message_message'], 'id' => $results['id']);
 		

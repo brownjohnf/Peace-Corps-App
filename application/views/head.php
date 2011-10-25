@@ -13,6 +13,8 @@
 	<meta property="og:type" content="government" />
 	<meta property="og:url" content="<?php echo current_url(); ?>" />
 	<meta property="og:image" content="<?php echo base_url(); ?>img/pc_logo.png" />
+	
+	<meta http-equiv="X-UA-Compatible" content="IE=8" />
 
 	<!-- For google plusone button -->
 	<meta itemprop="name" content="Title of your content">
@@ -21,7 +23,8 @@
 	<title><?=$page_title?></title>
 	
 	<!--[if IE]>
-	<link rel="stylesheet" type="text/css" href="css/all-ie-only.css" />
+	<link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>css/all-ie-only.css" />
+	<link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>css/all-ie-<?php if ($this->uri->rsegment(2) == 'splash'): echo 'splash'; else: echo 'standard'; endif; ?>.css" />
 	<![endif]-->
 	
 	<?php foreach ($stylesheets as $css): ?>

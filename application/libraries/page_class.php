@@ -270,7 +270,7 @@ class Page_class
 	    $data['set_actors'] = null;
 		$data['set_links'] = null;
 		$data['profile_photo'] = null;
-		$data['group_id'] = null;
+		$data['group_id'] = 6;
 		$data['visibility'] = 1;
 		
 		
@@ -481,7 +481,7 @@ class Page_class
 			}
 			else
 			{
-				$class = array();
+				$class = array('class' => 'visible');
 			}
 			
 			if ($this->ci->userdata['group']['name'] == 'Admin')

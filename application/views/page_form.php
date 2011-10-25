@@ -28,7 +28,8 @@
 
 <label>Title*</label><?php echo form_input('title', set_value('title', $title)); ?><br />
 <label>Description*</label><?php echo form_input('description', set_value('description', $description)); ?><br />
-<label>Content*</label><span id="insert_photo">Insert Photo</span><br><?php echo form_textarea('content', set_value('content', $content)); ?><br />
+<label>Content*</label><br><?php echo form_textarea('content', set_value('content', $content)); ?><br />
+<span id="insert_photo" class="button1">Insert Photo</span>
 <label>Right-column Page Link(s)</label><?php echo form_multiselect('links[]', $links, $set_links); ?><br />
 
 <label>Profile Photo*</label>

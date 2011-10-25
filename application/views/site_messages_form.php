@@ -27,7 +27,7 @@
 <?php echo form_open('admin/site/messages/edit'); ?>
 
 <label>Message</label><?php echo form_textarea('message', set_value('message', $message)); ?><br />
-<label>Notice</label><?php echo form_textarea('notice', set_value('notice', $notice)); ?><br />
+<label>Alert</label><?php echo form_textarea('alert', set_value('notice', $alert)); ?><br />
 <label>Success</label><?php echo form_textarea('success', set_value('success', $success)); ?><br />
 <label>Error</label><?php echo form_textarea('error', set_value('error', $error)); ?><br />
 

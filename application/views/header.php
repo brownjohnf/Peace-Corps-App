@@ -27,13 +27,16 @@
 			<br class="clearfloat" />
 		</div><!-- END #header_outer -->
 		
-		<?php
-if ($this->session->flashdata('alert'))
+<?php
+if ($this->uri->rsegment(1) != 'home')
 {
-    $this->load->view('alert');
-}
-if ($this->session->flashdata('message'))
-{
-    $this->load->view('message');
+	if ($this->session->flashdata('alert'))
+	{
+		$this->load->view('alert');
+	}
+	if ($this->session->flashdata('message'))
+	{
+		$this->load->view('message');
+	}
 }
 ?>

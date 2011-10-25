@@ -172,6 +172,8 @@ class Photo_class
 				$config['x_axis'] = $target['width'];
 				$config['width'] = $target['width'];
 				$config['source_image']	= $data['file_path'].$config['new_image'];
+				$config['image_library'] = 'imagemagick';
+				$config['library_path'] = '/usr/bin/';
 				unset($config['height']);
 				
 				$this->ci->image_lib->clear();
@@ -210,6 +212,8 @@ class Photo_class
 				$config['y_axis'] = $target['height'];
 				$config['height'] = $target['height'];
 				$config['source_image']	= $data['file_path'].$config['new_image'];
+				$config['image_library'] = 'imagemagick';
+				$config['library_path'] = '/usr/bin/';
 				unset($config['width']);
 				
 				$this->ci->image_lib->clear();

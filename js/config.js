@@ -3,5 +3,8 @@
    the COPYRIGHT file.
 */
 
-var base_url = 'http://alpha.pcsenegal.org/';
-var upload_dir = 'uploads/';
+
+var base_url = 'http://pcsenegal.com/';
+
+//var base_url = 'http://alpha.pcsenegal.org/';
+var upload_dir = base_url + 'uploads/';

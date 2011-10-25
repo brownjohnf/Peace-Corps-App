@@ -31,7 +31,7 @@ class Admin extends MY_Controller {
 	    $this->form_validation->set_rules('error', 'Error', 'callback_pass');
 	    $this->form_validation->set_rules('message', 'Message', 'callback_pass');
 	    $this->form_validation->set_rules('success', 'Success', 'callback_pass');
-	    $this->form_validation->set_rules('notice', 'Notice', 'callback_pass');
+	    $this->form_validation->set_rules('alert', 'Alert', 'callback_pass');
 		
 		if ($this->form_validation->run() == false)
 		{
@@ -58,7 +58,7 @@ class Admin extends MY_Controller {
 		{
 		    if ($edit = $this->admin_class->edit_site_messages($this->input->post()))
 		    {
-			    $this->session->set_flashdata('success', 'Site messages set successfully.');
+			    $this->session->set_flashdata('success', 'Site messages set successfully. It will take one page transition for them to appear.');
 			    redirect('feed/page');
 			}
 			else
