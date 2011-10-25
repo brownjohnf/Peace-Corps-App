@@ -22,7 +22,7 @@ function profile_photo(img) {
 }
 
 function embed_photo(img) {
-   $('textarea[name=content]').insertAtCaret('<img style="float:;" src="' + img + '" />');
+   $('textarea[name=content]').insertAtCaret('<img class="float" src="' + img + '" />');
    /*var data = {'img':img};
    $.post(base_url + 'photo/ajax_image', data, function(str) {
 	  $('#profile_photo_preview').attr('src', str);

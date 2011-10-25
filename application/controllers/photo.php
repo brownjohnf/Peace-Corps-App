@@ -69,17 +69,22 @@ class Photo extends MY_Controller {
 			}
 				
 			$this->session->set_flashdata('success', print_r($success, true));
-			redirect('photo/upload');
+			redirect('photo/add');
 		}
 	}
 	
 	public function gallery()
 	{
 		$this->load->model('photo_model');
-		$results = $this->photo_model->read(array('where' => array('width' => 180, 'height' => 180)));
+		$results = $this->photo_model->read(array('where' => array('height' => 180), 'order_by' => array('column' => 'width', 'order' => 'desc')));
 		foreach ($results as $result)
 		{
-			$data['photos'][] = array('src' => base_url().'uploads/'.$result['filename'].$result['extension'], 'height' => '180px', 'width' => '180px');
+			if ($result['width'] != 180)
+			{
+				$count = round(980 / $result['width']);
+				$margin = (980 - $result['width'] * $count) / $count / 2;
+				$data['photos'][] = array('src' => base_url().'uploads/'.$result['filename'].$result['extension'], 'height' => '180px', 'width' => $result['width'], 'style' => 'margin:'.$margin.'px;');
+			}
 		}
 		
 		$data['title'] = 'Photo Gallery';
@@ -140,7 +145,9 @@ class Photo extends MY_Controller {
 		$results = $this->photo_model->read(array('where' => array('width' => 180, 'height' => 180)));
 		foreach ($results as $result)
 		{
-			$data['photos'][] = array('src' => base_url().'uploads/'.$result['filename'].$result['extension'], 'height' => '180px', 'width' => '180px', 'id' => $result['filename'].$result['extension'], 'class' => 'gallery_photo', 'onClick' => "profile_photo('".$result['imagename']."');");
+			$count = round(980 / $result['width']);
+			$margin = (980 - $result['width'] * $count) / $count / 2;
+			$data['photos'][] = array('src' => base_url().'uploads/'.$result['filename'].$result['extension'], 'height' => '180px', 'width' => '180px', 'id' => $result['filename'].$result['extension'], 'class' => 'gallery_photo', 'onClick' => "profile_photo('".$result['imagename']."');", 'style' => 'margin:'.$margin.'px;');
 		}
 		
 		$data['controls'] = null;
@@ -154,10 +161,20 @@ class Photo extends MY_Controller {
 	{
 		$this->load->model('photo_model');
 		
-		$results = $this->photo_model->read(array('where' => "width = '180' OR height = '180'"));
+		$results = $this->photo_model->read(array('where' => array('height' => 180), 'order_by' => array('column' => 'width', 'order' => 'desc')));
 		foreach ($results as $result)
 		{
-			$data['photos'][] = array('src' => base_url().'uploads/'.$result['filename'].$result['extension'], 'height' => $result['height'], 'width' => $result['width'], 'id' => $result['filename'].$result['extension'], 'class' => 'gallery_photo', 'onClick' => "embed_photo('".base_url().'uploads/'.$result['imagename'].'_180w'.$result['extension']."');");
+			if ($result['width'] != 180)
+			{
+				if ($result['width'] > 180) {
+					$tail = '_180h';
+				} else {
+					$tail = '_180w';
+				}
+				$count = round(980 / $result['width']);
+				$margin = (980 - $result['width'] * $count) / $count / 2;
+				$data['photos'][] = array('src' => base_url().'uploads/'.$result['filename'].$result['extension'], 'height' => $result['height'], 'width' => $result['width'], 'id' => $result['filename'].$result['extension'], 'class' => 'gallery_photo', 'onClick' => "embed_photo('".base_url().'uploads/'.$result['imagename'].$tail.$result['extension']."');", 'style' => 'margin:'.$margin.'px;');
+			}
 		}
 		
 		$data['controls'] = null;

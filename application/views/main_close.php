@@ -10,7 +10,7 @@
 		<?php
 			//$browser = get_browser(null, true);
 			//print_r($browser);
-			echo $_SERVER['HTTP_USER_AGENT'];
+			echo "You're using: ".$_SERVER['HTTP_USER_AGENT'];
 		?>
 		<!-- clearing element, keeps the footer pushed down to the bottom, and ensures that the images on top of it keep clear of the page content. -->
 		<div id="bottom_of_page">

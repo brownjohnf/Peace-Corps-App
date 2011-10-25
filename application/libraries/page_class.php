@@ -306,7 +306,7 @@ class Page_class
 	    // merge the two, to create a populated set of data, with list options
 	    $data = array_merge($blank_data, $page);
 			
-		$photo_data = $this->ci->photo_model->read(array('where' => array('imagename' => $data['profile_photo'], 'height' => 75, 'width' => 75), 'limit' => 1));
+		$photo_data = $this->ci->photo_model->read(array('where' => array('imagename' => $data['profile_photo'], 'height' => 180, 'width' => 180), 'limit' => 1));
 			
 		$data['profile_photo_info'] = array('src' => base_url().'uploads/'.$photo_data['filename'].$photo_data['extension'], 'width' => $photo_data['width'], 'height' => $photo_data['height'], 'id' => 'profile_photo_preview');
 	    
@@ -370,7 +370,7 @@ class Page_class
 			
 			if ($result['profile_photo'] != '')
 			{
-				$photo_data = $this->ci->photo_model->read(array('where' => array('imagename' => $result['profile_photo'], 'width' => 180, 'height' => 180), 'limit' => 1));
+				$photo_data = $this->ci->photo_model->read(array('where' => array('imagename' => $result['profile_photo'], 'width' => 50, 'height' => 50), 'limit' => 1));
 				$item['profile_photo'] = base_url().'uploads/'.$photo_data['filename'].$photo_data['extension'];
 			}
 			else

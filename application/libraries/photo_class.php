@@ -153,7 +153,7 @@ class Photo_class
 		}
 		elseif (abs($target['width'] / $target['height'] - $data['image_width'] / $data['image_height']) > .1) // if the aspect ratio of the photo is not almost exactly what is specified, resize to the small dimension, then crop the photo to the final size
 		{
-			if ($data['image_width'] > $data['image_height'])
+			if ($data['image_width'] > $data['image_height'] && $target['height'] / $target['width'] > $data['image_height'] / $data['image_width'])// if a landscape image, with an acceptable aspect ration
 			{
 				//print 'w>h';
 				$config['image_library'] = 'gd2';
@@ -168,32 +168,24 @@ class Photo_class
 					die($this->ci->image_lib->display_errors().'<- landscape resize<br>');
 				}
 				
-				$slice = ($data['image_width'] - $target['height']) / 2;
-				$config['x_axis'] = $target['width'];
-				$config['width'] = $target['width'];
-				$config['source_image']	= $data['file_path'].$config['new_image'];
+				$slice = round(($config['width'] - $target['width']) / 2);// set the cut to half of the needed removal
+				$config['x_axis'] = $slice;
+				$config['width'] = $target['width'];// set the width- this also guarantees that the final size will be exact
+				$config['source_image']	= $data['file_path'].$config['new_image']; // set new filename
 				$config['image_library'] = 'imagemagick';
 				$config['library_path'] = '/usr/bin/';
 				unset($config['height']);
+				//unset($config['width']);// added for test
 				
 				$this->ci->image_lib->clear();
 				$this->ci->image_lib->initialize($config);
+				//print_r($config);
 				if ( ! $this->ci->image_lib->crop())
 				{
 					die($this->ci->image_lib->display_errors().'<- first landscape crop<br>');
 				}
-				/*
-				$config['x_axis'] = -$target['width'];
-				
-				$this->ci->image_lib->clear();
-				$this->ci->image_lib->initialize($config);
-				if ( ! $this->ci->image_lib->crop())
-				{
-					die($this->ci->image_lib->display_errors().'<- second landscape crop<br>');
-				}
-				*/
 			}
-			elseif ($data['image_width'] <= $data['image_width'])
+			elseif ($data['image_width'] < $data['image_height'] && $target['width'] / $target['height'] > $data['image_width'] / $data['image_height'])// if a portrait image, with an acceptable aspect ratio
 			{
 				//print ' w<=h';
 				$config['image_library'] = 'gd2';
@@ -208,8 +200,8 @@ class Photo_class
 					die($this->ci->image_lib->display_errors().'<- portrait resize<br>');
 				}
 				
-				$slice = ($data['image_height'] - $target['width']) / 2;
-				$config['y_axis'] = $target['height'];
+				$slice = round(($config['height'] - $target['height']) / 2);
+				$config['y_axis'] = $slice;
 				$config['height'] = $target['height'];
 				$config['source_image']	= $data['file_path'].$config['new_image'];
 				$config['image_library'] = 'imagemagick';
@@ -222,19 +214,71 @@ class Photo_class
 				{
 					die($this->ci->image_lib->display_errors().'<- first portrait crop<br>');
 				}
-				/*
-				$config['y_axis'] = -$target['height'];
+			}
+			elseif ($data['image_width'] < $data['image_height'] && $target['width'] / $target['height'] < $data['image_width'] / $data['image_height'])// if a landscape image, with an unacceptable aspect ration
+			{
+				//print 'w>h';
+				$config['image_library'] = 'gd2';
+				$config['height'] = $target['height'];
+				$config['width'] = $data['image_width'] * ($target['height'] / $data['image_height']);
+			
+				$this->ci->image_lib->clear();
+				$this->ci->image_lib->initialize($config);
+				
+				if ( ! $this->ci->image_lib->resize())
+				{
+					die($this->ci->image_lib->display_errors().'<- landscape resize<br>');
+				}
+				
+				$slice = round(($config['width'] - $target['width']) / 2);// set the cut to half of the needed removal
+				$config['x_axis'] = $slice;
+				$config['width'] = $target['width'];// set the width- this also guarantees that the final size will be exact
+				$config['source_image']	= $data['file_path'].$config['new_image']; // set new filename
+				$config['image_library'] = 'imagemagick';
+				$config['library_path'] = '/usr/bin/';
+				unset($config['height']);
+				//unset($config['width']);// added for test
+				
+				$this->ci->image_lib->clear();
+				$this->ci->image_lib->initialize($config);
+				//print_r($config);
+				if ( ! $this->ci->image_lib->crop())
+				{
+					die($this->ci->image_lib->display_errors().'<- first landscape crop<br>');
+				}
+			}
+			elseif ($data['image_width'] > $data['image_height'] && $target['height'] / $target['width'] < $data['image_height'] / $data['image_width'])// if a portrait image, with an unacceptable aspect ratio
+			{
+				//print ' w<=h';
+				$config['image_library'] = 'gd2';
+				$config['width'] = $target['width'];
+				$config['height'] = $data['image_height'] * ($target['width'] / $data['image_width']);
+			
+				$this->ci->image_lib->clear();
+				$this->ci->image_lib->initialize($config);
+				
+				if ( ! $this->ci->image_lib->resize())
+				{
+					die($this->ci->image_lib->display_errors().'<- portrait resize<br>');
+				}
+				
+				$slice = round(($config['height'] - $target['height']) / 2);
+				$config['y_axis'] = $slice;
+				$config['height'] = $target['height'];
+				$config['source_image']	= $data['file_path'].$config['new_image'];
+				$config['image_library'] = 'imagemagick';
+				$config['library_path'] = '/usr/bin/';
+				unset($config['width']);
 				
 				$this->ci->image_lib->clear();
 				$this->ci->image_lib->initialize($config);
 				if ( ! $this->ci->image_lib->crop())
 				{
-					die($this->ci->image_lib->display_errors().'<- second portrait crop<br>');
+					die($this->ci->image_lib->display_errors().'<- first portrait crop<br>');
 				}
-				*/
 			}
 		}
-		else // otherwise, just do a hard resize
+		else // if the image is close to the right aspect ration, just do a hard resize
 		{
 			//print 'hard resize';
 			$config['image_library'] = 'gd2';
