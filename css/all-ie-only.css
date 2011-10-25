@@ -16,3 +16,7 @@
 .splash_text h1 {
 	font-size: 24px;
 }
+
+#diaspora_share {
+	display: none;
+}
