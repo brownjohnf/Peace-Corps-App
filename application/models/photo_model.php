@@ -25,16 +25,18 @@ class Photo_model extends CI_Model {
 	
 	public function read($data = array())
 	{
-		$default = array('fields' => '*', 'limit' => '50', 'where' => array('id like' => '%'), 'order_by' => array('column' => 'updated', 'order' => 'desc'), 'offset' => 0);
+		$default = array('fields' => '*', 'where' => array('id like' => '%'), 'order_by' => array('column' => 'updated', 'order' => 'desc'), 'offset' => 0);
 		$data = array_merge($default, $data);
 		//echo '<pre>'; print_r($data); echo '</pre>';
 		$this->db->select($data['fields']);
 		$this->db->where($data['where']);
-		$this->db->limit($data['limit'], $data['offset']);
+		if (isset($data['limit'])) {
+			$this->db->limit($data['limit'], $data['offset']);
+		}
 		$this->db->order_by($data['order_by']['column'], $data['order_by']['order']);
 		$query = $this->db->get('photos');
 
-		if ($data['limit'] == 1)
+		if (isset($data['limit']) && $data['limit'] == 1)
 		{
 			return $query->row_array();
 		}	

@@ -18,10 +18,13 @@ $(document).ready(function() {
 		 $(this).children('ul').first().addClass('currently_open').slideDown();
 	  },
 	  function() {
-		 $(this).children('ul').first().slideUp().removeClass('currently_open');
-		 $("#leftbar " + current).parents('ul').show();
+		 /*$(this).children('ul').first().slideUp().removeClass('currently_open');
+		 $("#leftbar " + current).parents('ul').show();*/
 	  }
    );
+   $('.content').mouseenter(function() {
+	  $('.currently_open').slideUp().removeClass('currently_open');
+   })
    $("#main_menu " + name).css('color', '#fff');
    $(".feed_block .body .message " + current).css('color', 'red');
    $(".controls").hide();

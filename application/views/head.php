@@ -24,7 +24,7 @@
 	
 	<!--[if IE]>
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>css/all-ie-only.css" />
-	<link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>css/all-ie-<?php if ($this->uri->rsegment(2) == 'splash'): echo 'splash'; else: echo 'standard'; endif; ?>.css" />
+	<link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>css/all-ie-only-<?php if ($this->uri->rsegment(2) == 'splash'): echo 'splash'; else: echo 'standard'; endif; ?>.css" />
 	<![endif]-->
 	
 	<?php foreach ($stylesheets as $css): ?>

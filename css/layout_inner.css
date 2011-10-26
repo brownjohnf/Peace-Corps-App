@@ -81,8 +81,14 @@
 }
 
 #leftbar .controls {
-	float: right;
 	margin: 2px 0 0 0;
+	position: absolute;
+	top: 0;
+	right: 0;
+}
+
+#leftbar li {
+	position: relative;
 }
 
 #leftbar .controls img {

@@ -18,5 +18,20 @@
 }
 
 #diaspora_share {
-	display: none;
+	display: none !important;
+}
+/*
+#leftbar .controls {
+	float: right !important;
+	position: inherit !important;
+	top: auto !important;
+	right: auto !important;
+}
+
+#leftbar li {
+	position: inherit !important;
+}
+*/
+#leftbar ul * {
+	zoom: 1;
 }

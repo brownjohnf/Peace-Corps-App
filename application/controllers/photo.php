@@ -81,9 +81,12 @@ class Photo extends MY_Controller {
 		{
 			if ($result['width'] != 180)
 			{
-				$count = round(980 / $result['width']);
+				$count = floor(980 / $result['width']);
 				$margin = (980 - $result['width'] * $count) / $count / 2;
-				$data['photos'][] = array('src' => base_url().'uploads/'.$result['filename'].$result['extension'], 'height' => '180px', 'width' => $result['width'], 'style' => 'margin:'.$margin.'px;');
+				if ($margin > 5) {
+					$margin = 3;
+				}
+				$data['photos'][] = array('src' => base_url().'uploads/'.$result['filename'].$result['extension'], 'height' => '180px', 'width' => $result['width'], 'style' => 'margin: 3px '.$margin.'px;');
 			}
 		}
 		
@@ -145,8 +148,11 @@ class Photo extends MY_Controller {
 		$results = $this->photo_model->read(array('where' => array('width' => 180, 'height' => 180)));
 		foreach ($results as $result)
 		{
-			$count = round(980 / $result['width']);
+			$count = floor(980 / $result['width']);
 			$margin = (980 - $result['width'] * $count) / $count / 2;
+			if ($margin > 5) {
+				$margin = 3;
+			}
 			$data['photos'][] = array('src' => base_url().'uploads/'.$result['filename'].$result['extension'], 'height' => '180px', 'width' => '180px', 'id' => $result['filename'].$result['extension'], 'class' => 'gallery_photo', 'onClick' => "profile_photo('".$result['imagename']."');", 'style' => 'margin:'.$margin.'px;');
 		}
 		
@@ -171,8 +177,11 @@ class Photo extends MY_Controller {
 				} else {
 					$tail = '_180w';
 				}
-				$count = round(980 / $result['width']);
+				$count = floor(980 / $result['width']);
 				$margin = (980 - $result['width'] * $count) / $count / 2;
+				if ($margin > 5) {
+					$margin = 3;
+				}
 				$data['photos'][] = array('src' => base_url().'uploads/'.$result['filename'].$result['extension'], 'height' => $result['height'], 'width' => $result['width'], 'id' => $result['filename'].$result['extension'], 'class' => 'gallery_photo', 'onClick' => "embed_photo('".base_url().'uploads/'.$result['imagename'].$tail.$result['extension']."');", 'style' => 'margin:'.$margin.'px;');
 			}
 		}
