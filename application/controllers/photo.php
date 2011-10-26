@@ -50,6 +50,8 @@ class Photo extends MY_Controller {
 		}
 		else
 		{
+			$caption = $this->input->post('caption');
+			//print $caption;
 			$this->load->library('image_lib');
 			
 			// set an array of sizes to be created
@@ -65,7 +67,7 @@ class Photo extends MY_Controller {
 			// process each photo
 			foreach ($photos as $photo)
 			{
-				$success = $this->photo_class->create($this->upload->data(), $photo);
+				$success[] = $this->photo_class->create($this->upload->data(), $photo, $caption);
 			}
 				
 			$this->session->set_flashdata('success', print_r($success, true));
@@ -76,7 +78,19 @@ class Photo extends MY_Controller {
 	public function gallery()
 	{
 		$this->load->model('photo_model');
-		$results = $this->photo_model->read(array('where' => array('height' => 180), 'order_by' => array('column' => 'width', 'order' => 'desc')));
+		if (is_numeric($this->uri->segment(3)))
+		{
+			$owner_id = $this->uri->segment(3);
+		}
+		elseif ($this->uri->segment(3) == 'me')
+		{
+			$owner_id = $this->userdata['id'];
+		}
+		else
+		{
+			$owner_id = '%';
+		}
+		$results = $this->photo_model->read(array('where' => array('height' => 180, 'owner_id like' => $owner_id), 'order_by' => array('column' => 'width', 'order' => 'desc')));
 		foreach ($results as $result)
 		{
 			if ($result['width'] != 180)
@@ -86,7 +100,7 @@ class Photo extends MY_Controller {
 				if ($margin > 5) {
 					$margin = 3;
 				}
-				$data['photos'][] = array('src' => base_url().'uploads/'.$result['filename'].$result['extension'], 'height' => '180px', 'width' => $result['width'], 'style' => 'margin: 3px '.$margin.'px;');
+				$data['photos'][] = array('src' => base_url().'uploads/'.$result['filename'].$result['extension'], 'height' => '180px', 'width' => $result['width'], 'style' => 'margin: 3px '.$margin.'px;', 'alt' => $result['caption']);
 			}
 		}
 		
@@ -117,7 +131,7 @@ class Photo extends MY_Controller {
 		$results = $this->photo_model->read();
 		foreach ($results as $result)
 		{
-			$data['photos'][] = array('src' => base_url().'uploads/'.$result['filename'].$result['extension'], 'height' => '180px');
+			$data['photos'][] = array('src' => base_url().'uploads/'.$result['filename'].$result['extension'], 'height' => '180px', 'alt' => $result['caption']);
 		}
 		
 		$data['title'] = 'Photo Gallery';

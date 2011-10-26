@@ -30,7 +30,7 @@ class Page extends MY_Controller {
 	    // retrieve the backtrack url for the top of the page. takes the content id and table name
 	    // the backtrack function can only be called for content with a 'parent' field, and a valid hierarchical structure
 	    $data['backtrack'] = $this->common_class->backtrack($data['parent_id'], 'pages');
-	    $data['backtrack'][$url] = $data['title'];
+	    $data['backtrack']['page/view/'.$url] = $data['title'];
 	    
 	    // print the page
 		$this->output->set_header("Cache-Control: max-age=300, public, must-revalidate");

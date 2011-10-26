@@ -59,7 +59,7 @@
 
 <?php echo form_hidden('id', set_value('id', $id)); ?>
 <label>If you're sure...</label>
-<?php echo form_submit('submit', 'Submit Content!'); ?>
+<?php echo form_submit('submit', 'Save Page!'); ?>
 
 <?php echo form_close(); ?>
 </div>

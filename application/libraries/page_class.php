@@ -475,13 +475,13 @@ class Page_class
 		$pages = $this->ci->page_model->read(array('fields' => 'id, title, url, visibility', 'where' => array('parent_id' => $parent_id), 'order_by' => array('column' => 'title', 'order' => 'asc')));
 		foreach ($pages as $page)
 		{
-			if (! $page['visibility'])
+			if ($page['visibility'] == 1)
 			{
-				$class = array('class' => 'invisible');
+				$class = array('class' => 'visible');
 			}
 			else
 			{
-				$class = array('class' => 'visible');
+				$class = array('class' => 'invisible');
 			}
 			
 			if ($this->ci->userdata['group']['name'] == 'Admin')

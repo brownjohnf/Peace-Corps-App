@@ -85,7 +85,7 @@ class Common_class
 	    while ($parent_id != 0)
 	    {
 			$response = $this->ci->page_model->read(array('where' => array('id' => $parent_id), 'fields' => $fields, 'limit' => 1));
-			$data[$response['url']] = $response['title'];
+			$data['page/view/'.$response['url']] = $response['title'];
 			$parent_id = $response['parent_id'];
 	    }
 		if (is_array($data))

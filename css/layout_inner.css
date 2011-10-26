@@ -161,6 +161,11 @@
 #page_form select, #photo_form select, #user_form select, #user_form input {
     width: 50%;
 }
+
+#photo_form input[type=text], #photo_form input[type=file] {
+	width: 80%;
+}
+
 #backtrack {
     margin-bottom: 10px;
 }

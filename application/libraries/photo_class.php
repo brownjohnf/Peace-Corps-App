@@ -120,7 +120,7 @@ class Photo_class
 		return $upload_info;
 	}
 	
-	public function create($data = array(), $target = array())
+	public function create($data = array(), $target = array(), $caption)
 	{
 		// set the original file and full name for the new file
 		$config['source_image']	= $data['full_path'];
@@ -304,6 +304,7 @@ class Photo_class
 		$input['imagename'] = $config['new_image'];
 		$input['owner_id'] = $this->ci->userdata['id'];
 		$input['added'] = time();
+		$input['caption'] = $caption;
 		//print '</p>';
 		unset($config);
 		
