@@ -515,4 +515,32 @@ class Page_class
 		$return = $this->_menu_r($parent_id, $depth);
 	    return ul($return, array('id' => 'page_menu', 'class' => 'leftmenu'));
 	}
+	
+	private function _dropdown_r($parent_id, $maxdepth = 0, $curdepth = 0)
+	{
+		$pages = $this->ci->page_model->read(array('fields' => 'id, title, url', 'where' => array('parent_id' => $parent_id), 'order_by' => array('column' => 'title', 'order' => 'asc')));
+		foreach ($pages as $page)
+		{
+			if ($this->ci->page_model->read(array('fields' => 'id', 'where' => array('parent_id' => $page['id']))) && $curdepth < $maxdepth)
+			{
+				$menu[$page['title']] = $this->_menu_r($page['id'], $maxdepth, $curdepth + 1);
+			}
+			else
+			{
+				$menu[$page['id']] = $page['title'];
+			}
+		}
+		return $menu;
+	}
+	
+	public function dropdown($depth = null, $parent_id = 0)
+	{
+		if (is_null($depth))
+		{
+			$depth = 99999;
+		}
+		// new approach
+		return $this->_menu_r($parent_id, $depth);
+	    //return ul($return, array('id' => 'page_menu', 'class' => 'leftmenu'));
+	}
 }
