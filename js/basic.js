@@ -8,9 +8,12 @@ $(document).ready(function() {
    var $url = $.url();
    var current = 'a[href="' + $url.attr('source') + '"]';
    var name = 'a[name="' + $url.segment(1) + '"]';
+   
+   /* remove elements of the menu that aren't set to viewable */
    $('#leftbar ul a.invisible').parent('li').remove();
    $('#leftbar ul:empty').remove();
-   $('#leftbar ul.leftmenu > li ul').hide();
+   
+   /*$('#leftbar ul.leftmenu > li ul').hide();*/
    $("#leftbar " + current).parents('ul').show();
    $("#leftbar " + current).css('background-color', '#cae1ff').css('border', '1px solid #ccc').closest('ul.leftmenu > li').children('ul').show();
    $('#leftbar ul.leftmenu li').hoverIntent(

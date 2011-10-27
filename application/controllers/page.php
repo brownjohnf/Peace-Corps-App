@@ -70,6 +70,9 @@ class Page extends MY_Controller {
 	    $this->form_validation->set_rules('description', 'Description', 'required');
 	    $this->form_validation->set_rules('content', 'Content', 'required');
 	    $this->form_validation->set_rules('updated', 'Updated', 'is_natural');
+	    $this->form_validation->set_rules('auto_child_link', 'Auto-link to children', 'is_natural');
+	    $this->form_validation->set_rules('auto_sibling_link', 'Auto-link to siblings', 'is_natural');
+	    $this->form_validation->set_rules('auto_parent_link', 'Auto-link to parents', 'is_natural');
 	    $this->form_validation->set_rules('visibility', 'visibility', 'required');
 	    $this->form_validation->set_rules('group_id', 'Group', 'required');
 	    $this->form_validation->set_rules('parent_id', 'Parent', 'required');
@@ -160,6 +163,9 @@ class Page extends MY_Controller {
 	    $this->form_validation->set_rules('description', 'Description', 'required');
 	    $this->form_validation->set_rules('content', 'Content', 'required');
 	    $this->form_validation->set_rules('updated', 'Updated', 'is_natural');
+	    $this->form_validation->set_rules('auto_link_child', 'Auto-link to children', 'is_natural');
+	    $this->form_validation->set_rules('auto_link_sibling', 'Auto-link to siblings', 'is_natural');
+	    $this->form_validation->set_rules('auto_link_parent', 'Auto-link to parents', 'is_natural');
 	    $this->form_validation->set_rules('visibility', 'Visibility', 'required');
 	    $this->form_validation->set_rules('group_id', 'Group', 'required');
 	    $this->form_validation->set_rules('parent_id', 'Parent', 'required');

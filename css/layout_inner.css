@@ -245,3 +245,7 @@ span#insert_photo {
 	float: right;
 	margin-right: 0;
 }
+
+#leftbar ul.leftmenu > li ul {
+	display: none;
+}

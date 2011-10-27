@@ -36,8 +36,12 @@
 <?php echo img($profile_photo_info); ?>
 <?php echo form_input('profile_photo', set_value('profile_photo', $profile_photo)); ?><br />
 
-<label>Mark as updated</label>
-<?php echo form_checkbox('updated', '1', set_checkbox('updated', '1', true)); ?>&nbsp;If checked, this page will appear in feeds as updated.
+<label>Mark as update</label>
+<?php echo form_checkbox('updated', '1', set_checkbox('updated', '1', true)); ?>&nbsp;If checked, this page will appear in feeds as updated.<br />
+<label>Auto-linking (automatically selects pages for the 'Suggested Reading' section)</label>
+<?php echo form_checkbox('auto_link_child', '1', set_checkbox('updated', '1', false)); ?>&nbsp;auto-link to children<br />
+<?php echo form_checkbox('auto_link_sibling', '1', set_checkbox('updated', '1', false)); ?>&nbsp;auto-link to siblings<br />
+<?php echo form_checkbox('auto_link_parent', '1', set_checkbox('updated', '1', false)); ?>&nbsp;auto-link to parents
 
 
 <h2>Sharing</h2>
@@ -45,7 +49,7 @@
 <?php echo form_dropdown('parent_id', $parents, set_value('parent_id', $parent_id)); ?><br />
 
 <label>Visibility* (determines whether or not the page will be listed in the menu)</label>
-<?php echo form_dropdown('visibility', array(1 => 'Visible', 2 => 'Invisible'), set_value('visibility', $visibility)); ?><br />
+<?php echo form_dropdown('visibility', array(1 => 'Show', 0 => 'Hide'), set_value('visibility', $visibility)); ?><br />
 
 <label>Group*</label>
 <?php echo form_dropdown('group_id', $groups, set_value('group_id', $group_id)); ?><br />

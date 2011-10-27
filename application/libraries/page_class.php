@@ -130,6 +130,40 @@ class Page_class
 			$input['updated'] = time();
 		}
 		
+		// if auto-links were requested, apply them
+		if (array_key_exists('auto_link_parent', $data) && $data['parent_id'] != 0) {
+			$auto_links[] = $data['parent_id'];
+		}
+		if (array_key_exists('auto_link_sibling', $data)) {
+			$query_array[] = "parent_id = $data[parent_id]";
+		}
+		if (array_key_exists('auto_link_child', $data)) {
+			$query_array[] = "parent_id = $data[id]";
+		}
+		
+		// if auto-links need to be looked up, do so
+		if (isset($query_array))
+		{
+			$query_string = implode(' OR ', $query_array)." AND id != $data[id]";
+			if ($results = $this->ci->page_model->read(array('fields' => 'id', 'where' => $query_string)))
+			{
+				foreach ($results as $result)
+				{
+					$auto_links[] = $result['id'];
+				}
+			}
+		}
+		
+		// if there is any auto-data to submit
+		if (isset($auto_links) && isset($data['links']))
+		{
+			$data['links'] = array_merge($data['links'], $auto_links);
+		}
+		elseif (isset($auto_links))
+		{
+			$data['links'] = $auto_links;
+		}
+		
 		// update the page entry, or die
 		if (! $this->ci->page_model->update($input)) {
 			die('Failed to update content table. Check your data and try again. [002]');
@@ -514,33 +548,5 @@ class Page_class
 		// new approach
 		$return = $this->_menu_r($parent_id, $depth);
 	    return ul($return, array('id' => 'page_menu', 'class' => 'leftmenu'));
-	}
-	
-	private function _dropdown_r($parent_id, $maxdepth = 0, $curdepth = 0)
-	{
-		$pages = $this->ci->page_model->read(array('fields' => 'id, title, url', 'where' => array('parent_id' => $parent_id), 'order_by' => array('column' => 'title', 'order' => 'asc')));
-		foreach ($pages as $page)
-		{
-			if ($this->ci->page_model->read(array('fields' => 'id', 'where' => array('parent_id' => $page['id']))) && $curdepth < $maxdepth)
-			{
-				$menu[$page['title']] = $this->_menu_r($page['id'], $maxdepth, $curdepth + 1);
-			}
-			else
-			{
-				$menu[$page['id']] = $page['title'];
-			}
-		}
-		return $menu;
-	}
-	
-	public function dropdown($depth = null, $parent_id = 0)
-	{
-		if (is_null($depth))
-		{
-			$depth = 99999;
-		}
-		// new approach
-		return $this->_menu_r($parent_id, $depth);
-	    //return ul($return, array('id' => 'page_menu', 'class' => 'leftmenu'));
 	}
 }
