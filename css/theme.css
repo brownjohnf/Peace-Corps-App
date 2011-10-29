@@ -202,3 +202,7 @@ div.tags a, div.authors a, div.actors a, .feed_tags {
 .invisible {
 	color: gray;
 }
+
+#splash_container {
+	background: url(http://pcsenegal.com/img/splash_background.jpg);
+}

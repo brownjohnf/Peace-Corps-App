@@ -145,20 +145,20 @@
     width: 560px;
     overflow: hidden;
 }
-#user_list_view {
+#user_list_view, #link_list_view, #document_list_view {
 	margin: 20px;
 	overflow: auto;
 }
-#table_view, #site_messages_form, #page_form {
+#table_view, #site_messages_form, #page_form, #link_form, #document_form {
 	margin: 0 0 0 220px;
 	width: 760px;
 	overflow: hidden;
 }
-#page_form label, #photo_form label, #user_form label, #site_messages_form label {
+#page_form label, #photo_form label, #user_form label, #site_messages_form label, #link_form label, #document_form label {
     display: block;
     margin-top: 10px;
 }
-#page_form select, #photo_form select, #user_form select, #user_form input {
+#page_form select, #photo_form select, #user_form select, #user_form input, #link_form input[type=text], #document_form input[type=text] {
     width: 50%;
 }
 
@@ -182,16 +182,16 @@
 	width: 180px;
 	box-shadow: 0 0 5px black;
 }
-#page_view .controls, #page_form .controls, #photo_form .controls, #gallery_view .controls, #user_form .controls {
+#page_view .controls, #page_form .controls, #photo_form .controls, #gallery_view .controls, #user_form .controls, #link_form .controls, #document_form .controls {
     float: right;
 	margin: 0;
 	padding: 0;
 }
-#page_view .edit a, #page_form .controls a, #photo_form .controls a, #gallery_view .controls a, #user_form .controls a {
+#page_view .edit a, #page_form .controls a, #photo_form .controls a, #gallery_view .controls a, #user_form .controls a, #link_form .controls a, #document_form .controls a {
 	margin: 0;
 	padding: 0;
 }
-#page_view .controls a img, #page_form .controls a img, #photo_form .controls a img, #gallery_view .controls a img, #user_form .controls a img {
+#page_view .controls a img, #page_form .controls a img, #photo_form .controls a img, #gallery_view .controls a img, #user_form .controls a img, #link_form .controls a img, #document_form .controls a img {
 	height: 22px;
 	margin-left: 5px;
 }

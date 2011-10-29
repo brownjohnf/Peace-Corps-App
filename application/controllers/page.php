@@ -196,7 +196,7 @@ class Page extends MY_Controller {
 			$data['controls'] = anchor('page/view/'.$data['url'], img(base_url().'img/cancel_icon.png'), array('class' => 'cancel'));
 			$data['backtrack'] = array('' => 'Home', 'feed/page' => 'Pages', 'page/view/'.$data['url'] => $data['title'], 'page/edit/'.$this->uri->segment(3) => 'Edit');
 			
-			$this->load->view('head', array('page_title' => 'Edit Page', 'stylesheets' => array('layout_outer.css', 'layout_inner.css', 'theme.css', 'nyroModal.css'), 'scripts' => array('jquery.nyroModal.js', 'jquery.nyroModal.filters.link.js', 'page_edit.js', 'basic.js', 'jquery.url.js')));
+			$this->load->view('head', array('page_title' => 'Edit Page', 'stylesheets' => array('layout_outer.css', 'layout_inner.css', 'theme.css', 'nyroModal.css'), 'scripts' => array('jquery.nyroModal.js', 'jquery.nyroModal.filters.link.js', 'page_edit.js')));
 			$this->load->view('header');
 			$this->load->view('main_open');
 			$this->load->view('left_column');

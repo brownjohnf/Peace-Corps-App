@@ -7,6 +7,12 @@ class User extends MY_Controller {
 	
 	function __construct() {
 	    parent::__construct();
+		
+		if ($this->userdata['group']['name'] != 'Admin')
+		{
+			$this->session->set_flashdata('error', 'You do not have appropriate permissions for this action.');
+			redirect('feed/page');
+		}
 	}
 	
 	public function view()

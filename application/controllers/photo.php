@@ -22,7 +22,7 @@ class Photo extends MY_Controller {
 		$data['form_title'] = 'Upload Photo';
 		$data['user_id'] = $this->userdata['id'];
 		
-		$this->load->view('head', array('page_title' => 'Upload Photo', 'stylesheets' => array('layout_outer.css', 'layout_inner.css', 'theme.css'), 'scripts' => array('basic.js', 'jquery.url.js')));
+		$this->load->view('head', array('page_title' => 'Upload Photo', 'stylesheets' => array('layout_outer.css', 'layout_inner.css', 'theme.css')));
 		$this->load->view('header');
 		$this->load->view('main_open');
 		$this->load->view('left_column');

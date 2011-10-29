@@ -39,12 +39,36 @@
 			<h2>Admin</h2>
 			<div>
 			    <ul class="leftmenu">
-					<li><?=anchor('page/create', 'New Page')?></li>
-					<li><?=anchor('photo/add', 'Upload Photo')?></li>
-					<li><?=anchor('photo/gallery/me', 'My Photos')?></li>
-					<li><?=anchor('user/view', 'User Admin')?></li>
-					<li><?=anchor('resource/type_view', 'Resource Types')?></li>
-					<li><?=anchor('page/tree', 'Page Tree')?></li>
+					
+					<li><?=anchor('photo/gallery/me', 'My Photos')?>
+						<ul>
+							<li><?=anchor('photo/add', 'Upload Photo')?></li>
+						</ul>
+					</li>
+					<li><?=anchor('user/view', 'All Users')?>
+						<ul>
+							<li><?=anchor('user/create', 'New User')?></li>
+						</ul>
+					</li>
+					<li><?=anchor('resource/type_view', 'Resource Types')?>
+						<ul>
+							<li><?=anchor('link/view', 'All Links')?>
+								<ul>
+									<li><?=anchor('link/create', 'New Link')?></li>
+								</ul>
+							</li>
+							<li><?=anchor('document/view', 'All Documents')?>
+								<ul>
+									<li><?=anchor('document/add', 'Upload Document')?></li>
+								</ul>
+							</li>
+						</ul>
+					</li>
+					<li><?=anchor('page/tree', 'All Pages')?>
+						<ul>
+							<li><?=anchor('page/create', 'New Page')?></li>
+						</ul>
+					</li>
 					<li><?=anchor('admin/site/messages/edit', 'Edit Site Messages')?></li>
 			    </ul>
 			</div>

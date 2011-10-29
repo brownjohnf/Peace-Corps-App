@@ -29,7 +29,7 @@
 
 <?php echo form_open_multipart('photo/upload');?>
 
-<label>File*</label>
+<label>Photo* ( .jpg | .png | .gif )</label>
 <input type="file" name="userfile" size="20" /><br /><br />
 
 <label>Caption</label>

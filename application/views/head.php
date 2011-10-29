@@ -27,9 +27,9 @@
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>css/all-ie-only-<?php if ($this->uri->rsegment(2) == 'splash'): echo 'splash'; else: echo 'standard'; endif; ?>.css" />
 	<![endif]-->
 	
-	<?php foreach ($stylesheets as $css): ?>
+	<?php if (isset($stylesheets)): foreach ($stylesheets as $css): ?>
 	<link href="<?php echo base_url().'css/'.$css; ?>" rel="stylesheet" type="text/css" />
-	<?php endforeach; ?>
+	<?php endforeach; endif; ?>
 	
 	<script type="text/javascript" src="<?php echo base_url(); ?>js/jquery.js"></script>
 	<script type="text/javascript" src="<?php echo base_url(); ?>js/jquery.url.js"></script>
@@ -37,9 +37,9 @@
 	<script type="text/javascript" src="<?php echo base_url(); ?>js/config.js"></script>
 	<script type="text/javascript" src="<?php echo base_url(); ?>js/basic.js"></script>
 	
-	<?php foreach ($scripts as $js): ?>
+	<?php if (isset($scripts)): foreach ($scripts as $js): ?>
 	<script type="text/javascript" src="<?php echo base_url().'js/'.$js; ?>"></script>
-	<?php endforeach; ?>
+	<?php endforeach; endif; ?>
 		
 	<link href="<?php echo base_url(); ?>img/favicon.ico" type="image/x-icon" rel="icon"/>
 	<link href="<?php echo base_url(); ?>img/favicon.ico" type="image/x-icon" rel="shortcut icon"/>

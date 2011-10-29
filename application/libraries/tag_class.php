@@ -13,6 +13,7 @@ class Tag_class
 		$this->ci->load->library('page_class');
 	}
 	
+	// generates a feed of recently modified tags
 	public function feed($tag = null)
 	{
 		// set fields to retrieve
@@ -48,7 +49,7 @@ class Tag_class
 		return $return;
 	}
 	
-	
+	// extracts tags from text and inserts them into the database
 	public function tag($tag_info = array('source' => null, 'source_id' => null, 'to_add' => array(array('blurb' => null, 'tag' => null))))
 	{
 		// make sure that there're a source and id set
@@ -85,6 +86,7 @@ class Tag_class
 		return true;
 	}
 	
+	// experimental (unused) function for generating a tag cloud
 	public function cloud($data = array())
 	{
 		$default = array('source' => '%', 'limit' => 50, 'order' => 'date');
@@ -112,6 +114,7 @@ class Tag_class
 		return $return;
 	}
 	
+	// converts embedded hash tags to links
 	public function tags_to_links($string)
 	{
 		
@@ -148,6 +151,7 @@ class Tag_class
 		return $return;
 	}
 	
+	// extracts tags from text, and returns them in array, blurb, and string form
 	public function parse_tags($raw_string)
 	{
 		// set the total number of CHARACTERS (excluding the tag itself) you'd like stored per tag
@@ -197,6 +201,51 @@ class Tag_class
 		}
 		else {
 			return false;
+		}
+	}
+	
+	// extracts tags from tag-only input box. doesn't use ! check
+	
+	// extracts tags from text, and returns them in array, blurb, and string form
+	public function tag_input($raw_string)
+	{
+		$string = $raw_string;
+		$regexes[] = '/#([^#]+)/';
+		//$regexes[] = '/#([^\.,\/\s!<>#]+)/';
+		
+		foreach ($regexes as $regex)
+		{
+			if (preg_match_all($regex, $string, $matches, PREG_OFFSET_CAPTURE))
+			{
+				foreach ($matches[1] as $match)
+				{
+					$tag = strtolower(trim($match[0]));
+					
+					$return['array'][] = $tag;
+					$for_string[] = $tag;
+				}
+				$return['string'] = '#'.implode('#', $for_string);
+			}
+		}
+		//echo '<pre>'; print_r($return); echo '</pre>';
+		if (isset($return)) {
+			return $return;
+		}
+		else {
+			return null;
+		}
+	}
+	
+	// validation callback function for checking tags
+	function check_tag_input($tags)
+	{
+		if ($tags == '' || preg_match('/#.+/i', $tags))
+		{
+			return false;
+		}
+		else
+		{
+			return array('tag_check', 'The %s field must be blank or contain valid tags. (hash separated: #tag1 #tag2#tag3 etc.)');
 		}
 	}
 }
