@@ -69,6 +69,6 @@
 						<br class="clearfloat" />
 					</div><!-- END footer_lower_inner -->
 				</div><!-- END footer_lower -->
-			</div><!-- end #footer -->
+			</div><!-- end #footer_outer -->
 </body>
 </html>

@@ -28,10 +28,10 @@ class Home extends MY_Controller {
 		
 		$this->output->set_header("Cache-Control: max-age=300, public, must-revalidate");
 		
-		$this->load->view('head', array('page_title' => 'Peace Corps Senegal | Welcome', 'stylesheets' => array('layout_outer.css', 'layout_inner.css', 'theme.css', 'anythingslider.css'), 'scripts' => array('jquery.easing.1.2.js', 'jquery.anythingslider.min.js', 'my_anything_slider.js')));
+		$this->load->view('head', array('page_title' => 'Peace Corps Senegal | Welcome', 'stylesheets' => array('layout_outer.css', 'layout_inner.css', 'theme.css', 'anythingslider.css', 'splash.css'), 'scripts' => array('jquery.easing.1.2.js', 'jquery.anythingslider.min.js', 'my_anything_slider.js')));
 		$this->load->view('header');
 		$this->load->view('splash_view', $data);
-		$this->load->view('footer');
+		//$this->load->view('footer');
 	}
 	
 	public function login_redirect()

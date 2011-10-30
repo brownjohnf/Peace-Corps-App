@@ -29,10 +29,10 @@
 								)
 							);
 		?>
-		
+<!--	
 		<div id="splash_container">
-			<div id="slider_container">
-				<div id="slider">
+			<div id="slider_container">-->
+				<div style="background-color:black;">
 					<ul id="slider1">
 						<?php foreach ($splash as $slide): ?>
 						<li>
@@ -62,7 +62,7 @@
 						</li>
 						<?php endforeach; ?>
 					</ul>
-				</div>
+				</div><!--
 			</div>
 		</div>
 		<div id="splash_content">
@@ -73,4 +73,28 @@
 			</div>
 		</div>
 		<div id="splash_footer_clear">
+		</div>-->
+		</div> <!-- END outer container -->
+		<div style="position:absolute; top:440px; left:0; width:100%;" id="test_splash">
+			<div style="position:relative; margin:0 auto; width:980px; margin-top:30px;">
+				<div class="first">
+					<h1>Seed Distributions</h1>
+					<p><img src="http://pcsenegal.com/uploads/ad8f43cf48574073b9bbf386789e9bd1_180w.JPG">Agriculture Volunteers all over the country are finally able to begin evaluating the yield returned by improved seed varieties.<br>read more --></p>
+				</div>
+				<div class="second">
+					<h1>Malaria Boot Camp</h1>
+					<p>
+					<img src="http://pcsenegal.com/uploads/a737077cfc0f12c77861a184b2b84251_180w.JPG">Test paragraph 2</p>
+				</div>
+				<div class="third">
+					<h1>Master Farmers</h1>
+					<p>
+					<img src="http://pcsenegal.com/uploads/ba7764d88298a2ea4d64198d535dd1c9_180w.jpg">Test paragraph 3</p>
+				</div>
+				<div class="clearfloat">
+					
+				</div>
+			</div>
 		</div>
+	</body>
+</html>

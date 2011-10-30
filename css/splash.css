@@ -1,0 +1,56 @@
+@charset "UTF-8";
+
+
+/*   Copyright (c) 2011, John F. Brown  This file is
+  licensed under the Affero General Public License version 3 or later.  See
+   the COPYRIGHT file.
+*/
+
+body {
+	background:url(http://pcsenegal.com/img/splash_bg_millet.jpg);
+	background-position-y: 440px;
+}
+
+#test_splash div div {
+	float: left;
+	width: 290px;
+	padding: 25px 10px 0 10px;
+	height: 320px;
+	margin-right: 24px;
+	text-align: left;
+	background-size: 100%;
+	background-repeat: no-repeat;
+	color: #eee;
+}
+
+#test_splash div div img {
+	margin: 0 5px 5px 0;
+	float: left;
+}
+
+#test_splash div div p {
+	margin: 10px 0;
+}
+
+#test_splash div div h1 {
+	margin: 10px 0;
+}
+
+#test_splash div div.second {
+	width: 292px;
+}
+
+#test_splash div div.third {
+	margin-right: 0;
+}
+
+
+#test_splash div div.first {
+	background-image: url(http://pcsenegal.com/img/cloth_brown.png);
+}
+#test_splash div div.second {
+	background-image: url(http://pcsenegal.com/img/cloth_blue.png);
+}
+#test_splash div div.third {
+	background-image: url(http://pcsenegal.com/img/cloth_green.png);
+}
