@@ -46,6 +46,142 @@ class User_class
 		return $user_id;
 	}
 	
+	public function upload($data)
+	{
+		if ($data['file_type'] != 'text/csv') {
+			$this->ci->session->set_flashdata('error', 'Your file is not of the text/csv mime type, and is therefore unacceptable.');
+			return false;
+			die();
+		}
+		$handle = fopen($data['full_path'], 'r');
+		$csv = fgetcsv($handle, 0, ',', '"');
+		
+		if (! array_search('pc_id', $csv) && ! array_search('id', $csv) && count(array_intersect(array('fname', 'lname'), $csv)) != 2)
+		{
+			$this->ci->session->set_flashdata('error', 'You are missing both an ID, PC_ID, and all neccessary fields for creating a new entry. This means that this app has no idea what to do, and is therefore aborting. You must be either a) updating an existing entry by ID, b) updating an existing entry by PC_ID, or c) creating a new entry. If the latter, the following fields are required to be present and populated: fname, lname.');
+			return false;
+			die;
+		}
+		$keys = array_flip($csv);
+		
+		while(($row = fgetcsv($handle, 0, ',', '"')) != false)
+		{
+			// trim crap off the end of all fields
+			foreach ($csv as $key => $value)
+			{
+				$prep[$value] = trim($row[$key], "(),'\t\n\r\0\x0B -_=/\\][");
+				if ($prep[$value] == '')
+				{
+					unset($prep[$value]);
+				}
+			}
+			// if this user is a volunteer
+			if (array_key_exists('is_volunteer', $prep) && $prep['is_volunteer'] == 1)
+			{
+				// if their cos date is set
+				if (array_key_exists('cos', $prep))
+				{
+					$prep['cos'] = strtotime($prep['cos']);
+				}
+				// if their site is set by name
+				if (array_key_exists('site', $prep))
+				{
+					// set a blank set of site data to use in lieu of anything they might be missing
+					$default_site = array('name' => null, 'parent_id' => 0, 'lat' => null, 'lng' => null);
+					
+					// if the site already exists, based on a search by name
+					if ($site = $this->ci->site_model->read(array('fields' => 'id, parent_id', 'where' => array('name like' => $prep['site']), 'limit' => 1)))
+					{
+						$prep['site_id'] = $site['id'];
+						
+						// if the site has no parent, and the region is set in csv
+						if ($site['parent_id'] == 0 && array_key_exists('region', $prep))
+						{
+							// if there is no region of that name
+							if (! $region = $this->ci->region_model->read(array('fields' => 'id', 'where' => array('name like' => $prep['region']), 'limit' => 1)))
+							{
+								// create a new region
+								$region['id'] = $this->ci->region_model->create(array('name' => ucfirst(strtolower($prep['region']))));
+							}
+							
+							// set the site parent to the new region_id
+							if (! $this->ci->site_model->update(array('id' => $prep['site_id'], 'parent_id' => $region['id'])))
+							{
+								die('could not add region to existing site.');
+							}
+						}
+					}
+					// if the site does not exist, and there's a region set, confirm/create the region then the site
+					elseif (array_key_exists('region', $prep))
+					{
+						// if there is no region of that name
+						if (! $region = $this->ci->region_model->read(array('fields' => 'id', 'where' => array('name like' => $prep['region']), 'limit' => 1)))
+						{
+							// create a new region
+							if (! $region['id'] = $this->ci->region_model->create(array('name' => ucfirst(strtolower($prep['region'])))))
+							{
+								die('could not create new region of name '.$prep['region']);
+							}
+						}
+						
+						// create the site, including the region in the definition
+						if (! $site['id'] = $this->ci->site_model->create(array_merge($default_site, array('name' => $prep['site'], 'parent_id' => $region['id']))))
+						{
+							die('could not create new site with a parent_id of '.$region['id']);
+						}
+						
+						$prep['site_id'] = $site['id'];
+						$prep['region_id'] = $region['id'];
+					}
+					// if the site does not exist, and there is no region set, create it
+					elseif ($site = $this->ci->site_model->create(array_merge($default_site, array('name' => $prep['site']))))
+					{
+						$prep['site_id'] = $site['id'];
+					}
+					else
+					{
+						die('serious problem: could not find or create site.');
+					}
+					unset($prep['site']);
+				}
+				if (array_key_exists('sector', $prep))
+				{
+					$default_sector = array('name' => $prep['sector'], 'short' => word_limiter($prep['sector'], 1));
+					if (strlen($prep['sector']) < 6)
+					{
+						$field = 'short';
+					}
+					else
+					{
+						$field = 'name';
+					}
+					if ($sector_id = $this->ci->sector_model->read(array('fields' => 'id', 'where' => array($field.' like' => $prep['sector']), 'limit' => 1)))
+					{
+						$prep['sector_id'] = $sector_id['id'];
+					}
+					elseif ($site_id = $this->ci->sector_model->create(array_merge($default_sector, array($field => $prep['sector']))))
+					{
+						$prep['sector_id'] = $sector_id['id'];
+					}
+					else
+					{
+						die('serious problem: could not find or create sector.');
+					}
+					unset($prep['sector']);
+				}
+			}
+			elseif (array_key_exists('is_staff', $prep))
+			{
+				
+			}
+			$output[] = $prep;
+		}
+		
+		echo '<pre>'; print_r($output); echo '</pre>';
+		
+		fclose($handle);
+	}
+	
 	public function edit($data)
 	{
 		$this->ci->load->model('user_model');
@@ -82,7 +218,7 @@ class User_class
 	}
 	public function blank_form()
 	{
-		$this->ci->load->model(array('permission_model', 'people_model', 'location_model'));
+		$this->ci->load->model(array('permission_model', 'people_model', 'site_model'));
 		
 	    $data['fb_id'] = null;
 	    $data['pc_id'] = null;
@@ -106,7 +242,7 @@ class User_class
 	    $groups = $this->ci->permission_model->read_groups(array('fields' => 'id, name'));
 	    $stages = $this->ci->people_model->read_stages(array('fields' => 'id, name'));
 	    $sectors = $this->ci->people_model->read_sectors(array('fields' => 'id, name'));
-	    $sites = $this->ci->location_model->read_sites(array('fields' => 'id, name'));
+	    $sites = $this->ci->site_model->read_sites(array('fields' => 'id, name'));
 	    
 	    foreach ($stages as $stage) {
 			$data['stages'][$stage['id']] = $stage['name'];

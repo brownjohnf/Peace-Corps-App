@@ -48,6 +48,7 @@
 					<li><?=anchor('user/view', 'All Users')?>
 						<ul>
 							<li><?=anchor('user/create', 'New User')?></li>
+							<li><?=anchor('user/upload', 'Upload Batch')?></li>
 						</ul>
 					</li>
 					<li><?=anchor('resource/type_view', 'Resource Types')?>

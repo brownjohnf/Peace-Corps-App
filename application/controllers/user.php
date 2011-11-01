@@ -155,15 +155,57 @@ class User extends MY_Controller {
 	{
 		if (! $this->people_model->delete($this->uri->segment(3, null)))
 		{
-			$error = "Couldn't delete page.";
+			$error[] = "Couldn't delete page.";
 		}
 		if (! $this->permission_model->purge_by_user($this->uri->segment(3, null)))
 		{
-			$error = "Couldn't purge page references.";
+			$error[] = "Couldn't purge page references.";
 		}
 		if (isset($error)) {
-			$this->session->set_flashdata('error', $error);
+			$this->session->set_flashdata('error', implode(' ', $error));
 		}
 		redirect('user/view');
+	}
+	
+	public function upload()
+	{
+		$data['form_title'] = 'Upload Users';
+		
+		$this->load->view('head', array('page_title' => 'Upload Photo', 'stylesheets' => array('layout_outer.css', 'layout_inner.css', 'theme.css')));
+		$this->load->view('header');
+		$this->load->view('main_open');
+		$this->load->view('left_column');
+		$this->load->view('user_upload_form', $data);
+		$this->load->view('main_close');
+		$this->load->view('footer', array('footer' => 'Footer Here'));
+	}
+	
+	public function do_upload()
+	{
+		ini_set("memory_limit","128M");
+		$this->config->load('upload_users', true);
+		$config = $this->config->item('upload_users');
+		$this->load->library('upload', $config);
+
+		if ( ! $this->upload->do_upload())
+		{
+			$this->session->set_flashdata('error', $this->upload->display_errors());
+			redirect('user/upload');
+		}
+		else
+		{
+			$this->load->library('user_class');
+			$this->load->model(array('user_model', 'site_model', 'sector_model', 'region_model'));
+			if (! $this->user_class->upload($this->upload->data()))
+			{
+				$this->session->set_flashdata('error', 'Your data could not be saved. Please try again.');
+				redirect('user/upload');
+			}
+			else
+			{
+				$this->session->set_flashdata('success', 'Your users were successfully added.');
+				redirect('user/view');
+			}
+		}
 	}
 }

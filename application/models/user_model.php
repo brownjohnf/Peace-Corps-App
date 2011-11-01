@@ -14,18 +14,18 @@ class User_model extends CI_Model {
 	function delete($id)
 	{
 		$this->db->where('id', $id);
-		return $this->db->delete('pages');
+		return $this->db->delete('people');
 	}
 	
 	public function create($data)
 	{
 	    if ($this->db->insert('people', $data))
 	    {
-				return $this->db->insert_id();
+			return $this->db->insert_id();
 	    }
 		else
 	    {
-				return false;
+			return false;
 	    }
 	}
 	// takes array, returns ID

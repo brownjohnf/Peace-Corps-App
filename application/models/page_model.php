@@ -21,7 +21,7 @@ class Page_model extends CI_Model {
 	{
 		$default = array('fields' => '*', 'limit' => '50', 'where' => array('id like' => '%', 'delete' => false), 'order_by' => array('column' => 'updated', 'order' => 'desc'), 'offset' => 0);
 		// sets it to only read non-deleted pages by default
-		if (array_key_exists('where', $data)) {
+		if (array_key_exists('where', $data) && is_array($data['where'])) {
 			$data['where'] = array_merge($default['where'], $data['where']);
 		}
 		$data = array_merge($default, $data);

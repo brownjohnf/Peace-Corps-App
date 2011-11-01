@@ -6,11 +6,11 @@
 
 <?php
 	$topmenu = array(
-					 anchor('','Home', array('name' => 'home')),
+					 anchor('page/view/about-us','About Us', array('name' => 'page')),
 					 anchor('feed','Updates', array('name' => 'feed')),
 					 //anchor('resource','Learning', array('name' => 'resource')),
 					 anchor('photo/gallery','Photos', array('name' => 'photo')),
-					 anchor('feed/video','Videos', array('name' => 'video')),
+					 //anchor('feed/video','Videos', array('name' => 'video')),
 					 anchor('feed/blog', 'Blogs', array('name' => 'blog'))
 					 );
 ?>

@@ -11,46 +11,15 @@ body {
 	background-position-y: 440px;
 }
 
-#test_splash div div {
-	float: left;
-	width: 290px;
-	padding: 25px 10px 0 10px;
-	height: 320px;
-	margin-right: 24px;
-	text-align: left;
-	background-size: 100%;
-	background-repeat: no-repeat;
-	color: #eee;
+#outer_container {
+	margin: 0;
+	min-height: inherit !important;
 }
 
-#test_splash div div img {
-	margin: 0 5px 5px 0;
-	float: left;
-}
-
-#test_splash div div p {
-	margin: 10px 0;
-}
-
-#test_splash div div h1 {
-	margin: 10px 0;
-}
-
-#test_splash div div.second {
-	width: 292px;
-}
-
-#test_splash div div.third {
-	margin-right: 0;
-}
-
-
-#test_splash div div.first {
-	background-image: url(http://pcsenegal.com/img/cloth_brown.png);
-}
-#test_splash div div.second {
-	background-image: url(http://pcsenegal.com/img/cloth_blue.png);
-}
-#test_splash div div.third {
-	background-image: url(http://pcsenegal.com/img/cloth_green.png);
+#slider_container {
+	box-shadow: 0px 10px 50px 12px #000;
+	-webkit-box-shadow: 0px 10px 50px 12px #000;
+	-moz-box-shadow: 0px 10px 50px 12px #000;
+	background-color: #000;
+	margin: 100px 0;
 }

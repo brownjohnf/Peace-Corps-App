@@ -144,7 +144,7 @@ class Page_class
 		// if auto-links need to be looked up, do so
 		if (isset($query_array))
 		{
-			$query_string = implode(' OR ', $query_array)." AND id != $data[id]";
+			$query_string = '('.implode(' OR ', $query_array).") AND (id != $data[id] OR 'delete' IS FALSE)";
 			if ($results = $this->ci->page_model->read(array('fields' => 'id', 'where' => $query_string)))
 			{
 				foreach ($results as $result)

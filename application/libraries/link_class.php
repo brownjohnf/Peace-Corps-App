@@ -14,7 +14,7 @@ class Link_class
 	{
 	    $input['url'] = $data['url'];
 	    $input['title'] = $data['title'];
-	    $input['created_on'] = time();
+	    $input['created'] = time();
 		
 		if (! $id = $this->ci->link_model->create($input))
 		{

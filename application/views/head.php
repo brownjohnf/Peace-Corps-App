@@ -17,10 +17,10 @@
 	<meta http-equiv="X-UA-Compatible" content="IE=8" />
 
 	<!-- For google plusone button -->
-	<meta itemprop="name" content="Title of your content">
+	<meta itemprop="name" content="Peace Corps Senegal | <?=$page_title?>">
 	<meta itemprop="description" content="This would be a description of the content your users are sharing">
 		
-	<title><?=$page_title?></title>
+	<title>Peace Corps Senegal | <?=$page_title?></title>
 	
 	<!--[if IE]>
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>css/all-ie-only.css" />

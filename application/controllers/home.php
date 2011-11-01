@@ -19,32 +19,68 @@ class Home extends MY_Controller {
 	{
 		$this->load->library(array('common_class'));
 		if ($this->input->get('state')) {
-			redirect('home/login_redirect');
+			if ($this->auth->is_user())
+			{
+				$this->session->set_flashdata('success', 'You have successfully logged in.');
+				redirect(base_url().'profile/view/'.$this->userdata['url']);
+			}
+			else
+			{
+				redirect('welcome');
+			}
 		}
 		
-		$data['col1'] = '<h2>Browse</h2>'.$this->page_class->menu();
-		$data['col2'] = '<h2>Contact Us</h2><p>Peace Corps Senegal<br>Almadies Lot N/1 TF 23231<br>BP 2534<br>Dakar Yoff<br>Senegal, West Africa</p><p>admin@pcsenegal.org<br>Phone: +221 33 859 7575<br>Fax: +221 33 859 7580</p>';
-		$data['col3'] = '<h2>Legal</h2><p>All content and design protected under Creative Commons Copyright. &copy;2011 Peace Corps Senegal.<p/><p>The contents of this web site do not reflect in any way the positions of the U.S. Government or the United States Peace Corps. This web site is managed and supported by Peace Corps Senegal Volunteers and our supporters. It is not a U.S. Government web site.</p>';
+$data['splash'] = array(
+					array(
+						'visual' => img(array('src' => base_url().'uploads/d42c981bac33c044a217eaf43949237b_splash.JPG', 'width' => '658px', 'height' => '390px')),
+						'width' => '658px',
+						'title' => "We've got a new look!",
+						'text' => "We're pleased to announce the launch of our new Peace Corps Senegal website. The address may be the same, but it's full of new features and content, making it more powerful and full-featured than ever.",
+						'link' => anchor('page/view/about-us', '<i>Bismillah!</i>')
+						),
+					array(
+						  'visual' => '<iframe width="658" height="390" src="http://www.youtube.com/embed/0ad-aaaVZ-E?rel=0&wmode=Opaque" frameborder="0" allowfullscreen></iframe>',
+						  'width' => '658px',
+						  'title' => 'Kolda Ag Fair A Success!',
+						  'text' => "Peace Corps Senegal organized and executed an agricultural fair in the southern regional capital of Kolda. Combining elements of a farmers market with a food transformation expo, it attracted many local agricultural producers and buyers.",
+						  'link' => anchor('http://youtube.com/user/pcsenegaladmin', 'Visit our YouTube Channel', array('target' => '_blank'))
+						  ),
+					array(
+						  'visual' => '<iframe width="658" height="390" src="http://www.youtube.com/embed/gt4VYGd178I?rel=0&wmode=Opaque" frameborder="0" allowfullscreen></iframe>',
+						  'width' => '658px',
+						  'title' => 'Welcome Aggies!',
+						  'text' => "Peace Corps Senegal welcomes its newest agriculture stage! Over the next nine weeks, they'll learn a local language, learn about Senegalese culture, and aquire all the skills they'll need to be an effective Volunteer for the next two years.",
+						  'link' => anchor('http://youtube.com/user/pcsenegaladmin', 'Visit our YouTube Channel', array('target' => '_blank'))
+						  ),
+					array(
+						'visual' => img(array('src' => base_url().'uploads/d42c981bac33c044a217eaf43949237b_splash.JPG', 'width' => '658px', 'height' => '390px')),
+						'width' => '658px',
+						'title' => 'Photo Contest 2012',
+						'text' => "Last year's Peace Corps West Africa photo contest winners were beautiful, and ranged from poignant to funny; we're expecting even better this year. If you're a PCV with a camera, wipe off the dust and snap some shots. Details coming soon.",
+						'link' => ''//anchor('', '')
+						),
+					array(
+						'visual' => img(array('src' => base_url().'uploads/d42c981bac33c044a217eaf43949237b_splash.JPG', 'width' => '658px', 'height' => '390px')),
+						'width' => '658px',
+						'title' => 'Stomping Out Malaria',
+						'text' => "Peace Corps/Senegal is proud of its continued efforts to combat malaria. We have inspired a new partnership between the President's Malaria Initiative and Peace Corps programs across Africa, who are now teamed up to eradicate malaria across the continent. For more information on the Stomping Out Malaria in Africa initiative, and to see what else we're doing to fight malaria here in Senegal, check out our page.",
+						'link' => anchor('page/view/malaria', 'Fighting Malaria')
+						),
+					array(
+						'visual' => img(array('src' => base_url().'uploads/d42c981bac33c044a217eaf43949237b_splash.JPG', 'width' => '658px', 'height' => '390px')),
+						'width' => '658px',
+						'title' => 'Celebrating 50 Years',
+						'text' => "It's hard to believe, but Peace Corps is now 50 years old. We'll be looking back over the years as we near our 50th birthday here at Peace Corps Senegal, coming up in 2013. Stay tuned.",
+						'link' => anchor('page/view/50th-anniversary', 'Celebrate with us')
+						)
+					);
 		
 		$this->output->set_header("Cache-Control: max-age=300, public, must-revalidate");
 		
-		$this->load->view('head', array('page_title' => 'Peace Corps Senegal | Welcome', 'stylesheets' => array('layout_outer.css', 'layout_inner.css', 'theme.css', 'anythingslider.css', 'splash.css'), 'scripts' => array('jquery.easing.1.2.js', 'jquery.anythingslider.min.js', 'my_anything_slider.js')));
+		$this->load->view('head', array('page_title' => 'Home', 'stylesheets' => array('layout_outer.css', 'layout_inner.css', 'theme.css', 'anythingslider.css', 'splash.css'), 'scripts' => array('jquery.easing.1.2.js', 'jquery.anythingslider.min.js', 'my_anything_slider.js')));
 		$this->load->view('header');
 		$this->load->view('splash_view', $data);
 		//$this->load->view('footer');
-	}
-	
-	public function login_redirect()
-	{
-		if ($this->auth->is_user())
-		{
-			$this->session->set_flashdata('success', 'You have successfully logged in.');
-			redirect(base_url().'profile/view/'.$this->userdata['url']);
-		}
-		else
-		{
-			redirect('welcome');
-		}
 	}
 	
 	public function welcome()
