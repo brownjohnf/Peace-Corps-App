@@ -356,7 +356,7 @@ class Module_class
 			}
 			
 			$item['elapsed'] = $this->ci->common_class->elapsed_time($result['updated']).' ago';
-			if ($this->ci->userdata['group']['name'] == 'Admin' || $this->ci->permission_class->is_actor(array('page_id' => $result['id'], 'user_id' => $this->ci->userdata['id'])))
+			if ($this->ci->userdata['group']['name'] == 'admin' || $this->ci->permission_class->is_actor(array('page_id' => $result['id'], 'user_id' => $this->ci->userdata['id'])))
 			{
 				$item['controls'] = anchor('page/edit/'.$result['id'], img('img/edit_icon_black.png'), array('class' => 'edit'));
 			}
@@ -401,7 +401,7 @@ class Module_class
 		}
 		*/
 		
-		if ($this->ci->userdata['group']['name'] == 'Admin' || $this->ci->permission_class->is_actor(array('page_id' => $result['id'], 'user_id' => $this->ci->userdata['id'])))
+		if ($this->ci->userdata['group']['name'] == 'admin' || $this->ci->permission_class->is_actor(array('page_id' => $result['id'], 'user_id' => $this->ci->userdata['id'])))
 		{
 			$return['controls'] = anchor('page/edit/'.$result['id'], img('img/edit_icon_black.png'), array('class' => 'edit')).anchor('page/create/'.$result['id'], img('img/create_icon_black.png'), array('class' => 'create')).anchor('page/delete/'.$result['id'], img('img/delete_icon_black.png'), array('class' => 'delete'));
 		}

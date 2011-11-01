@@ -20,7 +20,7 @@
 				<p>
 					<?php echo anchor('profile/view/'.$this->uri->segment(3, null), 'View Profile'); ?><br>
 					<?php echo anchor($blog_url, 'Go to blog', array('target' => '_blank')); ?><br>
-					<?php if ($this->userdata['group']['name'] == 'Admin'): echo anchor('user/edit/'.$id, 'Edit User'); endif; ?>
+					<?php if ($this->userdata['group']['name'] == 'admin'): echo anchor('user/edit/'.$id, 'Edit User'); endif; ?>
 				</p>
 			</div>
 			<?php endif; ?>

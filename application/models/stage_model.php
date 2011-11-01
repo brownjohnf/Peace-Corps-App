@@ -3,7 +3,7 @@
 #   licensed under the Affero General Public License version 3 or later.  See
 #   the COPYRIGHT file.
 
-class Site_model extends CI_Model {
+class Stage_model extends CI_Model {
 
 	public function __construct() {
 		
@@ -15,8 +15,7 @@ class Site_model extends CI_Model {
 	{
 		$data['altered_id'] = $this->userdata['id'];
 		$data['created'] = time();
-		//echo '<pre>'; print_r($data); echo '</pre>';
-	    if ($this->db->insert('sites', $data))
+	    if ($this->db->insert('stages', $data))
 	    {
 			return $this->db->insert_id();
 	    }
@@ -42,7 +41,7 @@ class Site_model extends CI_Model {
 			$this->db->limit($data['limit'], $data['offset']);
 		}
 		$this->db->order_by($data['order_by']['column'], $data['order_by']['order']);
-		$query = $this->db->get('sites');
+		$query = $this->db->get('stages');
 
 		if (isset($data['limit']) && $data['limit'] == 1)
 		{
@@ -61,7 +60,7 @@ class Site_model extends CI_Model {
 		$id = $data['id'];
 		unset($data['id']);
 	    $this->db->where('id', $id);
-	    if ($this->db->update('sites', $data))
+	    if ($this->db->update('stages', $data))
 	    {
 			return $id;
 	    }
@@ -71,9 +70,9 @@ class Site_model extends CI_Model {
 	    }
 	}
 	
-	function delete($id)
+	function delete($data = array())
 	{
-		$this->db->where('id', $id);
-		return $this->db->delete('sites');
+		$this->db->where($data);
+		return $this->db->delete('stages');
 	}
 }

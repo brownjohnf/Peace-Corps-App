@@ -8,7 +8,7 @@ class Admin extends MY_Controller {
 	function __construct() {
 	    parent::__construct();
 		
-		if ($this->userdata['group']['name'] != 'Admin')
+		if ($this->userdata['group']['name'] != 'admin')
 		{
 			$this->session->set_flashdata('error', 'You are not a site Admin, and therefore do not have access to this portion of the site.');
 			redirect('feed/page');

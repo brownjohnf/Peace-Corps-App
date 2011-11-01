@@ -8,7 +8,7 @@ class Link extends MY_Controller {
 	function __construct() {
 	    parent::__construct();
 		
-		if ($this->userdata['group']['name'] != 'Admin')
+		if ($this->userdata['group']['name'] != 'admin')
 		{
 			$this->session->set_flashdata('error', 'You do not have appropriate permissions for this action.');
 			redirect('feed/page');

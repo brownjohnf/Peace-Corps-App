@@ -8,7 +8,7 @@ class User extends MY_Controller {
 	function __construct() {
 	    parent::__construct();
 		
-		if ($this->userdata['group']['name'] != 'Admin')
+		if ($this->userdata['group']['name'] != 'admin')
 		{
 			$this->session->set_flashdata('error', 'You do not have appropriate permissions for this action.');
 			redirect('feed/page');
@@ -195,7 +195,7 @@ class User extends MY_Controller {
 		else
 		{
 			$this->load->library('user_class');
-			$this->load->model(array('user_model', 'site_model', 'sector_model', 'region_model'));
+			$this->load->model(array('user_model', 'site_model', 'sector_model', 'region_model', 'stage_model', 'group_model', 'volunteer_model', 'people_model'));
 			if (! $this->user_class->upload($this->upload->data()))
 			{
 				$this->session->set_flashdata('error', 'Your data could not be saved. Please try again.');

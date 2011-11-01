@@ -11,7 +11,7 @@ class People_model extends CI_Model {
 		
 	}
 	
-	public function read($data)
+	public function read($data = array())
 	{
 		$default = array('fields' => '*', 'limit' => '5000', 'where' => array('id like' => '%'), 'order_by' => array('column' => 'lname', 'order' => 'asc'), 'offset' => 0);
 		$data = array_merge($default, $data);
@@ -176,12 +176,20 @@ class People_model extends CI_Model {
 		return true;
 	}
 	
-	function update($data)
+	public function update($data, $column = 'id')
 	{
-		$this->db->where('id', $data['id']);
-		$this->db->update('people', $data);
-		
-		return true;
+	    $data['edited'] = time();
+	    $this->db->where($column, $data[$column]);
+		//echo 'column: '.$column.'. query data '; print_r($data);
+	    if ($this->db->update('people', $data))
+	    {
+			return $data[$column];
+	    }
+	    else
+	    {
+			//echo $this->db->last_query();
+			return false;
+	    }
 	}
 	
 	function updateActivity($email)
@@ -212,5 +220,19 @@ class People_model extends CI_Model {
 		{
 			return false;
 		}
+	}
+	
+	public function create($data)
+	{
+		$data['altered_id'] = $this->userdata['id'];
+		$data['created'] = time();
+	    if ($this->db->insert('people', $data))
+	    {
+			return $this->db->insert_id();
+	    }
+		else
+	    {
+			return false;
+	    }
 	}
 }

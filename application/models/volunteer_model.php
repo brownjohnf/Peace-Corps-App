@@ -3,7 +3,7 @@
 #   licensed under the Affero General Public License version 3 or later.  See
 #   the COPYRIGHT file.
 
-class Site_model extends CI_Model {
+class Volunteer_model extends CI_Model {
 
 	public function __construct() {
 		
@@ -15,8 +15,7 @@ class Site_model extends CI_Model {
 	{
 		$data['altered_id'] = $this->userdata['id'];
 		$data['created'] = time();
-		//echo '<pre>'; print_r($data); echo '</pre>';
-	    if ($this->db->insert('sites', $data))
+	    if ($this->db->insert('volunteers', $data))
 	    {
 			return $this->db->insert_id();
 	    }
@@ -32,7 +31,7 @@ class Site_model extends CI_Model {
 		{
 			$data['where'] = array();
 		}
-		$default = array('fields' => '*', 'where' => array('id like' => '%', 'delete' => 0), 'order_by' => array('column' => 'name', 'order' => 'asc'), 'offset' => 0);
+		$default = array('fields' => '*', 'where' => array('id like' => '%', 'delete' => 0), 'order_by' => array('column' => 'id', 'order' => 'asc'), 'offset' => 0);
 		$data['where'] = array_merge($default['where'], $data['where']);
 		$data = array_merge($default, $data);
 		//echo '<pre>'; print_r($data); echo '</pre>';
@@ -42,7 +41,7 @@ class Site_model extends CI_Model {
 			$this->db->limit($data['limit'], $data['offset']);
 		}
 		$this->db->order_by($data['order_by']['column'], $data['order_by']['order']);
-		$query = $this->db->get('sites');
+		$query = $this->db->get('volunteers');
 
 		if (isset($data['limit']) && $data['limit'] == 1)
 		{
@@ -55,25 +54,25 @@ class Site_model extends CI_Model {
 	}
 	
 	// takes array, returns ID
-	public function update($data)
+	public function update($data, $column = 'id')
 	{
 	    $data['edited'] = time();
-		$id = $data['id'];
-		unset($data['id']);
-	    $this->db->where('id', $id);
-	    if ($this->db->update('sites', $data))
+	    $this->db->where($column, $data[$column]);
+		//echo 'column: '.$column.'. query data '; print_r($data);
+	    if ($this->db->update('volunteers', $data))
 	    {
-			return $id;
+			return $data[$column];
 	    }
 	    else
 	    {
+			//echo $this->db->last_query();
 			return false;
 	    }
 	}
 	
-	function delete($id)
+	function delete($data = array())
 	{
-		$this->db->where('id', $id);
-		return $this->db->delete('sites');
+		$this->db->where($data);
+		return $this->db->delete('volunteers');
 	}
 }

@@ -24,7 +24,7 @@ class Page_class
 	    $input['profile_photo'] = $data['profile_photo'];
 	    $input['visibility'] = $data['visibility'];
 		
-		if ($this->ci->userdata['group']['name'] != 'Admin')
+		if ($this->ci->userdata['group']['name'] != 'admin')
 		{
 			$data['actors'][] = $this->ci->userdata['id'];
 		}
@@ -429,7 +429,7 @@ class Page_class
 			}
 			
 			$item['elapsed'] = $this->ci->common_class->elapsed_time($result['updated']).' ago';
-			if ($this->ci->userdata['group']['name'] == 'Admin' || $this->ci->permission_class->is_actor(array('page_id' => $result['id'], 'user_id' => $this->ci->userdata['id'])))
+			if ($this->ci->userdata['group']['name'] == 'admin' || $this->ci->permission_class->is_actor(array('page_id' => $result['id'], 'user_id' => $this->ci->userdata['id'])))
 			{
 				$item['controls'] = anchor('page/edit/'.$result['id'], img('img/edit_icon_black.png'), array('class' => 'edit'));
 			}
@@ -470,7 +470,7 @@ class Page_class
 			$return['profile_photo'] = base_url().'img/blank.png';
 		}
 		
-		if ($this->ci->userdata['group']['name'] == 'Admin' || $this->ci->permission_class->is_actor(array('page_id' => $result['id'], 'user_id' => $this->ci->userdata['id'])))
+		if ($this->ci->userdata['group']['name'] == 'admin' || $this->ci->permission_class->is_actor(array('page_id' => $result['id'], 'user_id' => $this->ci->userdata['id'])))
 		{
 			$return['controls'] = anchor('page/edit/'.$result['id'], img('img/edit_icon_black.png'), array('class' => 'edit')).anchor('page/create/'.$result['id'], img('img/create_icon_black.png'), array('class' => 'create')).anchor('page/delete/'.$result['id'], img('img/delete_icon_black.png'), array('class' => 'delete'));
 		}
@@ -518,7 +518,7 @@ class Page_class
 				$class = array('class' => 'invisible');
 			}
 			
-			if ($this->ci->userdata['group']['name'] == 'Admin')
+			if ($this->ci->userdata['group']['name'] == 'admin')
 			{
 				$controls = '<div class="controls">'.anchor('page/edit/'.$page['id'], img('img/edit_icon_black.png'), array('class' => 'edit')).'</div>';
 			}

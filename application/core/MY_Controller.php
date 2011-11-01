@@ -37,7 +37,7 @@ class MY_Controller extends CI_Controller
 						$this->session->set_flashdata($message['type'], $message['content']);
 					}
 				}
-				if ($this->userdata['group']['name'] == 'Admin')
+				if ($this->userdata['group']['name'] == 'admin')
 				{
 					//$this->user_menu[] = anchor('feed', 'Admin Panel');
 				}

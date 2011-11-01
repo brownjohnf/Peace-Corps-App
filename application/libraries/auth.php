@@ -43,7 +43,7 @@ class Auth
 		if ($result = $this->ci->people_model->selectUsers(array('where' => array('email' => $this->ci->fb_data['me']['email']))))
 		{
 			//print_r($result);
-			if ($result[0]['name'] == 'Admin')
+			if ($result[0]['name'] == 'admin')
 			{
 				return true;
 			}

@@ -106,7 +106,7 @@ class Photo extends MY_Controller {
 		
 		$data['title'] = 'Photo Gallery';
 		
-		if ($this->userdata['group']['name'] = 'Admin')
+		if ($this->userdata['group']['name'] = 'admin')
 		{
 			$data['controls'] = anchor('photo/add/', img('img/upload_icon_black.png'), array('class' => 'upload'));
 		}
@@ -136,7 +136,7 @@ class Photo extends MY_Controller {
 		
 		$data['title'] = 'Photo Gallery';
 		
-		if ($this->userdata['group']['name'] = 'Admin')
+		if ($this->userdata['group']['name'] = 'admin')
 		{
 			$data['controls'] = anchor('photo/add/', img('img/upload_icon_black.png'), array('class' => 'upload'));
 		}

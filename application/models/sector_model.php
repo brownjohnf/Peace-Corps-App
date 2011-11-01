@@ -27,6 +27,10 @@ class Sector_model extends CI_Model {
 	
 	public function read($data = array('where' => array()))
 	{
+		if (! array_key_exists('where', $data))
+		{
+			$data['where'] = array();
+		}
 		$default = array('fields' => '*', 'where' => array('id like' => '%', 'delete' => false), 'order_by' => array('column' => 'name', 'order' => 'asc'), 'offset' => 0);
 		$data['where'] = array_merge($default['where'], $data['where']);
 		$data = array_merge($default, $data);

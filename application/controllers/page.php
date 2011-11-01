@@ -47,12 +47,12 @@ class Page extends MY_Controller {
 	
 	public function create()
 	{
-		if ($this->userdata['group']['name'] != 'Admin' && (! $this->permission_class->is_actor(array('page_id' => $this->uri->segment(3, 0), 'user_id' => $this->userdata['id']))))
+		if ($this->userdata['group']['name'] != 'admin' && (! $this->permission_class->is_actor(array('page_id' => $this->uri->segment(3, 0), 'user_id' => $this->userdata['id']))))
 		{
 			$this->session->set_flashdata('error', 'You do not have appropriate permissions for this action. [create]');
 			redirect('feed/page');
 		}
-		if ($this->userdata['group']['name'] != 'Admin')
+		if ($this->userdata['group']['name'] != 'admin')
 		{
 			$locked = 'disabled';
 		}
@@ -81,7 +81,7 @@ class Page extends MY_Controller {
 		if ($this->form_validation->run() == false)
 		{
 			$data = $this->page_class->blank_form();
-			if (($actor_for = $this->permission_class->page_by_actor($this->userdata['id'])) && $this->userdata['group']['name'] != 'Admin')
+			if (($actor_for = $this->permission_class->page_by_actor($this->userdata['id'])) && $this->userdata['group']['name'] != 'admin')
 			{
 				$data['parents'] = array_intersect_key($data['parents'], $actor_for);
 			}
@@ -140,12 +140,12 @@ class Page extends MY_Controller {
 			redirect('page/create');
 	    }
 		
-		if ($this->userdata['group']['name'] != 'Admin' && (! $this->permission_class->is_actor(array('page_id' => $this->uri->segment(3), 'user_id' => $this->userdata['id']))))
+		if ($this->userdata['group']['name'] != 'admin' && (! $this->permission_class->is_actor(array('page_id' => $this->uri->segment(3), 'user_id' => $this->userdata['id']))))
 		{
 			$this->session->set_flashdata('error', 'You do not have appropriate permissions for this action. [edit]');
 			redirect('feed/page');
 		}
-		elseif ($this->userdata['group']['name'] != 'Admin')
+		elseif ($this->userdata['group']['name'] != 'admin')
 		{
 			$locked = 'disabled';
 		}
@@ -175,7 +175,7 @@ class Page extends MY_Controller {
 		if ($this->form_validation->run() == false)
 		{
 			$data = $this->page_class->full_form($this->uri->segment(3));
-			if (($actor_for = $this->permission_class->page_by_actor($this->userdata['id'])) && $this->userdata['group']['name'] != 'Admin')
+			if (($actor_for = $this->permission_class->page_by_actor($this->userdata['id'])) && $this->userdata['group']['name'] != 'admin')
 			{
 				$data['parents'] = array_intersect_key($data['parents'], $actor_for);
 			}
@@ -220,7 +220,7 @@ class Page extends MY_Controller {
 	
 	public function delete()
 	{
-		if ($this->userdata['group']['name'] != 'Admin')
+		if ($this->userdata['group']['name'] != 'admin')
 		{
 			$this->session->set_flashdata('error', 'You do not have appropriate permissions for this action.');
 			redirect('feed/page');

@@ -72,7 +72,7 @@
 	</div>
 	<?php endif; ?>
 	
-	<?php if (($this->userdata['group']['name'] == 'Admin' || $this->userdata['id'] == $id) && isset($actor_for)): ?>
+	<?php if (($this->userdata['group']['name'] == 'admin' || $this->userdata['id'] == $id) && isset($actor_for)): ?>
 	<div>
 		<h3>Acting Privileges</h3>
 		<p>
@@ -86,7 +86,7 @@
 	</div>
 	<?php endif; ?>
 	
-	<?php if ($this->userdata['group']['name'] == 'Admin'): ?>
+	<?php if ($this->userdata['group']['name'] == 'admin'): ?>
 	<div>
 		<h3>Admin</h3>
 		<p>

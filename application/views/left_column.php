@@ -35,7 +35,7 @@
 			    <?php echo $this->page_class->menu(); ?>
 			</div>
 			
-			<?php if ($this->userdata['group']['name'] == 'Admin'): ?>
+			<?php if ($this->userdata['group']['name'] == 'admin'): ?>
 			<h2>Admin</h2>
 			<div>
 			    <ul class="leftmenu">
