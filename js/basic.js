@@ -88,6 +88,9 @@ $(document).ready(function() {
 		 $(this).attr('src', base_url + 'img/upload_icon_black.png');
 	  }
    );
+   $('a#google_anchor').click(function() {
+      $('#google_search input[type=text]').css('background-color', 'lightyellow');
+   });
    $('#google_search input[type=text]').focus(
 	  function() {
 		 $(this).attr('value', '');

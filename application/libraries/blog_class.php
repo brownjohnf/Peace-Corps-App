@@ -71,7 +71,7 @@ class Blog_class
 	public function view($names)
 	{
 		$names_array = explode('-', trim($names));
-	    $query = array('where' => array('people.lname like' => urldecode($names_array[0]), 'people.fname like' => urldecode($names_array[1])), 'limit' => 1, 'offset' => 0);
+	    $query = array('where' => array('lname like' => urldecode($names_array[0]), 'fname like' => urldecode($names_array[1])), 'limit' => 1, 'offset' => 0);
 		
 	    // get profile info
 	    if (! $result = $this->ci->people_model->selectUsers($query)) {

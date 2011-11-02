@@ -14,7 +14,7 @@
 						<?php endif; ?>
 						<img id="watermark" src="<?php echo base_url(); ?>img/pc_logo_watermark.png" />
 						
-						<div id="google_search"><!-- Google search -->
+						<div id="google_search" name="google_search"><!-- Google search -->
 							<form method="get" action="http://www.google.com/search">
 								<input type="hidden" name="ie" value="UTF-8" />
 								<input type="hidden" name="oe" value="UTF-8" />

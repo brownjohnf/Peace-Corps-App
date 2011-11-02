@@ -17,7 +17,7 @@ class User_class
 	    $input['group_id'] = $data['group_id'];
 	    $input['stage_id'] = $data['stage_id'];
 	    $input['sector_id'] = $data['sector_id'];
-	    $input['email'] = $data['email'];
+	    $input['email1'] = $data['email1'];
 		
 		if ($data['fb_id'] != '') {
 			$input['fb_id'] = $data['fb_id'];
@@ -28,7 +28,7 @@ class User_class
 	    $input['fname'] = $data['fname'];
 	    $input['lname'] = $data['lname'];
 	    $input['address'] = $data['address'];
-	    $input['phone'] = $data['phone'];
+	    $input['phone1'] = $data['phone1'];
 	    $input['blog_address'] = $data['blog_address'];
 	    $input['blog_name'] = $data['blog_name'];
 	    $input['blog_description'] = $data['blog_description'];
@@ -234,7 +234,7 @@ class User_class
 				// if there is an extant entry
 				if ($vol = $this->ci->volunteer_model->read(array('fields' => 'id, user_id', 'where' => array($id_col => $id_to_use), 'limit' => 1)))
 				{
-					if (! $this->ci->volunteer_model->update($input, $id_col))
+					if (! $this->ci->volunteer_model->update($input, array($id_col => $input[$id_col])))
 					{
 						die('failed to update volunteer entry');
 					}
@@ -267,7 +267,7 @@ class User_class
 			// insert the person into the people table
 			
 			// set default values
-			$input = array_intersect_key($prep, array_flip(array('id', 'fb_id', 'group_id', 'fname', 'lname', 'email', 'email2', 'phone1', 'phone2', 'address', 'blog_address', 'blog_description', 'blog_name', 'is_user')));
+			$input = array_intersect_key($prep, array_flip(array('id', 'fb_id', 'group_id', 'fname', 'lname', 'email1', 'email2', 'phone1', 'phone2', 'address', 'blog_address', 'blog_description', 'blog_name', 'is_user')));
 			//print_r($input);
 			
 			// if an id is set, and therefore we assume they already exist
@@ -304,37 +304,52 @@ class User_class
 	
 	public function edit($data)
 	{
-		$this->ci->load->model('user_model');
+		$this->ci->load->model(array('user_model', 'volunteer_model', 'people_model'));
 		
 		$input['id'] = $data['id'];
+		$input['fb_id'] = $data['fb_id'];
 	    $input['group_id'] = $data['group_id'];
-	    $input['stage_id'] = $data['stage_id'];
-	    $input['sector_id'] = $data['sector_id'];
-	    $input['email'] = $data['email'];
-		
-		if ($data['fb_id'] != '') {
-			$input['fb_id'] = $data['fb_id'];
-		}
-		
-	    $input['pc_id'] = $data['pc_id'];
-	    $input['site_id'] = $data['site_id'];
 	    $input['fname'] = $data['fname'];
 	    $input['lname'] = $data['lname'];
+	    $input['gender'] = $data['gender'];
+	    $input['project'] = $data['project'];
+	    $input['email1'] = $data['email1'];
+	    $input['email2'] = $data['email2'];
+	    $input['phone1'] = $data['phone1'];
+	    $input['phone2'] = $data['phone2'];
 	    $input['address'] = $data['address'];
-	    $input['phone'] = $data['phone'];
 	    $input['blog_address'] = $data['blog_address'];
 	    $input['blog_name'] = $data['blog_name'];
 	    $input['blog_description'] = $data['blog_description'];
-	    $input['project'] = $data['project'];
+	    foreach (array('is_user', 'is_admin', 'is_moderator') as $is)
+	    {
+	    	if (array_key_exists($is, $data))
+	    	{
+	    		$input[$is] = true;
+	    	}
+	    }
+	    
+		// update the user entry, or die
+		if (! $this->ci->people_model->update($input)) {
+			die('Failed to update people table. Check your data and try again. [002]');
+		}
+	    
+	    unset($input);
+	    $input['user_id'] = $data['id'];
+	    $input['pc_id'] = $data['pc_id'];
+	    $input['focus'] = $data['focus'];
+	    $input['stage_id'] = $data['stage_id'];
 	    $input['cos'] = $data['cos'];
 	    $input['local_name'] = $data['local_name'];
+	    $input['site_id'] = $data['site_id'];
+	    $input['sector_id'] = $data['sector_id'];
 		
-		// update the page entry, or die
-		if (! $this->ci->user_model->update($input)) {
-			die('Failed to update content table. Check your data and try again. [002]');
+		// update the user entry, or die
+		if (! $success = $this->ci->volunteer_model->update($input, 'user_id')) {
+			die('Failed to update volunteers table. Check your data and try again. [002]');
 		}
 		
-		return $input['id'];
+		return $data['id'];
 	}
 	public function blank_form()
 	{
@@ -342,31 +357,42 @@ class User_class
 									 'permission_model',
 									 'people_model',
 									 'site_model',
-									 'sector_model'
+									 'sector_model',
+									 'stage_model',
+									 'group_model'
 									 ));
 		
+		$data['id'] = null;
 	    $data['fb_id'] = null;
-	    $data['pc_id'] = null;
+		$data['group_id'] = null;
 	    $data['fname'] = null;
 	    $data['lname'] = null;
+	    $data['gender'] = null;
 	    $data['project'] = null;
-	    $data['email'] = null;
-		$data['phone'] = null;
+	    $data['email1'] = null;
+	    $data['email2'] = null;
+		$data['phone1'] = null;
+	    $data['phone2'] = null;
 		$data['address'] = null;
-		$data['cos'] = null;
-		$data['local_name'] = null;
+		$data['blog_address'] = null;
 		$data['blog_name'] = null;
 		$data['blog_description'] = null;
-		$data['blog_address'] = null;
-		$data['stage_id'] = null;
-		$data['sector_id'] = null;
-		$data['site_id'] = null;
-		$data['group_id'] = null;
-		$data['id'] = null;
+	    $data['is_user'] = null;
+	    $data['is_admin'] = null;
+	    $data['is_moderator'] = null;
 	    
-	    $groups = $this->ci->permission_model->read_groups(array('fields' => 'id, name'));
-	    $stages = $this->ci->people_model->read_stages(array('fields' => 'id, name'));
-	    $sectors = $this->ci->people_model->read_sectors(array('fields' => 'id, name'));
+	    
+	    $data['pc_id'] = null;
+	    $data['focus'] = null;
+		$data['stage_id'] = null;
+		$data['cos'] = null;
+		$data['local_name'] = null;
+		$data['site_id'] = null;
+		$data['sector_id'] = null;
+	    
+	    $groups = $this->ci->group_model->read(array('fields' => 'id, name'));
+	    $stages = $this->ci->stage_model->read(array('fields' => 'id, name'));
+	    $sectors = $this->ci->sector_model->read(array('fields' => 'id, name'));
 	    $sites = $this->ci->site_model->read(array('fields' => 'id, name'));
 	    
 	    foreach ($stages as $stage) {
@@ -379,6 +405,7 @@ class User_class
 		foreach ($sectors as $sector) {
 			$data['sectors'][$sector['id']] = $sector['name'];
 	    }
+	    
 		$data['sites']['NULL'] = 'Unknown';
 	    foreach ($sites as $site) {
 			$data['sites'][$site['id']] = $site['name'];
@@ -389,7 +416,7 @@ class User_class
 	public function full_form($id)
 	{
 	    // fetch the user data
-	    $page = $this->ci->people_model->read(array('where' => array('id' => $id), 'limit' => 1));
+	    $page = $this->ci->people_model->selectUsers(array('where' => array('people.id' => $id), 'limit' => 1));
 		
 	    // fetch empty dataset
 	    $blank_data = $this->blank_form();
@@ -397,6 +424,7 @@ class User_class
 	    // merge the two, to create a populated set of data, with list options
 	    $data = array_merge($blank_data, $page);
 	    
+	    //print_r($data);
 	    return $data;
 	}
 }

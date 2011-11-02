@@ -13,6 +13,10 @@ class Document_model extends CI_Model {
 	
 	public function create($data)
 	{
+	    $data['created'] = time();
+	    $data['edited'] = $data['created'];
+	    $data['altered_id'] = $this->userdata['id'];
+	    
 	    if ($this->db->insert('documents', $data))
 	    {
 			return $this->db->insert_id();
@@ -45,15 +49,22 @@ class Document_model extends CI_Model {
 	
 	function update($data)
 	{
+	    $data['edited'] = time();
+	    $data['altered_id'] = $this->userdata['id'];
+	    
 		$this->db->where('id', $data['id']);
 		if ($this->db->update('documents', $data)) {
 			return true;
 		}
 	}
 	
-	function delete($id)
+	function delete($array)
 	{
-		$this->db->where('id', $id);
-		return $this->db->update('documents', array('delete' => true));
+	    $data['edited'] = time();
+	    $data['altered_id'] = $this->userdata['id'];
+	    $data['delete'] = true;
+	    
+		$this->db->where($array);
+		return $this->db->update('documents', $data);
 	}
 }

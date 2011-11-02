@@ -45,20 +45,21 @@
 							<li><?=anchor('photo/add', 'Upload Photo')?></li>
 						</ul>
 					</li>
-					<li><?=anchor('user/view', 'All Users')?>
+					<li><?=anchor('user/view', 'Users')?>
 						<ul>
 							<li><?=anchor('user/create', 'New User')?></li>
+							<li><?=anchor('stage/view', 'Stages')?></li>
 							<li><?=anchor('user/upload', 'Upload Batch')?></li>
 						</ul>
 					</li>
 					<li><?=anchor('resource/type_view', 'Resource Types')?>
 						<ul>
-							<li><?=anchor('link/view', 'All Links')?>
+							<li><?=anchor('link/view', 'Links')?>
 								<ul>
 									<li><?=anchor('link/create', 'New Link')?></li>
 								</ul>
 							</li>
-							<li><?=anchor('document/view', 'All Documents')?>
+							<li><?=anchor('document/view', 'Documents')?>
 								<ul>
 									<li><?=anchor('document/add', 'Upload Document')?></li>
 								</ul>
@@ -77,5 +78,8 @@
 			
 			<div>
 				<?php echo anchor('page/view/donate', img(array('src' => base_url().'img/donate_w170.png', 'width' => '190px'))); ?>
+			</div>
+			<div>
+				<a href="#google_search" id="google_anchor"><?php echo img(array('src' => base_url().'img/google_search.png', 'width' => '190px')); ?></a>
 			</div>
 		</div><!-- END leftbar -->

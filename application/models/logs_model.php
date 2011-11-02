@@ -7,7 +7,7 @@ class Logs_model extends CI_Model {
 	
 	function addRequest($email) {
 		
-		$user = $this->people_model->getUser('email', $email);
+		$user = $this->people_model->getUser('email1', $email);
 		$data = array(
 					  'folder' => $this->uri->segment(1, null),
 					  'controller' => $this->uri->segment(2, null),

@@ -54,13 +54,16 @@ class Volunteer_model extends CI_Model {
 	}
 	
 	// takes array, returns ID
-	public function update($data, $column = 'id')
+	public function update($data = array(), $column = 'id')
 	{
 	    $data['edited'] = time();
+	    $data['altered_id'] = $this->userdata['id'];
+	    
 	    $this->db->where($column, $data[$column]);
 		//echo 'column: '.$column.'. query data '; print_r($data);
 	    if ($this->db->update('volunteers', $data))
 	    {
+	    	//print $data[$column];
 			return $data[$column];
 	    }
 	    else

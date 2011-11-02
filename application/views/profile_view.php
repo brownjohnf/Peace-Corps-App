@@ -30,14 +30,14 @@
 	
 	<div>
 		<p>a.k.a <?=$local_name?>
-		<p><?=$group?>, <?=$sector_name?>, <?=$project?></p>
-		<p><?=$stage_name?>&nbsp;Stage<br><?=$site_name?></p>
+		<p><?=$group?> | <?=$sector_name?> | <?=$project?></p>
+		<p><?=$stage_name?>&nbsp;Stage<br><?=$site_name?><br>COS: <?=$cos?></p>
 	</div>
 	
 	<div>
 		<h3>Contact Info</h3>
 		<?php if ($this->auth->is_user()): ?>
-		<p><?=$phone?><br><?=$email?>
+		<p><?=$phone1?><br><?=$email1?>
 		<?php else: ?>
 		<p>You must be a member of Peace Corps Senegal and logged in to access this information.</p>
 		<?php endif; ?>

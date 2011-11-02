@@ -33,7 +33,7 @@
 
 <div class="actors">
 <?php if ($actors): ?>
-    <h3>Actors</h3>
+    <h3>Editors</h3>
     <p>
         <?php $count = count($actors); foreach ($actors as $actor_id => $actor): ?>
         <?php echo anchor('profile/view/'.$actor['url'], $actor['name']); if ($count > 1) echo '&nbsp;|&nbsp;'; $count--;?>

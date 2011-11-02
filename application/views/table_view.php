@@ -30,16 +30,16 @@ if ($this->session->flashdata('success'))
 			<th>Edit</th>
 		<?php endif; foreach ($table[0] as $key => $value): ?>
 			<th><?php echo ucfirst($key) ?></th>
-		<?php endforeach; if (isset($delete_target)): ?>
-			<th>Delete</th>
-		<?php endif; ?>
+		<?php endforeach; if (isset($extra_targets)): foreach ($extra_targets as $target_info): ?>
+			<th><?=$target_info['text']?></th>
+		<?php endforeach; endif; ?>
 		</thead>
 	<?php foreach ($table as $row): ?>
 		<tr>
 		<?php if (isset($edit_target)): ?>
 			<td class="control"><?php echo anchor($edit_target.$row['id'], 'Edit'); ?></td>
 		<?php endif; foreach ($row as $header => $column): ?>
-			<td class="<?=$header?>"><?=$column?></td>
+			<td class="<?=$header?>"><?php if (($header == 'created' || $header == 'edited') && ! is_null($column)): echo date('d-M-Y H:i:s', $column); else: echo $column; endif; ?></td>
 		<?php endforeach; if (isset($extra_targets)): foreach ($extra_targets as $target_info): ?>
 			<td class="control"><?php echo anchor($target_info['path'].$row[$target_info['column']], $target_info['text']); ?></td>
 		<?php endforeach; endif; ?>

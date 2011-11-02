@@ -56,11 +56,11 @@ if ($this->session->flashdata('success'))
 				<td class=""><?php echo anchor('profile/view/'.url_title($row['lname'].'-'.$row['fname'], 'dash', true), $row['lname']); ?></td>
 				<td class=""><?=$row['group_name']?></td>
 				<td class=""><?=$row['sector_name']?></td>
-				<td class=""><?=$row['email']?></td>
+				<td class=""><?=$row['email1']?></td>
 				<td class=""><?=$row['blog_name']?></td>
 				<td class=""><?=$row['blog_description']?></td>
 				<td class=""><?=$row['blog_address']?></td>
-				<td class=""><?=$row['phone']?></td>
+				<td class=""><?=$row['phone1']?></td>
 				<td class=""><?=$row['stage_name']?></td>
 				<td class=""><?=$row['cos']?></td>
 				<td class=""><?=$row['project']?></td>

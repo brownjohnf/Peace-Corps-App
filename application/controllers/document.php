@@ -70,7 +70,7 @@ class Document extends MY_Controller {
 	{
 		if (! $this->auth->is_user())
 		{
-			$this->session->set_flashdata('error', 'You do not have appropriate permissions for this action. [upload photo]');
+			$this->session->set_flashdata('error', 'You do not have appropriate permissions for this action. [upload document]');
 			redirect('resource');
 		}
 		ini_set("memory_limit","128M");
@@ -159,12 +159,21 @@ class Document extends MY_Controller {
 	
 	public function delete()
 	{
-		if (! $this->document_model->delete($this->uri->segment(3)))
+		$this->load->model('resource_model');
+		if (! $this->document_model->delete(array('id' => $this->uri->segment(3))))
 		{
-			$error = "Couldn't delete document from database.";
+			$error[] = "Couldn't delete document from database.";
+		}
+		if (! $this->tag_model->delete(array('source' => 'documents', 'source_id' => $this->uri->segment(3))))
+		{
+			$error[] = "Couldn't delete document from database.";
+		}
+		if (! $this->resource_model->delete_resources(array('table' => 'documents', 'res_id' => $this->uri->segment(3))))
+		{
+			$error[] = "Couldn't delete document from mod_resources table.";
 		}
 		if (isset($error)) {
-			$this->session->set_flashdata('error', $error);
+			$this->session->set_flashdata('error', implode(' ', $error));
 		}
 		redirect('document/view');
 	}

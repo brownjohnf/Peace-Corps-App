@@ -8,7 +8,7 @@ $(function(){
 	  resizeContents: true,
 	  buildArrows: false,
 	  buildNavigation: false,
-	  delay: 9000,
+	  delay: 5000,
 	  animation: 600,
 	  easing: "swing",
 	  buildStartStop: false

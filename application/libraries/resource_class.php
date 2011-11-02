@@ -51,7 +51,7 @@ class Resource_class
 			{
 				foreach ($tables['people'] as $row)
 				{
-					$person = $this->ci->people_model->selectUsers(array('where' => array('people.id' => $row['res_id']), 'limit' => '1'));
+					$person = $this->ci->people_model->selectUsers(array('where' => array('id' => $row['res_id']), 'limit' => '1'));
 					$return['people'][$row['type_name']][] = anchor('profile/view/'.url_title($person['lname'].'-'.$person['fname'], 'dash', true), $person['fname'].' '.$person['lname']);
 				}
 			}

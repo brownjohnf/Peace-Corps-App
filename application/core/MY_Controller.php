@@ -23,7 +23,7 @@ class MY_Controller extends CI_Controller
 		// check to see if the user is logged in through facebook
 		if ((! $this->fb_data['uid']) or (! $this->fb_data['me']))
 		{
-			$this->userdata = array('group' => array('id' => -1, 'name' => 'Unknown'), 'fname' => 'Unknown', 'lname' => 'Unknown', 'flname' => 'Unknown', 'lfname' => 'Unknown', 'id' => 0);
+			$this->userdata = array('group' => array('id' => -1, 'name' => 'Unknown'), 'fname' => 'Unknown', 'lname' => 'Unknown', 'flname' => 'Unknown', 'lfname' => 'Unknown', 'id' => 0, 'is_admin' => false, 'is_user' => false, 'is_moderator' => false, 'is_logged_in' => false);
 			$this->user_menu[] = anchor($this->fb_data['loginUrl'].'&scope=email', 'Facebook Login');
 		}
 		else

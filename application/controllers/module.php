@@ -191,8 +191,8 @@ class Module extends MY_Controller {
 											   'name' => 'Bassirou Ndiaye',
 											   'description' => 'Local gardener; has significant experience reclaiming poor soil/garden beds; works with Volunteers.',
 											   'address' => 'Ndorong Sereer, Fatick',
-											   'phone' => '775558703',
-											   'email' => 'bas.ndiaye@yahoo.fr'
+											   'phone1' => '775558703',
+											   'email1' => 'bas.ndiaye@yahoo.fr'
 											   )
 										 );
 				break;
@@ -219,8 +219,8 @@ class Module extends MY_Controller {
 											   'name' => 'Alpha Sow',
 											   'description' => 'Local farmer who uses a lot of live fence technology; has worked with Volunteers to train other farmers.',
 											   'address' => 'Saraya, Kedougou',
-											   'phone' => '775558720',
-											   'email' => 'sow.alpha@gmail.com'
+											   'phone1' => '775558720',
+											   'email1' => 'sow.alpha@gmail.com'
 											   )
 										 );
 				$data['social'] = array(

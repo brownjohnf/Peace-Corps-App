@@ -17,9 +17,23 @@ class Auth
 	
 	public function is_user()
 	{
-		if ($result = $this->ci->people_model->selectUsers(array('where' => array('email' => $this->ci->fb_data['me']['email']), 'limit' => 1)))
+		if ($result = $this->ci->people_model->selectUsers(array('where' => array('email1' => $this->ci->fb_data['me']['email']), 'limit' => 1)))
 		{
-			$this->ci->userdata = array('group' => array('id' => $result['group_id'], 'name' => $result['group_name']), 'fname' => $result['fname'], 'lname' => $result['lname'], 'flname' => $result['fname'].' '.$result['lname'], 'lfname' => $result['lname'].', '.$result['fname'], 'id' => $result['id'], 'url' => url_title($result['lname'].'-'.$result['fname'], 'dash', true));
+			$this->ci->userdata = array(
+			                            'group' => array(
+			                                             'id' => $result['group_id'], 
+			                                             'name' => $result['group_name']), 
+			                            'fname' => $result['fname'], 
+			                            'lname' => $result['lname'], 
+			                            'flname' => $result['fname'].' '.$result['lname'], 
+			                            'lfname' => $result['lname'].', '.$result['fname'], 
+			                            'id' => $result['id'], 
+			                            'url' => url_title($result['lname'].'-'.$result['fname'], 'dash', true),
+			                            'is_admin' => $result['is_admin'],
+			                            'is_user' => $result['is_admin'],
+			                            'is_moderator' => $result['is_moderator'],
+			                            'is_logged_in' => true
+			                            );
 			//print_r($this->ci->userdata);
 			
 			if ($result['fb_id'] != $this->ci->fb_data['uid'])
@@ -33,14 +47,14 @@ class Auth
 		}
 		else
 		{
-			$this->ci->userdata = array('group' => array('id' => 0, 'name' => 'Guest'), 'fname' => 'Guest', 'lname' => 'Guest', 'flname' => 'Guest', 'lfname' => 'Guest', 'id' => 0);
+			$this->ci->userdata = array('group' => array('id' => 0, 'name' => 'Guest'), 'fname' => 'Guest', 'lname' => 'Guest', 'flname' => 'Guest', 'lfname' => 'Guest', 'id' => 0, 'is_admin' => false, 'is_moderator' => false, 'is_user' => false, 'is_logged_in' => true);
 			return false;
 		}
 	}
 	
 	public function is_admin()
 	{
-		if ($result = $this->ci->people_model->selectUsers(array('where' => array('email' => $this->ci->fb_data['me']['email']))))
+		if ($result = $this->ci->people_model->selectUsers(array('where' => array('email1' => $this->ci->fb_data['me']['email']))))
 		{
 			//print_r($result);
 			if ($result[0]['name'] == 'admin')

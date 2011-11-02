@@ -16,7 +16,7 @@ class Profile_class
 	{
 		$names = $this->ci->uri->segment(3);
 		$names_array = explode('-', trim($names));
-	    $query = array('where' => array('people.lname like' => urldecode($names_array[0]), 'people.fname like' => urldecode($names_array[1])), 'limit' => 1, 'offset' => 0);
+	    $query = array('where' => array('lname like' => urldecode($names_array[0]), 'fname like' => urldecode($names_array[1])), 'limit' => 1, 'offset' => 0);
 		
 	    // get profile info
 	    if (! $result = $this->ci->people_model->selectUsers($query)) {
@@ -28,10 +28,10 @@ class Profile_class
 	    // assign values to return array
 		$return['full_name'] = $result['fname'].'&nbsp;'.$result['lname'];
 		$return['url_name'] = url_title($result['lname'].'-'.$result['fname'], 'dash', true);
-		$return['group'] = $result['group_name'];
+		$return['group'] = $result['group_label'];
 		$return['project'] = $result['project'];
-		$return['email'] = $result['email'];
-		$return['phone'] = $result['phone'];
+		$return['email1'] = $result['email1'];
+		$return['phone1'] = $result['phone1'];
 		$return['stage_name'] = $result['stage_name'];
 		$return['sector_name'] = $result['sector_name'];
 		$return['local_name'] = $result['local_name'];
@@ -40,6 +40,7 @@ class Profile_class
 		$return['blog_address'] = prep_url($result['blog_address']);
 		$return['blog_description'] = $result['blog_description'];
 		$return['id'] = $result['id'];
+		$return['cos'] = date('d M Y', $result['cos']);
 		
 		if (isset($result['fb_id']) && is_numeric($result['fb_id'])) {
 			$return['social'][] = anchor('http://facebook.com/profile.php?id='.$result['fb_id'], 'Facebook', array('target' => '_blank'));

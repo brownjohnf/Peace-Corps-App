@@ -5,7 +5,7 @@
 
 $(function() {
    $('#datatable').dataTable({
-	  "iDisplayLength": 25,
+	  "iDisplayLength": 10,
 	  "bLengthChange": true
    });
 });

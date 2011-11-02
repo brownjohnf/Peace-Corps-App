@@ -8,7 +8,6 @@ class Tag_model extends CI_Model {
 	public function __construct() {
 		
 		parent::__construct();
-		
 	}
 	
 	public function read($data)
@@ -37,22 +36,22 @@ class Tag_model extends CI_Model {
 	public function delete($data = null)
 	{
 		if (! $data) {
-				die('source and source_id required for tag_model->delete');
+			die('source and source_id required for tag_model->delete');
 		}
 		
 		$this->db->where($data);
 		
 		if (! $this->db->delete('tags')) {
-				die('failed to delete from the tags table');
+			die('failed to delete from the tags table');
 		} else {
-				return true;
+			return true;
 		}
 	}
 	
 	public function create($batch)
 	{
-		if (! $this->db->insert_batch('tags', $batch)) {
-				die('failed to batch insert tags');
+		if ($this->db->insert_batch('tags', $batch)) {
+			return true;
 		}
 	}
 }

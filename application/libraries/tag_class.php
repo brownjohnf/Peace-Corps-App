@@ -206,7 +206,8 @@ class Tag_class
 	
 	// extracts tags from tag-only input box. doesn't use ! check
 	
-	// extracts tags from text, and returns them in array, blurb, and string form
+	// extracts tags from text, and returns them in array and string form
+	// returns return['array'], ['string']
 	public function tag_input($raw_string)
 	{
 		$string = $raw_string;

@@ -32,7 +32,7 @@ class Home extends MY_Controller {
 		
 $data['splash'] = array(
 					array(
-						'visual' => img(array('src' => base_url().'uploads/d42c981bac33c044a217eaf43949237b_splash.JPG', 'width' => '658px', 'height' => '390px')),
+						'visual' => img(array('src' => base_url().'uploads/1ca600fea348193c11d5880ce48fd278_splash.jpg', 'width' => '658px', 'height' => '390px')),
 						'width' => '658px',
 						'title' => "We've got a new look!",
 						'text' => "We're pleased to announce the launch of our new Peace Corps Senegal website. The address may be the same, but it's full of new features and content, making it more powerful and full-featured than ever.",
@@ -49,9 +49,16 @@ $data['splash'] = array(
 						  'visual' => '<iframe width="658" height="390" src="http://www.youtube.com/embed/gt4VYGd178I?rel=0&wmode=Opaque" frameborder="0" allowfullscreen></iframe>',
 						  'width' => '658px',
 						  'title' => 'Welcome Aggies!',
-						  'text' => "Peace Corps Senegal welcomes its newest agriculture stage! Over the next nine weeks, they'll learn a local language, learn about Senegalese culture, and aquire all the skills they'll need to be an effective Volunteer for the next two years.",
+						  'text' => "Peace Corps Senegal welcomes its newest agriculture stage! Over the next nine weeks, they'll learn a local language, learn about Senegalese culture, and acquire all the skills they'll need to be an effective Volunteer for the next two years.",
 						  'link' => anchor('http://youtube.com/user/pcsenegaladmin', 'Visit our YouTube Channel', array('target' => '_blank'))
 						  ),
+					array(
+						'visual' => img(array('src' => base_url().'uploads/1ca600fea348193c11d5880ce48fd278_splash.jpg', 'width' => '658px', 'height' => '390px')),
+						'width' => '658px',
+						'title' => "We've got a new look!",
+						'text' => "We're pleased to announce the launch of our new Peace Corps Senegal website. The address may be the same, but it's full of new features and content, making it more powerful and full-featured than ever.",
+						'link' => anchor('page/view/about-us', '<i>Bismillah!</i>')
+						),
 					array(
 						'visual' => img(array('src' => base_url().'uploads/d42c981bac33c044a217eaf43949237b_splash.JPG', 'width' => '658px', 'height' => '390px')),
 						'width' => '658px',
@@ -60,7 +67,7 @@ $data['splash'] = array(
 						'link' => ''//anchor('', '')
 						),
 					array(
-						'visual' => img(array('src' => base_url().'uploads/d42c981bac33c044a217eaf43949237b_splash.JPG', 'width' => '658px', 'height' => '390px')),
+						'visual' => img(array('src' => base_url().'uploads/00d7e66150430aff782c894883944e84_splash.jpg', 'width' => '658px', 'height' => '390px')),
 						'width' => '658px',
 						'title' => 'Stomping Out Malaria',
 						'text' => "Peace Corps/Senegal is proud of its continued efforts to combat malaria. We have inspired a new partnership between the President's Malaria Initiative and Peace Corps programs across Africa, who are now teamed up to eradicate malaria across the continent. For more information on the Stomping Out Malaria in Africa initiative, and to see what else we're doing to fight malaria here in Senegal, check out our page.",
@@ -72,6 +79,20 @@ $data['splash'] = array(
 						'title' => 'Celebrating 50 Years',
 						'text' => "It's hard to believe, but Peace Corps is now 50 years old. We'll be looking back over the years as we near our 50th birthday here at Peace Corps Senegal, coming up in 2013. Stay tuned.",
 						'link' => anchor('page/view/50th-anniversary', 'Celebrate with us')
+						),
+					array(
+						'visual' => img(array('src' => base_url().'uploads/1ca600fea348193c11d5880ce48fd278_splash.jpg', 'width' => '658px', 'height' => '390px')),
+						'width' => '658px',
+						'title' => "We've got a new look!",
+						'text' => "We're pleased to announce the launch of our new Peace Corps Senegal website. The address may be the same, but it's full of new features and content, making it more powerful and full-featured than ever.",
+						'link' => anchor('page/view/about-us', '<i>Bismillah!</i>')
+						),
+					array(
+						'visual' => img(array('src' => base_url().'uploads/ad8f43cf48574073b9bbf386789e9bd1_splash.JPG', 'width' => '658px', 'height' => '390px')),
+						'width' => '658px',
+						'title' => 'Food Security',
+						'text' => "Peace Corps Senegal Volunteers work with local farmers, food transformation cooperatives, and resellers to enhance Senegal's food security. Learn about our partnership with USAID, the Master Farmer program, and the many other ways we're working sustainably and locally to ensure greater food security for generations to come.",
+						'link' => anchor('page/view/food-security', 'PC Senegal &amp; Food Security')
 						)
 					);
 		

@@ -8,7 +8,7 @@ class User extends MY_Controller {
 	function __construct() {
 	    parent::__construct();
 		
-		if ($this->userdata['group']['name'] != 'admin')
+		if (! $this->userdata['is_admin'])
 		{
 			$this->session->set_flashdata('error', 'You do not have appropriate permissions for this action.');
 			redirect('feed/page');
@@ -21,17 +21,20 @@ class User extends MY_Controller {
 		
 		if ($this->uri->segment(4))
 		{
-			$data['table'] = $this->people_model->selectUsers(array('fields' => 'people.id, people.pc_id, people.fname, people.lname, people.gender, people.email, people.phone, people.address, people.blog_address, people.blog_name, people.blog_description, people.is_user, people.is_admin, people.is_moderator, people.created, people.edited, people.last_activity', 'where' => array('volunteers.'.$this->uri->segment(3) => $this->uri->segment(4))));
+			$data['table'] = $this->people_model->selectUsers(array('fields' => 'people.id, people.fname, people.lname, people.gender, people.email1, people.email2, people.phone1, people.phone2, people.address, people.blog_address, people.blog_name, people.blog_description, people.is_user, people.is_admin, people.is_moderator, people.created, people.edited, people.last_activity', 'where' => array($this->uri->segment(3) => $this->uri->segment(4))));
 		}
 		else
 		{
-			$data['table'] = $this->people_model->selectUsers(array('fields' => 'people.id, people.pc_id, people.fname, people.lname, people.gender, people.email, people.phone, people.address, people.blog_address, people.blog_name, people.blog_description, people.is_user, people.is_admin, people.is_moderator, people.created, people.edited, people.last_activity'));
+			$data['table'] = $this->people_model->selectUsers(array('fields' => 'people.id, people.fname, people.lname, people.gender, people.email1, people.email2, people.phone1, people.phone2, people.address, people.blog_address, people.blog_name, people.blog_description, people.is_user, people.is_admin, people.is_moderator, people.created, people.edited, people.last_activity'));
 		}
 		
 		//print_r($data);
 		
 		$data['title'] = 'All Users';
 		$data['backtrack'] = array('admin' => 'Admin Panel', 'user/view' => 'Users', 'user/view/' => 'All');
+		$data['edit_target'] = 'user/edit/';
+		$data['extra_targets'][] = array('path' => 'user/delete/', 'column' => 'id', 'text' => 'Delete');
+		$data['extra_targets'][] = array('path' => 'profile/view/', 'column' => 'id', 'text' => 'Profile');
 		
 		
 	    // print the page
@@ -55,10 +58,17 @@ class User extends MY_Controller {
 	    
 	    $this->form_validation->set_rules('fname', 'First Name', 'required');
 	    $this->form_validation->set_rules('lname', 'Last Name', 'required');
-	    $this->form_validation->set_rules('group_id', 'Group', 'required');
-	    $this->form_validation->set_rules('stage_id', 'Stage', 'required');
-	    $this->form_validation->set_rules('sector_id', 'Sector', 'required');
-	    $this->form_validation->set_rules('email', 'Email', 'required');
+	    $this->form_validation->set_rules('group_id', 'Group', 'required|numeric');
+	    $this->form_validation->set_rules('stage_id', 'Stage', 'required|numeric');
+	    $this->form_validation->set_rules('sector_id', 'Sector', 'required|numeric');
+	    $this->form_validation->set_rules('email1', 'Email1', 'required|valid_email');
+	    $this->form_validation->set_rules('email2', 'Email2', 'valid_email');
+	    $this->form_validation->set_rules('phone1', 'Phone1', 'numeric');
+	    $this->form_validation->set_rules('phone2', 'Phone2', 'numeric');
+	    $this->form_validation->set_rules('gender', 'Gender', 'numeric');
+	    $this->form_validation->set_rules('is_user', 'is_user', 'is_natural');
+	    $this->form_validation->set_rules('is_moderator', 'is_moderator', 'is_natural');
+	    $this->form_validation->set_rules('is_admin', 'is_moderator', 'is_natural');
 	    
 		if ($this->form_validation->run() == false)
 		{
@@ -77,21 +87,21 @@ class User extends MY_Controller {
 			
 			$data['controls'] = anchor('user/view', img(base_url().'img/cancel_icon.png'), array('class' => 'cancel'));
 			
-			$this->load->view('head', array('page_title' => $data['form_title'], 'stylesheets' => array('layout_outer.css', 'layout_inner.css', 'theme.css'), 'scripts' => array('basic.js','jquery.url.js')));
+			$this->load->view('head', array('page_title' => $data['form_title'], 'stylesheets' => array('layout_outer.css', 'layout_inner.css', 'theme.css')));
 			$this->load->view('header');
 			$this->load->view('main_open');
 			$this->load->view('left_column');
-			$this->load->view('right_column');
+			//$this->load->view('right_column');
 			$this->load->view('user_form', $data);
 			$this->load->view('main_close');
-			$this->load->view('footer', array('footer' => 'Footer Here'));
+			$this->load->view('footer');
 		}
 		else
 		{
 		    if ($id = $this->user_class->create($this->input->post()))
 		    {
 			$this->session->set_flashdata('message', 'User successfully created.');
-		        redirect('user/view/id/'.$id);
+		        redirect('user/view/user_id/'.$id);
 		    }
 		    else
 		    {
@@ -115,34 +125,41 @@ class User extends MY_Controller {
 	    
 	    $this->form_validation->set_rules('fname', 'First Name', 'required');
 	    $this->form_validation->set_rules('lname', 'Last Name', 'required');
-	    $this->form_validation->set_rules('group_id', 'Group', 'required');
-	    $this->form_validation->set_rules('stage_id', 'Stage', 'required');
-	    $this->form_validation->set_rules('sector_id', 'Sector', 'required');
-	    $this->form_validation->set_rules('email', 'Email', 'required');
+	    $this->form_validation->set_rules('group_id', 'Group', 'required|numeric');
+	    $this->form_validation->set_rules('stage_id', 'Stage', 'required|numeric');
+	    $this->form_validation->set_rules('sector_id', 'Sector', 'required|numeric');
+	    $this->form_validation->set_rules('email1', 'Email1', 'required|valid_email');
+	    $this->form_validation->set_rules('email2', 'Email2', 'valid_email');
+	    $this->form_validation->set_rules('phone1', 'Phone1', 'numeric');
+	    $this->form_validation->set_rules('phone2', 'Phone2', 'numeric');
+	    $this->form_validation->set_rules('gender', 'Gender', 'numeric');
+	    $this->form_validation->set_rules('is_user', 'is_user', 'is_natural');
+	    $this->form_validation->set_rules('is_moderator', 'is_moderator', 'is_natural');
+	    $this->form_validation->set_rules('is_admin', 'is_moderator', 'is_natural');
 	    
 		if ($this->form_validation->run() == false)
 		{
 			$data = $this->user_class->full_form($this->uri->segment(3));
 			
-	        $data['target'] = 'edit';
+	        $data['target'] = 'edit/'.$this->uri->segment(3);
 			$data['form_title'] = 'Edit User Info';
-			$data['controls'] = anchor('user/view/id/'.$this->uri->segment(3), img(base_url().'img/cancel_icon.png'), array('class' => 'cancel'));
+			$data['controls'] = anchor('user/view/user_id/'.$this->uri->segment(3), img(base_url().'img/cancel_icon.png'), array('class' => 'cancel'));
 			
-			$this->load->view('head', array('page_title' => $data['form_title'], 'stylesheets' => array('layout_outer.css', 'layout_inner.css', 'theme.css'), 'scripts' => array('basic.js', 'jquery.url.js')));
+			$this->load->view('head', array('page_title' => $data['form_title'], 'stylesheets' => array('layout_outer.css', 'layout_inner.css', 'theme.css')));
 			$this->load->view('header');
 			$this->load->view('main_open');
 			$this->load->view('left_column');
-			$this->load->view('right_column');
+			//$this->load->view('right_column');
 			$this->load->view('user_form', $data);
 			$this->load->view('main_close');
-			$this->load->view('footer', array('footer' => 'Footer Here'));
+			$this->load->view('footer');
 		}
 		else
 		{
 		    if ($id = $this->user_class->edit($this->input->post()))
 		    {
 			    $this->session->set_flashdata('success', 'User successfully edited.');
-			    redirect('user/view/id/'.$id);
+			    redirect('user/view/user_id/'.$id);
 			}
 		    else
 		    {
@@ -153,13 +170,13 @@ class User extends MY_Controller {
 	
 	public function delete()
 	{
-		if (! $this->people_model->delete($this->uri->segment(3, null)))
+		if (! $this->people_model->delete(array('id' => $this->uri->segment(3))))
 		{
-			$error[] = "Couldn't delete page.";
+			$error[] = "Couldn't delete user.";
 		}
-		if (! $this->permission_model->purge_by_user($this->uri->segment(3, null)))
+		if (! $this->permission_model->purge_by_user(array('id' => $this->uri->segment(3, null))))
 		{
-			$error[] = "Couldn't purge page references.";
+			$error[] = "Couldn't purge user references.";
 		}
 		if (isset($error)) {
 			$this->session->set_flashdata('error', implode(' ', $error));
@@ -207,29 +224,5 @@ class User extends MY_Controller {
 				redirect('user/view');
 			}
 		}
-	}
-	
-	public function stage()
-	{
-		$this->load->model('stage_model');
-		
-		$data['table'] = $this->stage_model->read();
-		$data['title'] = 'Stages';
-		$data['backtrack'] = array('admin' => 'Admin Panel', 'user' => 'Users', 'user/stage' => 'Stages');
-		$data['edit_target'] = 'stage/edit/';
-		$data['extra_targets'][] = array('path' => 'user/view/stage_id/', 'column' => 'id', 'text' => 'View Members');
-		$data['extra_targets'][] = array('path' => 'stage/delete/', 'column' => 'id', 'text' => 'Delete');
-		
-		
-	    // print the page
-		$this->output->set_header("Cache-Control: max-age=300, public, must-revalidate");
-		
-		$this->load->view('head', array('page_title' => $data['title'], 'stylesheets' => array('layout_outer.css', 'layout_inner.css', 'theme.css', 'demo_table.css'), 'scripts' => array('jquery.dataTables.min.js', 'datatable_initiate.js')));
-		$this->load->view('header');
-		//$this->load->view('main_open');
-		$this->load->view('left_column');
-		$this->load->view('table_view', $data);
-		//$this->load->view('main_close');
-		$this->load->view('footer');
 	}
 }

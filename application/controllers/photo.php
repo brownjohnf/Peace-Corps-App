@@ -105,6 +105,7 @@ class Photo extends MY_Controller {
 		}
 		
 		$data['title'] = 'Photo Gallery';
+		$data['backtrack'] = array('feed/page' => 'Home', 'photo/gallery' => 'Photos', 'photo/gallery/' => 'Gallery');
 		
 		if ($this->userdata['group']['name'] = 'admin')
 		{

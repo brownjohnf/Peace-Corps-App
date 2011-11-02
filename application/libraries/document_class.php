@@ -20,12 +20,21 @@ class Document_class
 		$input['type'] = $data['type'];
 		$input['user_id'] = $data['user_id'];
 		
-	    $input['created_on'] = time();
 		
 		if (! $id = $this->ci->document_model->create($input))
 		{
 			$this->ci->session->set_flashdata('error', 'Failed to add record to links table. [005]');
 			return false;
+		}
+		
+		foreach ($tags['array'] as $tag)
+		{
+			$tag_input[] = array('tag' => $tag, 'source' => 'documents', 'source_id' => $id, 'updated' => time());
+		}
+		
+		if (! $this->ci->tag_model->create($tag_input))
+		{
+			die('failed to add tags to tag table');
 		}
 		return $id;
 	}
@@ -36,11 +45,20 @@ class Document_class
 	    $input['tags'] = $tags['string'];
 	    $input['title'] = $data['title'];
 		$input['id'] = $data['id'];
-		$input['edited_on'] = time();
 		
 		// update the document entry, or die
 		if (! $this->ci->document_model->update($input)) {
 			die('Failed to update document table. Check your data and try again. [002]');
+		}
+		
+		foreach ($tags['array'] as $tag)
+		{
+			$tag_input[] = array('tag' => $tag, 'source' => 'documents', 'source_id' => $input['id'], 'updated' => time());
+		}
+		
+		if (! $this->ci->tag_model->create($tag_input))
+		{
+			die('failed to add tags to tag table');
 		}
 		return $input['id'];
 	}

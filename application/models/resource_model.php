@@ -76,4 +76,16 @@ class Resource_model extends CI_Model {
 		}
 	}
 	
+	function delete_resources($data = array())
+	{
+		$this->db->where($data);
+		
+	    $data['modified'] = time();
+	    $data['altered_id'] = $this->userdata['id'];
+	    $data['delete'] = true;
+	    
+		
+		return $this->db->update('mod_resources', $data);
+	}
+	
 }
