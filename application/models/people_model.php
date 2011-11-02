@@ -79,19 +79,22 @@ class People_model extends CI_Model {
 		$default = array('fields' => 'people.*', 'where' => array('people.id like' => '%'), 'order_by' => array('column' => 'people.lname', 'order' => 'asc'), 'offset' => 0);
 		$data = array_merge($default, $data);
 		
-		$this->db->select($data['fields'].', groups.name as group_name, stages.name as stage_name, sectors.name as sector_name, sites.name as site_name');
+		$this->db->select($data['fields'].', volunteers.sector_id, volunteers.stage_id, volunteers.site_id, volunteers.focus, volunteers.cos, volunteers.local_name, groups.name as group_name, stages.name as stage_name, sectors.name as sector_name, sites.name as site_name, political_regions.name as region_name');
 		$this->db->where($data['where']);
 		if (isset($data['limit'])) {
 			$this->db->limit($data['limit'], $data['offset']);
 		}
 		$this->db->from('people');
+		$this->db->join('volunteers', 'volunteers.id = people.group_id', 'left');
 		$this->db->join('groups', 'groups.id = people.group_id', 'left');
-		$this->db->join('stages', 'stages.id = people.stage_id', 'left');
-		$this->db->join('sectors', 'sectors.id = people.sector_id', 'left');
-		$this->db->join('sites', 'sites.id = people.site_id', 'left');
+		$this->db->join('stages', 'stages.id = volunteers.stage_id', 'left');
+		$this->db->join('sectors', 'sectors.id = volunteers.sector_id', 'left');
+		$this->db->join('sites', 'sites.id = volunteers.site_id', 'left');
+		$this->db->join('political_regions', 'political_regions.id = sites.parent_id', 'left');
 		$this->db->order_by($data['order_by']['column'], $data['order_by']['order']);
     	$query = $this->db->get();
-		//print_r($query->result_array());
+		//print_r($query->row_array());
+		print $this->db->last_query();
 		
 		if (isset($data['limit']) && $data['limit'] == 1) {
 			return $query->row_array();

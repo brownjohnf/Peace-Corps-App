@@ -36,6 +36,12 @@ class Resource extends MY_Controller {
 	
 	public function type_view()
 	{
+		if ($this->userdata['group']['name'] != 'admin')
+		{
+			$this->session->set_flashdata('error', 'You do not have appropriate permissions for this action.');
+			redirect('resource');
+		}
+		
 		$this->load->library('resource_class');
 		
 		$data['table'] = $this->resource_class->type_view();

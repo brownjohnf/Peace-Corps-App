@@ -3,7 +3,7 @@
 #   licensed under the Affero General Public License version 3 or later.  See
 #   the COPYRIGHT file.
 ?>
-
+			<div id="bottom_of_page"></div>
 		</div><!-- end #outer_container -->
 			<div id="footer_outer">
 				<div id="footer_upper">

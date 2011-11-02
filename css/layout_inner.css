@@ -134,7 +134,7 @@
 /* end of vmenu settings */
 
 #bottom_of_page {
-	height: 500px;
+	height: 300px;
 }
 
 #page_form input[type=text], #page_form textarea, #site_messages_form input[type=text], #site_messages_form textarea, .wide_form textarea, .wide_form input[type=textarea] {
@@ -149,10 +149,14 @@
 	margin: 20px;
 	overflow: auto;
 }
-#table_view, #site_messages_form, #page_form, #link_form, #document_form, .wide_form {
+#site_messages_form, #page_form, #link_form, #document_form, .wide_form {
 	margin: 0 0 0 220px;
 	width: 760px;
 	overflow: hidden;
+}
+#table_view {
+	margin: 10px 0 0 220px;
+	overflow: scroll;
 }
 #page_form label, #photo_form label, #user_form label, #site_messages_form label, #link_form label, #document_form label, .wide_form label {
     display: block;

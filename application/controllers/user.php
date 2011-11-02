@@ -21,11 +21,11 @@ class User extends MY_Controller {
 		
 		if ($this->uri->segment(4))
 		{
-			$data['table'] = $this->people_model->selectUsers(array('where' => array('people.'.$this->uri->segment(3) => $this->uri->segment(4))));
+			$data['table'] = $this->people_model->selectUsers(array('fields' => 'people.id, people.pc_id, people.fname, people.lname, people.gender, people.email, people.phone, people.address, people.blog_address, people.blog_name, people.blog_description, people.is_user, people.is_admin, people.is_moderator, people.created, people.edited, people.last_activity', 'where' => array('volunteers.'.$this->uri->segment(3) => $this->uri->segment(4))));
 		}
 		else
 		{
-			$data['table'] = $this->people_model->selectUsers();
+			$data['table'] = $this->people_model->selectUsers(array('fields' => 'people.id, people.pc_id, people.fname, people.lname, people.gender, people.email, people.phone, people.address, people.blog_address, people.blog_name, people.blog_description, people.is_user, people.is_admin, people.is_moderator, people.created, people.edited, people.last_activity'));
 		}
 		
 		//print_r($data);
@@ -37,11 +37,11 @@ class User extends MY_Controller {
 	    // print the page
 		$this->output->set_header("Cache-Control: max-age=300, public, must-revalidate");
 		
-		$this->load->view('head', array('page_title' => $data['title'], 'stylesheets' => array('demo_table.css', 'layout_outer.css', 'layout_inner.css', 'theme.css'), 'scripts' => array('jquery.dataTables.min.js', 'user.js', 'basic.js', 'jquery.url.js')));
+		$this->load->view('head', array('page_title' => $data['title'], 'stylesheets' => array('demo_table.css', 'layout_outer.css', 'layout_inner.css', 'theme.css'), 'scripts' => array('jquery.dataTables.min.js', 'user.js')));
 		$this->load->view('header');
 		//$this->load->view('main_open');
-		//$this->load->view('left_column');
-		$this->load->view('user_list_view', $data);
+		$this->load->view('left_column');
+		$this->load->view('table_view', $data);
 		//$this->load->view('main_close');
 		$this->load->view('footer', array('footer' => 'Footer Here'));
 	}
@@ -207,5 +207,29 @@ class User extends MY_Controller {
 				redirect('user/view');
 			}
 		}
+	}
+	
+	public function stage()
+	{
+		$this->load->model('stage_model');
+		
+		$data['table'] = $this->stage_model->read();
+		$data['title'] = 'Stages';
+		$data['backtrack'] = array('admin' => 'Admin Panel', 'user' => 'Users', 'user/stage' => 'Stages');
+		$data['edit_target'] = 'stage/edit/';
+		$data['extra_targets'][] = array('path' => 'user/view/stage_id/', 'column' => 'id', 'text' => 'View Members');
+		$data['extra_targets'][] = array('path' => 'stage/delete/', 'column' => 'id', 'text' => 'Delete');
+		
+		
+	    // print the page
+		$this->output->set_header("Cache-Control: max-age=300, public, must-revalidate");
+		
+		$this->load->view('head', array('page_title' => $data['title'], 'stylesheets' => array('layout_outer.css', 'layout_inner.css', 'theme.css', 'demo_table.css'), 'scripts' => array('jquery.dataTables.min.js', 'datatable_initiate.js')));
+		$this->load->view('header');
+		//$this->load->view('main_open');
+		$this->load->view('left_column');
+		$this->load->view('table_view', $data);
+		//$this->load->view('main_close');
+		$this->load->view('footer');
 	}
 }
