@@ -101,4 +101,12 @@ class Permission_model extends CI_Model
 	    $this->db->delete('authors');
 		return true;
 	}
+	public function purge_by_user($user_id)
+	{
+		$this->db->where('user_id', $user_id);
+	    $this->db->delete('actors');
+		$this->db->where('user_id', $user_id);
+	    $this->db->delete('authors');
+		return true;
+	}
 }

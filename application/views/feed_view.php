@@ -19,7 +19,7 @@
 
 <div id="backtrack">
 <?php foreach ($backtrack as $key => $value): ?>
-    <?php echo anchor($key, $value); ?>&nbsp;>&nbsp;
+		<?php echo anchor($key, $value).'&nbsp;&gt; '; ?>
 <? endforeach; ?>
 </div>
 
@@ -46,13 +46,13 @@
 			<span class="feed_read_more"><?php anchor($item['full_url'], 'read more'); ?></span>
 			<? endif; ?>
 		</div>
-		<div class="feed_info">INFO</div>
+		<div class="feed_info"></div>
 		<div class="feed_tags">
 			<?php if ($item['tags']): foreach ($item['tags'] as $tag): ?>
 			<span class="hash">#</span><?php echo anchor('feed/tag/'.$tag, $tag, array('class' => 'tag')); ?></span>
 			<?php endforeach; endif; ?>
 		</div>
-		<div class="feed_comments">COMMENTS</div>
+		<div class="feed_comments"></div>
 	</div>
 </div>
 <?php endforeach; ?>

@@ -20,7 +20,18 @@
 				<p>
 					<?php echo anchor('profile/view/'.$this->uri->segment(3, null), 'View Profile'); ?><br>
 					<?php echo anchor($blog_url, 'Go to blog', array('target' => '_blank')); ?><br>
-					<?php if ($this->userdata['group']['name'] == 'Admin'): echo anchor('user/edit/'.$id, 'Edit User'); endif; ?>
+					<?php if ($this->userdata['group']['name'] == 'admin'): echo anchor('user/edit/'.$id, 'Edit User'); endif; ?>
+				</p>
+			</div>
+			<?php endif; ?>
+			
+			<?php if (isset($links)): ?>
+			<div class="links">
+				<h2>Suggested Reading</h2>
+				<p>
+					<?php $count = count($links); foreach ($links as $link): ?>
+					<?php echo $link; if ($count > 1) echo '<br />'; $count--;?>
+					<?php endforeach; ?>
 				</p>
 			</div>
 			<?php endif; ?>
@@ -50,9 +61,35 @@
 	
 			<div id ="social">
 				<h2>Share</h2>
-				<br />
+				
+				
+				<!-- facebook like interface -->
+				<div id="fb-root"></div>
+				<script src="http://connect.facebook.net/en_US/all.js#appId=269078833104121&amp;xfbml=1"></script>
+				<fb:like href="<?php echo site_url(); ?>" send="true" layout="box_count" width="55" show_faces="true" action="like" font="arial"></fb:like>
+				<!-- END facebook like interface -->
+				
+				<!-- Google plusone button -->
+				<!-- Place this tag where you want the +1 button to render -->
+				<div class="g-plusone" data-size="tall"></div>
+				<!-- Place this render call where appropriate -->
+				<script type="text/javascript">
+				  (function() {
+					var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
+					po.src = 'https://apis.google.com/js/plusone.js';
+					var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
+				  })();
+				</script>
+				<!-- END google plusone button -->
+				
+				<!-- tweet this page -->
+				<a href="https://twitter.com/share" class="twitter-share-button" data-count="vertical" data-via="hedrickchris">Tweet</a>
+				<script type="text/javascript" src="//platform.twitter.com/widgets.js"></script>
+				<!-- END tweet this page -->
+				
+				<br /><br />
 				<!-- Diaspora* share button -->
-				<div>
+				<div id="diaspora_share">
 					<div style="float:left;width:31px;height:31px;border:#333 3px solid;-moz-border-radius:6px;-webkit-border-radius:6px;border-radius:6px; cursor:pointer;box-shadow:1px 1px 4px rgb(204,204,204);margin-right:5px;" onMouseOver="init();" onMouseOut="stop();" onClick="getPodName();">
 						<canvas width="27" height="27" id="canvas" style="margin:2px 0 0 2px;"></canvas>
 					</div>
@@ -153,29 +190,6 @@
 				</script>
 				<!-- END Dispora* share button -->
 				
-				<!-- facebook like interface -->
-				<div id="fb-root"></div>
-				<script src="http://connect.facebook.net/en_US/all.js#appId=269078833104121&amp;xfbml=1"></script>
-				<fb:like href="<?php echo site_url(); ?>" send="true" layout="box_count" width="55" show_faces="true" action="like" font="arial"></fb:like>
-				<!-- END facebook like interface -->
-				
-				<!-- Google plusone button -->
-				<!-- Place this tag where you want the +1 button to render -->
-				<div class="g-plusone" data-size="tall"></div>
-				<!-- Place this render call where appropriate -->
-				<script type="text/javascript">
-				  (function() {
-					var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
-					po.src = 'https://apis.google.com/js/plusone.js';
-					var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
-				  })();
-				</script>
-				<!-- END google plusone button -->
-				
-				<!-- tweet this page -->
-				<a href="https://twitter.com/share" class="twitter-share-button" data-count="vertical" data-via="hedrickchris">Tweet</a>
-				<script type="text/javascript" src="//platform.twitter.com/widgets.js"></script>
-				<!-- END tweet this page -->
 				
 			</div>
 			

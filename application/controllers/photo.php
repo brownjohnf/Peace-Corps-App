@@ -22,7 +22,7 @@ class Photo extends MY_Controller {
 		$data['form_title'] = 'Upload Photo';
 		$data['user_id'] = $this->userdata['id'];
 		
-		$this->load->view('head', array('page_title' => 'Upload Photo', 'stylesheets' => array('layout_outer.css', 'layout_inner.css', 'theme.css'), 'scripts' => array('basic.js', 'jquery.url.js')));
+		$this->load->view('head', array('page_title' => 'Upload Photo', 'stylesheets' => array('layout_outer.css', 'layout_inner.css', 'theme.css')));
 		$this->load->view('header');
 		$this->load->view('main_open');
 		$this->load->view('left_column');
@@ -50,6 +50,8 @@ class Photo extends MY_Controller {
 		}
 		else
 		{
+			$caption = $this->input->post('caption');
+			//print $caption;
 			$this->load->library('image_lib');
 			
 			// set an array of sizes to be created
@@ -58,75 +60,53 @@ class Photo extends MY_Controller {
 							array('width' => 180, 'height' => 180, 'name' => '_sm'),
 							array('width' => 180, 'height' => null, 'name' => '_180w'),
 							array('width' => null, 'height' => 180, 'name' => '_180h'),
+							array('width' => 658, 'height' => 390, 'name' => '_splash'),
 							array('width' => 980, 'height' => null, 'name' => '_lrg')
 							);
 			
 			// process each photo
 			foreach ($photos as $photo)
 			{
-				$success = $this->photo_class->create($this->upload->data(), $photo);
+				$success[] = $this->photo_class->create($this->upload->data(), $photo, $caption);
 			}
-			
-			/*
-			// crop the original down to a square
-			if (! $square_info = $this->photo_class->crop($upload_info))
-			{
-				$this->session->set_flashdata('error', 'Photo was successfully uploaded, but could not be cropped. Please correct the problem, and try again.'.print_r($this->upload->data(), true));
-				redirect('photo/add');
-			}
-			//print $square;
-			// reduce the square image to 180
-			if (! $this->photo_class->resize($square_info, 180, 180, true, $imagename))
-			{
-				$this->session->set_flashdata('error', 'Photo was successfully uploaded and cropped, but the cropped image could not be resized to 180. Please correct the problem, and try again.'.print_r($this->upload->data(), true));
-				redirect('photo/add');
-			}
-			// reduce the square image to 75, without copying
-			if (! $this->photo_class->resize($square_info, 75, 75, false, $imagename))
-			{
-				$this->session->set_flashdata('error', 'Photo was successfully uploaded and cropped, but the cropped image could not be resized to 75. Please correct the problem, and try again.'.print_r($this->upload->data(), true));
-				redirect('photo/add');
-			}
-			//print $original;
-			$upload_info['full_path'] = $original;
-			// reduce the original upload to 250
-			if (! $this->photo_class->resize($upload_info, 250, 250, true, $imagename))
-			{
-				$this->session->set_flashdata('error', 'Photo was successfully uploaded, cropped and resized, but the original image could not be resized to 980. Please correct the problem, and try again.'.print_r($this->upload->data(), true));
-				redirect('photo/add');
-			}
-			// reduce the original upload to 180, not copying
-			if (! $this->photo_class->resize($upload_info, 180, 180, true, $imagename))
-			{
-				$this->session->set_flashdata('error', 'Photo was successfully uploaded, cropped and resized, but the original image could not be resized to 980. Please correct the problem, and try again.'.print_r($this->upload->data(), true));
-				redirect('photo/add');
-			}
-			// reduce the original upload to 980
-			if (! $this->photo_class->resize($upload_info, 980, 900, false, $imagename))
-			{
-				$this->session->set_flashdata('error', 'Photo was successfully uploaded, cropped and resized, but the original image could not be resized to 980. Please correct the problem, and try again.'.print_r($this->upload->data(), true));
-				redirect('photo/add');
-			}
-			*/
 				
 			$this->session->set_flashdata('success', print_r($success, true));
-			redirect('photo/gallery');
-			
+			redirect('photo/add');
 		}
 	}
 	
 	public function gallery()
 	{
 		$this->load->model('photo_model');
-		$results = $this->photo_model->read(array('where' => array('width' => 180, 'height' => 180)));
+		if (is_numeric($this->uri->segment(3)))
+		{
+			$owner_id = $this->uri->segment(3);
+		}
+		elseif ($this->uri->segment(3) == 'me')
+		{
+			$owner_id = $this->userdata['id'];
+		}
+		else
+		{
+			$owner_id = '%';
+		}
+		$results = $this->photo_model->read(array('where' => array('height' => 180, 'owner_id like' => $owner_id), 'order_by' => array('column' => 'width', 'order' => 'desc')));
 		foreach ($results as $result)
 		{
-			$data['photos'][] = array('src' => base_url().'uploads/'.$result['filename'].$result['extension'], 'height' => '180px', 'width' => '180px');
+			if ($result['width'] != 180)
+			{
+				$count = floor(980 / $result['width']);
+				$margin = (980 - $result['width'] * $count) / $count / 2;
+				if ($margin > 5) {
+					$margin = 3;
+				}
+				$data['photos'][] = array('src' => base_url().'uploads/'.$result['filename'].$result['extension'], 'height' => '180px', 'width' => $result['width'], 'style' => 'margin: 3px '.$margin.'px;', 'alt' => $result['caption']);
+			}
 		}
 		
 		$data['title'] = 'Photo Gallery';
 		
-		if ($this->userdata['group']['name'] = 'Admin')
+		if ($this->userdata['group']['name'] = 'admin')
 		{
 			$data['controls'] = anchor('photo/add/', img('img/upload_icon_black.png'), array('class' => 'upload'));
 		}
@@ -151,12 +131,12 @@ class Photo extends MY_Controller {
 		$results = $this->photo_model->read();
 		foreach ($results as $result)
 		{
-			$data['photos'][] = array('src' => base_url().'uploads/'.$result['filename'].$result['extension'], 'height' => '180px');
+			$data['photos'][] = array('src' => base_url().'uploads/'.$result['filename'].$result['extension'], 'height' => '180px', 'alt' => $result['caption']);
 		}
 		
 		$data['title'] = 'Photo Gallery';
 		
-		if ($this->userdata['group']['name'] = 'Admin')
+		if ($this->userdata['group']['name'] = 'admin')
 		{
 			$data['controls'] = anchor('photo/add/', img('img/upload_icon_black.png'), array('class' => 'upload'));
 		}
@@ -174,14 +154,50 @@ class Photo extends MY_Controller {
 		$this->load->view('footer', array('footer' => 'Footer Here'));
 	}
 	
-	// for use in the modal, is a basic gallery, no header, footer, etc.
-	public function select_photo()
+	// for use in profile photo selection modal, is a basic gallery, no header, footer, etc.
+	public function select_profile_photo()
 	{
 		$this->load->model('photo_model');
+		
 		$results = $this->photo_model->read(array('where' => array('width' => 180, 'height' => 180)));
 		foreach ($results as $result)
 		{
-			$data['photos'][] = array('src' => base_url().'uploads/'.$result['filename'].$result['extension'], 'height' => '180px', 'width' => '180px', 'id' => $result['filename'].$result['extension'], 'class' => 'gallery_photo', 'onClick' => "pick_photo('".$result['imagename']."');");
+			$count = floor(980 / $result['width']);
+			$margin = (980 - $result['width'] * $count) / $count / 2;
+			if ($margin > 5) {
+				$margin = 3;
+			}
+			$data['photos'][] = array('src' => base_url().'uploads/'.$result['filename'].$result['extension'], 'height' => '180px', 'width' => '180px', 'id' => $result['filename'].$result['extension'], 'class' => 'gallery_photo', 'onClick' => "profile_photo('".$result['imagename']."');", 'style' => 'margin:'.$margin.'px;');
+		}
+		
+		$data['controls'] = null;
+		$data['title'] = 'Select a Photo';
+		
+		$this->load->view('gallery_view', $data);
+	}
+	
+	// for use in the embedded photo modal, is a basic gallery, no header, footer, etc.
+	public function select_embedded_photo()
+	{
+		$this->load->model('photo_model');
+		
+		$results = $this->photo_model->read(array('where' => array('height' => 180), 'order_by' => array('column' => 'width', 'order' => 'desc')));
+		foreach ($results as $result)
+		{
+			if ($result['width'] != 180)
+			{
+				if ($result['width'] > 180) {
+					$tail = '_180h';
+				} else {
+					$tail = '_180w';
+				}
+				$count = floor(980 / $result['width']);
+				$margin = (980 - $result['width'] * $count) / $count / 2;
+				if ($margin > 5) {
+					$margin = 3;
+				}
+				$data['photos'][] = array('src' => base_url().'uploads/'.$result['filename'].$result['extension'], 'height' => $result['height'], 'width' => $result['width'], 'id' => $result['filename'].$result['extension'], 'class' => 'gallery_photo', 'onClick' => "embed_photo('".base_url().'uploads/'.$result['imagename'].$tail.$result['extension']."');", 'style' => 'margin:'.$margin.'px;');
+			}
 		}
 		
 		$data['controls'] = null;

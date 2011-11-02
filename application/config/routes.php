@@ -47,6 +47,10 @@ $route['disclaimer'] = 'home/disclaimer';
 $route['support'] = 'home/support';
 $route['about'] = 'home/about';
 $route['security'] = 'home/security';
+$route['welcome'] = 'home/welcome';
+$route['admin/site/messages/edit'] = 'admin/edit_site_messages';
+$route['admin/site/messages'] = 'admin/edit_site_messages';
+$route['admin/site'] = 'admin/edit_site_messages';
 
 
 /* End of file routes.php */

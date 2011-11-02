@@ -7,8 +7,7 @@ class Feed extends MY_Controller {
 	
 	function __construct() {
 	    parent::__construct();
-		$this->load->library('page_class');
-		$this->load->library('common_class');
+		$this->load->library(array('page_class', 'common_class', 'tag_class'));
 	}
 
 	public function index()
@@ -52,6 +51,9 @@ class Feed extends MY_Controller {
 		$blogs_chunks = array_chunk($blogs, 10, true);
 		
 		$data['feed'] = $blogs_chunks[0];
+		
+		// retrieve tags w/o optional sorting/filter
+		$tags['tags'] = $this->tag_class->cloud();
 	    
 		$data['backtrack'] = array('feed' => 'Feed', 'feed/blog' => 'Blogs');
 		
@@ -59,7 +61,7 @@ class Feed extends MY_Controller {
 		$this->load->view('header');
 		$this->load->view('main_open');
 		$this->load->view('left_column');
-		$this->load->view('right_column');
+		$this->load->view('right_column', $tags);
 		$this->load->view('feed_view', $data);
 		$this->load->view('main_close');
 		$this->load->view('footer', array('footer' => 'Footer Here'));
@@ -70,15 +72,8 @@ class Feed extends MY_Controller {
 	    $data['feed'] = $this->page_class->feed();
 	    //echo '<pre>'; echo print_r($feed['data']); echo '</pre>';
 	    
-		$tags['tags'] = array();
-		foreach ($data['feed'] as $feed)
-		{
-			//print_r($tags['tags']);
-			//print_r($feed['tags']);
-			$tags['tags'] = array_merge($tags['tags'], $feed['tags']);
-		}
-		
-		$tags['tags'] = array_unique($tags['tags']);
+		// retrieve tags w/o optional sorting/filter
+		$tags['tags'] = $this->tag_class->cloud();
 	    
 		$data['backtrack'] = array('feed' => 'Feed', 'feed/page' => 'Pages');
 		
@@ -97,15 +92,8 @@ class Feed extends MY_Controller {
 	    $data['feed'] = $this->page_class->feed();
 	    //echo '<pre>'; echo print_r($feed['data']); echo '</pre>';
 	    
-		$tags['tags'] = array();
-		foreach ($data['feed'] as $feed)
-		{
-			//print_r($tags['tags']);
-			//print_r($feed['tags']);
-			$tags['tags'] = array_merge($tags['tags'], $feed['tags']);
-		}
-		
-		$tags['tags'] = array_unique($tags['tags']);
+		// retrieve tags w/o optional sorting/filter
+		$tags['tags'] = $this->tag_class->cloud();
 	    
 		$data['backtrack'] = array('feed' => 'Feed', 'feed/page' => 'Pages');
 		
@@ -126,15 +114,8 @@ class Feed extends MY_Controller {
 	    $data['feed'] = $this->tag_class->feed(urldecode($this->uri->segment(3, null)));
 	    //echo '<pre>'; echo print_r($data); echo '</pre>';
 	    
-		$tags['tags'] = array();
-		foreach ($data['feed'] as $feed)
-		{
-			//print_r($tags['tags']);
-			//print_r($feed['tags']);
-			$tags['tags'] = array_merge($tags['tags'], $feed['tags']);
-		}
-		
-		$tags['tags'] = array_unique($tags['tags']);
+		// retrieve tags w/o optional sorting/filter
+		$tags['tags'] = $this->tag_class->cloud();
 		
 		$data['backtrack'] = array('feed' => 'Feed', 'feed/tag' => 'Tags');
 		

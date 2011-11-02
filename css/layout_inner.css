@@ -30,6 +30,9 @@
 .content {
 	text-align: left;
 }
+.content p {
+	text-align: justify;
+}
 .content ul {
     padding-left: 40px;
     margin: 10px;
@@ -54,11 +57,11 @@
 }
 .floatright { /* this class can be used to float an element right in your page. The floated element must precede the element it should be next to on the page. */
 	float: right;
-	margin-left: 8px;
+	margin: 5px 0 5px 5px;
 }
 .floatleft { /* this class can be used to float an element left in your page */
 	float: left;
-	margin-right: 8px;
+	margin: 5px 5px 5px 0;
 }
 .clearfloat { /* this class should be placed on a div or break element and should be the final element before the close of a container that should fully contain a float */
 	clear:both;
@@ -78,8 +81,14 @@
 }
 
 #leftbar .controls {
-	float: right;
 	margin: 2px 0 0 0;
+	position: absolute;
+	top: 0;
+	right: 0;
+}
+
+#leftbar li {
+	position: relative;
 }
 
 #leftbar .controls img {
@@ -87,69 +96,87 @@
 }
 
 #leftbar ul.leftmenu > li > a {
-	padding: 4px 4px 4px 30px;
-	margin-top: 4px;
+	padding: 4px 4px 4px 15px;
+	margin-top: 3px;
 	font-size: 17px;
 }
 #leftbar ul.leftmenu > li > ul > li > a {
-    padding: 3px 4px 1px 45px;
-	margin-top: 3px;
+    padding: 3px 4px 1px 30px;
+	margin-top: 2px;
 	font-size: 15px;
 }
 #leftbar ul.leftmenu > li > ul > li > ul > li > a {
-    padding: 1px 4px 1px 60px;
+    padding: 1px 4px 1px 45px;
 	margin-top: 1px;
 	font-size: 13px;
+}
+#leftbar ul.leftmenu > li > ul > li > ul > li > ul > li > a {
+    padding: 1px 4px 1px 60px;
+	margin-top: 1px;
+	font-size: 11px;
+}
+#leftbar ul.leftmenu > li > ul > li > ul > li > ul > li ul > li > a {
+    padding: 1px 4px 1px 75px;
+	margin-top: 1px;
+	font-size: 11px;
 }
 #leftbar ul.leftmenu a {
 	display: block;
 }
 #leftbar ul.leftmenu li > a {
-	border: 1px solid #fff;
+	border: 1px solid transparent;
 }
-#leftbar ul.leftmenu a:hover {
+#leftbar ul.leftmenu li > a:hover {
     background-color: whitesmoke;
-	border: 1px solid #ccc;
+	border-color: #ccc;
 	text-decoration: none;
 }
 /* end of vmenu settings */
 
 #bottom_of_page {
-	height: 450px;
+	height: 300px;
 }
 
-#page_form input[type=text], textarea {
-    width: 548px;
+#page_form input[type=text], #page_form textarea, #site_messages_form input[type=text], #site_messages_form textarea, .wide_form textarea, .wide_form input[type=textarea] {
+	width: 748px;
 }
-
-#page_view, #page_form, #feed_view, #photo_form, #profile_view, #blank_view, #module_view, #user_form, #blog_view, #module_list_view {
+#page_view, #feed_view, #photo_form, #profile_view, #blank_view, #module_view, #user_form, #blog_view, #module_list_view {
     margin: 0 200px 0 220px;
     width: 560px;
     overflow: hidden;
 }
-#user_list_view {
+#user_list_view, #link_list_view, #document_list_view {
 	margin: 20px;
 	overflow: auto;
 }
-#table_view {
+#site_messages_form, #page_form, #link_form, #document_form, .wide_form {
 	margin: 0 0 0 220px;
 	width: 760px;
 	overflow: hidden;
 }
-#page_form label, #photo_form label, #user_form label {
+#table_view {
+	margin: 10px 0 0 220px;
+	overflow: scroll;
+}
+#page_form label, #photo_form label, #user_form label, #site_messages_form label, #link_form label, #document_form label, .wide_form label {
     display: block;
     margin-top: 10px;
 }
-#page_form select, #photo_form select, #user_form select, #user_form input {
+#page_form select, #photo_form select, #user_form select, #user_form input, #link_form input[type=text], #document_form input[type=text], .wide_form input[type=text] {
     width: 50%;
 }
+
+#photo_form input[type=text], #photo_form input[type=file], .wide_form input[type=file] {
+	width: 80%;
+}
+
 #backtrack {
     margin-bottom: 10px;
 }
 #logo {
-	width: 180px;
-	height: 180px;
-	margin: 0 10px 10px 10px;
+	width: 190px;
+	height: 190px;
+	margin: 0 10px 10px 0;
 }
 #rightbar div {
 	margin-bottom: 20px;
@@ -159,21 +186,20 @@
 	width: 180px;
 	box-shadow: 0 0 5px black;
 }
-#page_view .controls, #page_form .controls, #photo_form .controls, #gallery_view .controls, #user_form .controls {
+#page_view .controls, #page_form .controls, #photo_form .controls, #gallery_view .controls, #user_form .controls, #link_form .controls, #document_form .controls, .wide_form .controls {
     float: right;
 	margin: 0;
 	padding: 0;
 }
-#page_view .edit a, #page_form .controls a, #photo_form .controls a, #gallery_view .controls a, #user_form .controls a {
+#page_view .edit a, #page_form .controls a, #photo_form .controls a, #gallery_view .controls a, #user_form .controls a, #link_form .controls a, #document_form .controls a, .wide_form .controls a {
 	margin: 0;
 	padding: 0;
 }
-#page_view .controls a img, #page_form .controls a img, #photo_form .controls a img, #gallery_view .controls a img, #user_form .controls a img {
+#page_view .controls a img, #page_form .controls a img, #photo_form .controls a img, #gallery_view .controls a img, #user_form .controls a img, #link_form .controls a img, #document_form .controls a img, .wide_form .controls a img {
 	height: 22px;
 	margin-left: 5px;
 }
 #gallery_view #gallery img {
-	margin: 8px;
 	box-shadow: 0 0 5px black;
 	float: left;
 }
@@ -188,4 +214,42 @@ h2 {
 }
 #page_form h2 {
 	clear: both;
+}
+#splash_container {
+	height: 390px;
+}
+#splash_content {
+	width: 980px;
+	margin: 0 auto;
+}
+#splash_content > div {
+	margin: 10px 0 10px 0;
+	padding: 10px;
+	border: 1px solid #999;
+	border-radius: 10px;
+}
+#splash_content > div p {
+	margin-bottom: 10px;
+	text-align: justify;
+}
+#splash_content > div h2 {
+	margin-bottom: 10px;
+	color: #3f8fba;
+}
+span.button1 {
+	padding: 5px;
+	background-color: gray;
+	display: inline-block;
+	cursor: pointer;
+	font-size: 18px;
+	color: white;
+	margin: 2px;
+}
+span#insert_photo {
+	float: right;
+	margin-right: 0;
+}
+
+#leftbar ul.leftmenu > li ul {
+	display: none;
 }

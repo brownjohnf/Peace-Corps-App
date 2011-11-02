@@ -1,0 +1,37 @@
+@charset "UTF-8";
+
+/*   Copyright (c) 2011, John F. Brown  This file is
+  licensed under the Affero General Public License version 3 or later.  See
+   the COPYRIGHT file.
+*/
+
+#inner_container {
+	margin-top: 0 !important;
+}
+
+#footer_upper_inner > ul.ie_last {
+	margin: 0 !important;
+}
+
+.splash_text h1 {
+	font-size: 24px;
+}
+
+#diaspora_share {
+	display: none !important;
+}
+/*
+#leftbar .controls {
+	float: right !important;
+	position: inherit !important;
+	top: auto !important;
+	right: auto !important;
+}
+
+#leftbar li {
+	position: inherit !important;
+}
+*/
+#leftbar ul * {
+	zoom: 1;
+}

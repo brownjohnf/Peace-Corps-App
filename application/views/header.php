@@ -5,7 +5,14 @@
 ?>
 
 <?php
-	$topmenu = array(anchor('','Home', array('name' => 'home')), anchor('feed','Updates', array('name' => 'feed')), anchor('resource','Resources', array('name' => 'resource')), anchor('photo/gallery','Photos', array('name' => 'photo')), anchor('feed/video','Videos', array('name' => 'video')), anchor('feed/blog', 'Blogs'), array('name' => 'blog'));
+	$topmenu = array(
+					 anchor('page/view/about-us','About Us', array('name' => 'page')),
+					 anchor('feed','Updates', array('name' => 'feed')),
+					 //anchor('resource','Learning', array('name' => 'resource')),
+					 anchor('photo/gallery','Photos', array('name' => 'photo')),
+					 //anchor('feed/video','Videos', array('name' => 'video')),
+					 anchor('feed/blog', 'Blogs', array('name' => 'blog'))
+					 );
 ?>
 <body>
 	<div id="outer_container">
@@ -27,13 +34,16 @@
 			<br class="clearfloat" />
 		</div><!-- END #header_outer -->
 		
-		<?php
-if ($this->session->flashdata('alert'))
+<?php
+if ($this->uri->rsegment(1) != 'home')
 {
-    $this->load->view('alert');
-}
-if ($this->session->flashdata('message'))
-{
-    $this->load->view('message');
+	if ($this->session->flashdata('alert'))
+	{
+		$this->load->view('alert');
+	}
+	if ($this->session->flashdata('message'))
+	{
+		$this->load->view('message');
+	}
 }
 ?>

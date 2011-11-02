@@ -7,8 +7,8 @@ class Page extends MY_Controller {
 	
 	function __construct() {
 	    parent::__construct();
-		$this->load->library('page_class');
-		$this->load->library(array('common_class'));
+		$this->load->model('page_model');
+		$this->load->library(array('common_class', 'page_class'));
 	}
 	
 	public function index()
@@ -30,7 +30,7 @@ class Page extends MY_Controller {
 	    // retrieve the backtrack url for the top of the page. takes the content id and table name
 	    // the backtrack function can only be called for content with a 'parent' field, and a valid hierarchical structure
 	    $data['backtrack'] = $this->common_class->backtrack($data['parent_id'], 'pages');
-	    $data['backtrack'][$url] = $data['title'];
+	    $data['backtrack']['page/view/'.$url] = $data['title'];
 	    
 	    // print the page
 		$this->output->set_header("Cache-Control: max-age=300, public, must-revalidate");
@@ -39,7 +39,7 @@ class Page extends MY_Controller {
 		$this->load->view('header');
 		$this->load->view('main_open');
 		$this->load->view('left_column');
-		$this->load->view('right_column', array('authors' => $data['authors'], 'tags' => $data['tags'], 'profile_photo' => $data['profile_photo']));
+		$this->load->view('right_column', array('authors' => $data['authors'], 'tags' => $data['tags'], 'profile_photo' => $data['profile_photo'], 'links' => $data['links']));
 		$this->load->view('page_view', $data);
 		$this->load->view('main_close');
 		$this->load->view('footer', array('footer' => 'Footer Here'));
@@ -47,12 +47,12 @@ class Page extends MY_Controller {
 	
 	public function create()
 	{
-		if ($this->userdata['group']['name'] != 'Admin' && (! $this->permission_class->is_actor(array('page_id' => $this->uri->segment(3, 0), 'user_id' => $this->userdata['id']))))
+		if ($this->userdata['group']['name'] != 'admin' && (! $this->permission_class->is_actor(array('page_id' => $this->uri->segment(3, 0), 'user_id' => $this->userdata['id']))))
 		{
 			$this->session->set_flashdata('error', 'You do not have appropriate permissions for this action. [create]');
 			redirect('feed/page');
 		}
-		if ($this->userdata['group']['name'] != 'Admin')
+		if ($this->userdata['group']['name'] != 'admin')
 		{
 			$locked = 'disabled';
 		}
@@ -69,7 +69,11 @@ class Page extends MY_Controller {
 	    $this->form_validation->set_rules('title', 'Page Title', 'required');
 	    $this->form_validation->set_rules('description', 'Description', 'required');
 	    $this->form_validation->set_rules('content', 'Content', 'required');
-	    $this->form_validation->set_rules('updated', 'Updated', 'required');
+	    $this->form_validation->set_rules('updated', 'Updated', 'is_natural');
+	    $this->form_validation->set_rules('auto_child_link', 'Auto-link to children', 'is_natural');
+	    $this->form_validation->set_rules('auto_sibling_link', 'Auto-link to siblings', 'is_natural');
+	    $this->form_validation->set_rules('auto_parent_link', 'Auto-link to parents', 'is_natural');
+	    $this->form_validation->set_rules('visibility', 'visibility', 'required');
 	    $this->form_validation->set_rules('group_id', 'Group', 'required');
 	    $this->form_validation->set_rules('parent_id', 'Parent', 'required');
 	    $this->form_validation->set_rules('profile_photo', 'Profile Photo', 'required');
@@ -77,7 +81,7 @@ class Page extends MY_Controller {
 		if ($this->form_validation->run() == false)
 		{
 			$data = $this->page_class->blank_form();
-			if (($actor_for = $this->permission_class->page_by_actor($this->userdata['id'])) && $this->userdata['group']['name'] != 'Admin')
+			if (($actor_for = $this->permission_class->page_by_actor($this->userdata['id'])) && $this->userdata['group']['name'] != 'admin')
 			{
 				$data['parents'] = array_intersect_key($data['parents'], $actor_for);
 			}
@@ -89,10 +93,14 @@ class Page extends MY_Controller {
 			if ($this->input->post('authors')) {
 				$data['set_authors'] = $this->input->post('authors');
 			}
+			if ($this->input->post('links')) {
+				$data['set_links'] = $this->input->post('links');
+			}
 			$data['locked'] = $locked;
 			
 			
 			$data['form_title'] = 'Create New Page';
+			$data['backtrack'] = array('' => 'Home', 'feed/page' => 'Page', 'page/create' => 'Create');
 			
 			if (isset($history['page']['view'])) {
 				$data['controls'] = anchor('page/view/'.$history['page']['view'], img(base_url().'img/cancel_icon.png'), array('class' => 'cancel'));
@@ -106,7 +114,6 @@ class Page extends MY_Controller {
 			$this->load->view('header');
 			$this->load->view('main_open');
 			$this->load->view('left_column');
-			$this->load->view('right_column');
 			$this->load->view('page_form', $data);
 			$this->load->view('main_close');
 			$this->load->view('footer', array('footer' => 'Footer Here'));
@@ -115,12 +122,12 @@ class Page extends MY_Controller {
 		{
 		    if ($url = $this->page_class->create($this->input->post()))
 		    {
-			$this->session->set_flashdata('success', 'Page successfully created.');
+				$this->session->set_flashdata('success', 'Page successfully created.');
 		        redirect('page/view/'.$url);
 		    }
 		    else
 		    {
-			die("we've hit a serious database error trying to create a page. ask Jack. [010]");
+				die("we've hit a serious database error trying to create a page. ask Jack. [010]");
 		    }
 		}
 	}
@@ -133,12 +140,12 @@ class Page extends MY_Controller {
 			redirect('page/create');
 	    }
 		
-		if ($this->userdata['group']['name'] != 'Admin' && (! $this->permission_class->is_actor(array('page_id' => $this->uri->segment(3), 'user_id' => $this->userdata['id']))))
+		if ($this->userdata['group']['name'] != 'admin' && (! $this->permission_class->is_actor(array('page_id' => $this->uri->segment(3), 'user_id' => $this->userdata['id']))))
 		{
 			$this->session->set_flashdata('error', 'You do not have appropriate permissions for this action. [edit]');
 			redirect('feed/page');
 		}
-		elseif ($this->userdata['group']['name'] != 'Admin')
+		elseif ($this->userdata['group']['name'] != 'admin')
 		{
 			$locked = 'disabled';
 		}
@@ -156,6 +163,10 @@ class Page extends MY_Controller {
 	    $this->form_validation->set_rules('description', 'Description', 'required');
 	    $this->form_validation->set_rules('content', 'Content', 'required');
 	    $this->form_validation->set_rules('updated', 'Updated', 'is_natural');
+	    $this->form_validation->set_rules('auto_link_child', 'Auto-link to children', 'is_natural');
+	    $this->form_validation->set_rules('auto_link_sibling', 'Auto-link to siblings', 'is_natural');
+	    $this->form_validation->set_rules('auto_link_parent', 'Auto-link to parents', 'is_natural');
+	    $this->form_validation->set_rules('visibility', 'Visibility', 'required');
 	    $this->form_validation->set_rules('group_id', 'Group', 'required');
 	    $this->form_validation->set_rules('parent_id', 'Parent', 'required');
 	    $this->form_validation->set_rules('profile_photo', 'Profile Photo', 'required');
@@ -164,7 +175,7 @@ class Page extends MY_Controller {
 		if ($this->form_validation->run() == false)
 		{
 			$data = $this->page_class->full_form($this->uri->segment(3));
-			if (($actor_for = $this->permission_class->page_by_actor($this->userdata['id'])) && $this->userdata['group']['name'] != 'Admin')
+			if (($actor_for = $this->permission_class->page_by_actor($this->userdata['id'])) && $this->userdata['group']['name'] != 'admin')
 			{
 				$data['parents'] = array_intersect_key($data['parents'], $actor_for);
 			}
@@ -177,15 +188,18 @@ class Page extends MY_Controller {
 			if ($this->input->post('authors')) {
 			    $data['set_authors'] = $this->input->post('authors');
 			}
+			if ($this->input->post('links')) {
+			    $data['set_links'] = $this->input->post('links');
+			}
 			
 			
 			$data['controls'] = anchor('page/view/'.$data['url'], img(base_url().'img/cancel_icon.png'), array('class' => 'cancel'));
+			$data['backtrack'] = array('' => 'Home', 'feed/page' => 'Pages', 'page/view/'.$data['url'] => $data['title'], 'page/edit/'.$this->uri->segment(3) => 'Edit');
 			
-			$this->load->view('head', array('page_title' => 'Edit Page', 'stylesheets' => array('layout_outer.css', 'layout_inner.css', 'theme.css', 'nyroModal.css'), 'scripts' => array('jquery.nyroModal.js', 'jquery.nyroModal.filters.link.js', 'page_edit.js', 'basic.js', 'jquery.url.js')));
+			$this->load->view('head', array('page_title' => 'Edit Page', 'stylesheets' => array('layout_outer.css', 'layout_inner.css', 'theme.css', 'nyroModal.css'), 'scripts' => array('jquery.nyroModal.js', 'jquery.nyroModal.filters.link.js', 'page_edit.js')));
 			$this->load->view('header');
 			$this->load->view('main_open');
 			$this->load->view('left_column');
-			$this->load->view('right_column');
 			$this->load->view('page_form', $data);
 			$this->load->view('main_close');
 			$this->load->view('footer', array('footer' => 'Footer Here'));
@@ -206,7 +220,7 @@ class Page extends MY_Controller {
 	
 	public function delete()
 	{
-		if ($this->userdata['group']['name'] != 'Admin')
+		if ($this->userdata['group']['name'] != 'admin')
 		{
 			$this->session->set_flashdata('error', 'You do not have appropriate permissions for this action.');
 			redirect('feed/page');
@@ -228,6 +242,10 @@ class Page extends MY_Controller {
 		{
 			$error[] = 'Could not remove tags. Please look into the problem.';
 		}
+		if (! $this->page_model->delete_page_link(array('page_id' => $this->uri->segment(3))))
+		{
+			$error[] = 'Could not remove page links. Please look into the problem.';
+		}
 		
 		if (isset($error)) {
 			$this->session->set_flashdata('error', implode(' ', $error));
@@ -236,5 +254,21 @@ class Page extends MY_Controller {
 		}
 		
 		redirect('feed/page');
+	}
+	
+	public function tree()
+	{
+		$data['data'] = $this->page_class->menu();
+		$data['title'] = 'Page Tree';
+		$data['backtrack'] = array('' => 'Home', 'feed/page' => 'Pages', 'page/tree' => 'Page Tree');
+		
+		$this->load->view('head', array('page_title' => $data['title'], 'stylesheets' => array('layout_outer.css', 'layout_inner.css', 'theme.css'), 'scripts' => array('basic.js', 'jquery.url.js')));
+		$this->load->view('header');
+		$this->load->view('main_open');
+		$this->load->view('left_column');
+		$this->load->view('right_column');
+		$this->load->view('basic_view', $data);
+		$this->load->view('main_close');
+		$this->load->view('footer', array('footer' => 'Footer Here'));
 	}
 }

@@ -13,13 +13,16 @@ class Tag_model extends CI_Model {
 	
 	public function read($data)
 	{
-		$default = array('fields' => '*', 'limit' => '50', 'where' => array('id like' => '%'), 'order_by' => array('column' => 'updated', 'order' => 'desc'), 'offset' => 0);
+		$default = array('fields' => '*', 'limit' => '50', 'where' => array('id like' => '%'), 'order_by' => array('column' => 'updated', 'order' => 'desc'), 'offset' => 0, 'distinct' => false);
 		$data = array_merge($default, $data);
 		//echo '<pre>'; print_r($data); echo '</pre>';
 		$this->db->select($data['fields']);
 		$this->db->where($data['where']);
 		$this->db->limit($data['limit'], $data['offset']);
 		$this->db->order_by($data['order_by']['column'], $data['order_by']['order']);
+		if ($data['distinct']) {
+			$this->db->distinct();
+		}
 		$query = $this->db->get('tags');
 
 		if ($data['limit'] == 1)

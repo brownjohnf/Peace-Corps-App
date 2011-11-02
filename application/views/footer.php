@@ -3,12 +3,15 @@
 #   licensed under the Affero General Public License version 3 or later.  See
 #   the COPYRIGHT file.
 ?>
-
+			<div id="bottom_of_page"></div>
 		</div><!-- end #outer_container -->
 			<div id="footer_outer">
 				<div id="footer_upper">
 					<div id="footer_upper_inner">
-						<img src="<?php echo base_url(); ?>img/baobab.png" id="baobab" />
+						<?php if ($this->uri->segment(2) == 'splash'): ?>
+						<!--<img id="baskets" src="<?php echo base_url(); ?>img/baskets.png" />
+						<img id="baobab" src="<?php echo base_url(); ?>img/baobab.png" />-->
+						<?php endif; ?>
 						<img id="watermark" src="<?php echo base_url(); ?>img/pc_logo_watermark.png" />
 						
 						<div id="google_search"><!-- Google search -->
@@ -17,11 +20,8 @@
 								<input type="hidden" name="oe" value="UTF-8" />
 								<input type="hidden" name="domains" value="http://pcsenegal.org" />
 								<input type="hidden" name="sitesearch" value="http://pcsenegal.org" checked />
-								<div>
 								<!--<input type="submit" name="btnG" value="Google Search" height="50px" />-->
 								<input type="text" name="q" maxlength="200" value="Search pcsenegal.org using Google Search" />
-								<br class="clearfloat"/>
-								</div>
 							</form>
 						</div><!--END Search Google -->
 						
@@ -47,7 +47,7 @@
 							<li>Recently Updated</li>
 							<li>Search</li>
 						</ul>
-						<ul>
+						<ul class="ie_last">
 							<h4>Profiles & Photos</h4>
 							<li>Search</li>
 							<li><?php echo anchor('photo/gallery', 'All Photos'); ?></li>
@@ -60,7 +60,7 @@
 				<div id="footer_lower">
 					<div id="footer_lower_inner">
 						<div id="legal">
-							<?php echo anchor('disclaimer', 'Disclaimer').anchor('privacy', 'Privacy Policy').anchor('support', 'Support').anchor('security', 'Security').anchor('about', 'About'); if ((! $this->fb_data['uid']) or (! $this->fb_data['me'])): echo anchor($this->fb_data['logoutUrl'], 'Log Out'); endif; ?>
+							<?php echo anchor('disclaimer', 'Disclaimer').anchor('privacy', 'Privacy Policy').anchor('support', 'Support').anchor('security', 'Security').anchor('about', 'About'); if ( $this->fb_data['uid'] || $this->fb_data['me']): echo anchor($this->fb_data['logoutUrl'], 'Log Out'); endif; ?>
 							<br />Content &copy;2011 Peace Corps Senegal. Design &copy;2011 John F. Brown. Icons courtesy of Neurovit.
 						</div>
 						<div id="powered">
@@ -69,6 +69,6 @@
 						<br class="clearfloat" />
 					</div><!-- END footer_lower_inner -->
 				</div><!-- END footer_lower -->
-			</div><!-- end #footer -->
+			</div><!-- end #footer_outer -->
 </body>
 </html>

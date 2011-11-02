@@ -46,6 +46,262 @@ class User_class
 		return $user_id;
 	}
 	
+	public function upload($data)
+	{
+		if ($data['file_type'] != 'text/csv') {
+			$this->ci->session->set_flashdata('error', 'Your file is not of the text/csv mime type, and is therefore unacceptable.');
+			return false;
+			die();
+		}
+		$handle = fopen($data['full_path'], 'r');
+		$csv = fgetcsv($handle, 0, ',', '"');
+		
+		if (! array_search('pc_id', $csv) && ! array_search('id', $csv) && count(array_intersect(array('fname', 'lname'), $csv)) != 2)
+		{
+			$this->ci->session->set_flashdata('error', 'You are missing both an ID, PC_ID, and all neccessary fields for creating a new entry. This means that this app has no idea what to do, and is therefore aborting. You must be either a) updating an existing entry by ID, b) updating an existing entry by PC_ID, or c) creating a new entry. If the latter, the following fields are required to be present and populated: fname, lname.');
+			return false;
+			die;
+		}
+		$keys = array_flip($csv);
+		
+		while(($row = fgetcsv($handle, 0, ',', '"')) != false)
+		{
+			// trim crap off the end of all fields
+			foreach ($csv as $key => $value)
+			{
+				$prep[$value] = trim($row[$key], "(),'\t\n\r\0\x0B -_=/\\][");
+				if ($prep[$value] == '')
+				{
+					unset($prep[$value]);
+				}
+			}
+			// if this user is a volunteer
+			if (array_key_exists('is_user', $prep) && $prep['is_user'] == 1)
+			{
+				// if their cos date is set
+				if (array_key_exists('cos', $prep))
+				{
+					$prep['cos'] = strtotime($prep['cos']);
+				}
+				
+				// if their site is set by name
+				if (array_key_exists('site', $prep))
+				{
+					// set a blank set of site data to use in lieu of anything they might be missing
+					$default_site = array('name' => null, 'parent_id' => 0, 'lat' => null, 'lng' => null);
+					
+					// if the site already exists, based on a search by name
+					if ($site = $this->ci->site_model->read(array('fields' => 'id, parent_id', 'where' => array('name like' => $prep['site']), 'limit' => 1)))
+					{
+						$prep['site_id'] = $site['id'];
+						
+						// if the site has no parent, and the region is set in csv
+						if ($site['parent_id'] == 0 && array_key_exists('region', $prep))
+						{
+							// if there is no region of that name
+							if (! $region = $this->ci->region_model->read(array('fields' => 'id', 'where' => array('name like' => $prep['region']), 'limit' => 1)))
+							{
+								// create a new region
+								if (! $region['id'] = $this->ci->region_model->create(array('name' => ucfirst(strtolower($prep['region'])))))
+								{
+									die('could not create a region for an existing site');
+								}
+							}
+							
+							// set the site parent to the new region_id
+							if (! $this->ci->site_model->update(array('id' => $prep['site_id'], 'parent_id' => $region['id'])))
+							{
+								die('could not add region to existing site.');
+							}
+						}
+					}
+					
+					// if the site does not exist, and there's a region set, confirm/create the region then the site
+					elseif (array_key_exists('region', $prep))
+					{
+						// if there is no region of that name
+						if (! $region = $this->ci->region_model->read(array('fields' => 'id', 'where' => array('name like' => $prep['region']), 'limit' => 1)))
+						{
+							// create a new region
+							if (! $region['id'] = $this->ci->region_model->create(array('name' => ucfirst(strtolower($prep['region'])))))
+							{
+								die('could not create new region of name '.$prep['region']);
+							}
+						}
+						
+						// create the site, including the region in the definition
+						if (! $site['id'] = $this->ci->site_model->create(array_merge($default_site, array('name' => $prep['site'], 'parent_id' => $region['id']))))
+						{
+							die('could not create new site with a parent_id of '.$region['id']);
+						}
+						
+						$prep['site_id'] = $site['id'];
+						$prep['region_id'] = $region['id'];
+					}
+					
+					// if the site does not exist, and there is no region set, create it
+					elseif ($site = $this->ci->site_model->create(array_merge($default_site, array('name' => $prep['site']))))
+					{
+						$prep['site_id'] = $site['id'];
+					}
+					else
+					{
+						die('serious problem: could not find or create site.');
+					}
+					unset($prep['site']);
+					if (array_key_exists('region', $prep))
+					{
+						unset($prep['region']);
+					}
+				}
+				
+				// if their sector is set, either by full or abbreviated name
+				if (array_key_exists('sector', $prep))
+				{
+					// set default data for new sector
+					$default_sector = array('name' => $prep['sector'], 'short' => word_limiter($prep['sector'], 1));
+					
+					// set whether or not we're dealing with abbreviations or full names
+					if (strlen($prep['sector']) < 6)
+					{
+						$field = 'short';
+					}
+					else
+					{
+						$field = 'name';
+					}
+					
+					// try to look up the sector, if the sector doesn't exist
+					if (! $sector = $this->ci->sector_model->read(array('fields' => 'id', 'where' => array($field.' like' => $prep['sector']), 'limit' => 1)))
+					{
+						// create new sector from default data
+						if ($sector['id'] = $this->ci->sector_model->create(array_merge($default_sector, array($field => $prep['sector']))))
+						{
+							die('could not create new sector.');
+						}
+					}
+					$prep['sector_id'] = $sector['id'];
+					unset($prep['sector']);
+				}
+				
+				// if their stage is set in any way
+				if (array_key_exists('stage', $prep))
+				{
+					$default_stage = array('name' => $prep['stage']);
+					
+					// if there is no stage for this name
+					if (! $stage = $this->ci->stage_model->read(array('fields' => 'id', 'where' => array('name like' => $prep['stage']), 'limit' => 1)))
+					{
+						// create a new stage
+						if (! $stage['id'] = $this->ci->stage_model->create($default_stage))
+						{
+							die('could not create a new stage.');
+						}
+					}
+					$prep['stage_id'] = $stage['id'];
+					unset($prep['stage']);
+				}
+				
+				// get the volunteer group_id from the database
+				if (! $group = $this->ci->group_model->read(array('where' => array('name' => 'user'), 'limit' => 1)))
+				{
+					die('could not read groups for volunteer');
+				}
+				$prep['group_id'] = $group['id'];
+				
+				// insert the volunteer-specific data into the volunteers table
+				// determine whether to use the actual id, or the pc_id to check for extant data
+				if (array_key_exists('id', $prep))
+				{
+					$id_col = 'user_id';
+					$id_to_use = $prep['id'];
+					$prep['user_id'] = $prep['id'];
+				}
+				elseif (array_key_exists('pc_id', $prep))
+				{
+					$id_col = 'pc_id';
+					$id_to_use = $prep['pc_id'];
+				}
+				else
+				{
+					die('there is neither an id or pc_id column present for inserting the volunteer. FAIL.');
+				}
+				
+				// set default volunteer input data
+				$input = array_intersect_key($prep, array_flip(array('user_id', 'pc_id', 'focus', 'stage_id', 'cos', 'local_name', 'site_id', 'sector_id')));
+				//print_r($input);
+				
+				// if there is an extant entry
+				if ($vol = $this->ci->volunteer_model->read(array('fields' => 'id, user_id', 'where' => array($id_col => $id_to_use), 'limit' => 1)))
+				{
+					if (! $this->ci->volunteer_model->update($input, $id_col))
+					{
+						die('failed to update volunteer entry');
+					}
+					if ($vol['user_id'] > 0)
+					{
+						$prep['id'] = $vol['user_id'];
+					}
+					else
+					{
+						$prep['vol_id'] = $vol['id'];
+					}
+				}
+				
+				// if no current entries exist, create a new one
+				elseif ($prep['vol_id'] = $this->ci->volunteer_model->create($input))
+				{
+				}
+				else
+				{
+					die('something went very wrong, and locating or creating volunteer entries failed. '.$this->ci->db->last_query());
+				}
+			}
+			
+			// if the person is a staff member
+			if (array_key_exists('is_staff', $prep))
+			{
+				
+			}
+			
+			// insert the person into the people table
+			
+			// set default values
+			$input = array_intersect_key($prep, array_flip(array('id', 'fb_id', 'group_id', 'fname', 'lname', 'email', 'email2', 'phone1', 'phone2', 'address', 'blog_address', 'blog_description', 'blog_name', 'is_user')));
+			//print_r($input);
+			
+			// if an id is set, and therefore we assume they already exist
+			if ((array_key_exists('id', $prep) && $user = $this->ci->people_model->read(array('fields' => 'id', 'where' => array('id' => $prep['id']), 'limit' => 1))) || ($user = $this->ci->people_model->read(array('fields' => 'id', 'where' => array('fname' => $prep['fname'], 'lname' => $prep['lname']), 'limit' => 1))))
+			{
+				$input['id'] = $user['id'];
+				if (! $this->ci->people_model->update($input))
+				{
+					die('failed to update volunteer entry');
+				}
+			}
+			elseif ($user['id'] = $this->ci->people_model->create($input))
+			{
+				if (! $this->ci->volunteer_model->update(array('user_id' => $user['id'], 'id' => $prep['vol_id'])))
+				{
+					die('failed to add user_id to previously created volunteer profile');
+				}
+			}
+			else
+			{
+				die('failed to find or create a new volunteer entry');
+			}
+			
+			
+			$output[] = $prep;
+			unset($prep);
+		}
+		
+		//echo '<pre>'; print_r($output); echo '</pre>';
+		
+		fclose($handle);
+		return true;
+	}
+	
 	public function edit($data)
 	{
 		$this->ci->load->model('user_model');
@@ -82,7 +338,12 @@ class User_class
 	}
 	public function blank_form()
 	{
-		$this->ci->load->model(array('permission_model', 'people_model', 'location_model'));
+		$this->ci->load->model(array(
+									 'permission_model',
+									 'people_model',
+									 'site_model',
+									 'sector_model'
+									 ));
 		
 	    $data['fb_id'] = null;
 	    $data['pc_id'] = null;
@@ -106,7 +367,7 @@ class User_class
 	    $groups = $this->ci->permission_model->read_groups(array('fields' => 'id, name'));
 	    $stages = $this->ci->people_model->read_stages(array('fields' => 'id, name'));
 	    $sectors = $this->ci->people_model->read_sectors(array('fields' => 'id, name'));
-	    $sites = $this->ci->location_model->read_sites(array('fields' => 'id, name'));
+	    $sites = $this->ci->site_model->read(array('fields' => 'id, name'));
 	    
 	    foreach ($stages as $stage) {
 			$data['stages'][$stage['id']] = $stage['name'];

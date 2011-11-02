@@ -14,12 +14,16 @@ class Page_model extends CI_Model {
 	function delete($id)
 	{
 		$this->db->where('id', $id);
-		return $this->db->delete('pages');
+		return $this->db->update('pages', array('delete' => true));
 	}
 	
-	public function read($data)
+	public function read($data = array('where' => array()))
 	{
-		$default = array('fields' => '*', 'limit' => '50', 'where' => array('id like' => '%'), 'order_by' => array('column' => 'updated', 'order' => 'desc'), 'offset' => 0);
+		$default = array('fields' => '*', 'limit' => '50', 'where' => array('id like' => '%', 'delete' => false), 'order_by' => array('column' => 'updated', 'order' => 'desc'), 'offset' => 0);
+		// sets it to only read non-deleted pages by default
+		if (array_key_exists('where', $data) && is_array($data['where'])) {
+			$data['where'] = array_merge($default['where'], $data['where']);
+		}
 		$data = array_merge($default, $data);
 		//echo '<pre>'; print_r($data); echo '</pre>';
 		$this->db->select($data['fields']);
@@ -76,4 +80,36 @@ class Page_model extends CI_Model {
 		}
 	}
 	
+	public function create_page_link($data = array())
+	{
+	    return $this->db->insert('page_links', $data);
+	}
+	
+	public function read_page_links($data = array())
+	{
+		$default = array('fields' => 'page_links.*', 'where' => array('page_links.id like' => '%'), 'order_by' => array('column' => 'page_links.id', 'order' => 'asc'), 'offset' => 0);
+		$data = array_merge($default, $data);
+		
+		$this->db->select($data['fields'].', pages.url as link_url, pages.title as link_title');
+		$this->db->where($data['where']);
+		if (isset($data['limit'])) {
+			$this->db->limit($data['limit'], $data['offset']);
+		}
+		$this->db->from('page_links');
+		$this->db->join('pages', 'pages.id = page_links.link_id', 'left');
+		$this->db->order_by($data['order_by']['column'], $data['order_by']['order']);
+    	$query = $this->db->get();
+		
+		if (isset($data['limit']) && $data['limit'] == 1) {
+			return $query->row_array();
+		} else {
+			return $query->result_array();
+		}
+	}
+	
+	public function delete_page_link($where = array())
+	{
+	    $this->db->where($where);
+	    return $this->db->delete('page_links');
+	}
 }

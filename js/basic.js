@@ -6,11 +6,30 @@ $(document).ready(function() {
    
    $('.notification').show().delay(10000).slideUp(1000);
    var $url = $.url();
-   var $current = 'a[href="' + $url.attr('source') + '"]';
+   var current = 'a[href="' + $url.attr('source') + '"]';
    var name = 'a[name="' + $url.segment(1) + '"]';
-   $("#leftbar " + $current).css('background-color', '#cae1ff').css('border', '1px solid #ccc');
+   
+   /* remove elements of the menu that aren't set to viewable */
+   $('#leftbar ul a.invisible').parent('li').remove();
+   $('#leftbar ul:empty').remove();
+   
+   /*$('#leftbar ul.leftmenu > li ul').hide();*/
+   $("#leftbar " + current).parents('ul').show();
+   $("#leftbar " + current).css('background-color', '#cae1ff').css('border', '1px solid #ccc').closest('ul.leftmenu > li').children('ul').show();
+   $('#leftbar ul.leftmenu li').hoverIntent(
+	  function() {
+		 $(this).children('ul').first().addClass('currently_open').slideDown();
+	  },
+	  function() {
+		 /*$(this).children('ul').first().slideUp().removeClass('currently_open');
+		 $("#leftbar " + current).parents('ul').show();*/
+	  }
+   );
+   $('.content').mouseenter(function() {
+	  $('.currently_open').slideUp().removeClass('currently_open');
+   })
    $("#main_menu " + name).css('color', '#fff');
-   $(".feed_block .body .message " + $current).css('color', 'red');
+   $(".feed_block .body .message " + current).css('color', 'red');
    $(".controls").hide();
    $(".feed_block, #page_view, #page_form, #photo_form, #gallery_view, #user_form").hover(
 	  function() {
@@ -31,42 +50,42 @@ $(document).ready(function() {
    );
    $("a.edit img").hover(
 	  function() {
-		 $(this).attr('src', 'http://localhost/dev1/img/edit_icon.png');
+		 $(this).attr('src', base_url + 'img/edit_icon.png');
 	  },
 	  function() {
-		 $(this).attr('src', 'http://localhost/dev1/img/edit_icon_black.png');
+		 $(this).attr('src', base_url + 'img/edit_icon_black.png');
 	  }
    );
    $("a.create img").hover(
 	  function() {
-		 $(this).attr('src', 'http://localhost/dev1/img/create_icon.png');
+		 $(this).attr('src', base_url + 'img/create_icon.png');
 	  },
 	  function() {
-		 $(this).attr('src', 'http://localhost/dev1/img/create_icon_black.png');
+		 $(this).attr('src', base_url + 'img/create_icon_black.png');
 	  }
    );
    $("a.delete img").hover(
 	  function() {
-		 $(this).attr('src', 'http://localhost/dev1/img/delete_icon.png');
+		 $(this).attr('src', base_url + 'img/delete_icon.png');
 	  },
 	  function() {
-		 $(this).attr('src', 'http://localhost/dev1/img/delete_icon_black.png');
+		 $(this).attr('src', base_url + 'img/delete_icon_black.png');
 	  }
    );
    $("a.cancel img").hover(
 	  function() {
-		 $(this).attr('src', 'http://localhost/dev1/img/cancel_icon.png');
+		 $(this).attr('src', base_url + 'img/cancel_icon.png');
 	  },
 	  function() {
-		 $(this).attr('src', 'http://localhost/dev1/img/cancel_icon_black.png');
+		 $(this).attr('src', base_url + 'img/cancel_icon_black.png');
 	  }
    );
    $("a.upload img").hover(
 	  function() {
-		 $(this).attr('src', 'http://localhost/dev1/img/upload_icon.png');
+		 $(this).attr('src', base_url + 'img/upload_icon.png');
 	  },
 	  function() {
-		 $(this).attr('src', 'http://localhost/dev1/img/upload_icon_black.png');
+		 $(this).attr('src', base_url + 'img/upload_icon_black.png');
 	  }
    );
    $('#google_search input[type=text]').focus(

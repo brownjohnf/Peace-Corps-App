@@ -1,0 +1,25 @@
+@charset "UTF-8";
+
+
+/*   Copyright (c) 2011, John F. Brown  This file is
+  licensed under the Affero General Public License version 3 or later.  See
+   the COPYRIGHT file.
+*/
+
+body {
+	background:url(http://pcsenegal.com/img/splash_bg_millet.jpg);
+	background-position-y: 440px;
+}
+
+#outer_container {
+	margin: 0;
+	min-height: inherit !important;
+}
+
+#slider_container {
+	box-shadow: 0px 10px 50px 12px #000;
+	-webkit-box-shadow: 0px 10px 50px 12px #000;
+	-moz-box-shadow: 0px 10px 50px 12px #000;
+	background-color: #000;
+	margin: 100px 0;
+}

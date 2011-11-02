@@ -11,7 +11,7 @@ class People_model extends CI_Model {
 		
 	}
 	
-	public function read($data)
+	public function read($data = array())
 	{
 		$default = array('fields' => '*', 'limit' => '5000', 'where' => array('id like' => '%'), 'order_by' => array('column' => 'lname', 'order' => 'asc'), 'offset' => 0);
 		$data = array_merge($default, $data);
@@ -79,19 +79,22 @@ class People_model extends CI_Model {
 		$default = array('fields' => 'people.*', 'where' => array('people.id like' => '%'), 'order_by' => array('column' => 'people.lname', 'order' => 'asc'), 'offset' => 0);
 		$data = array_merge($default, $data);
 		
-		$this->db->select($data['fields'].', groups.name as group_name, stages.name as stage_name, sectors.name as sector_name, sites.name as site_name');
+		$this->db->select($data['fields'].', volunteers.sector_id, volunteers.stage_id, volunteers.site_id, volunteers.focus, volunteers.cos, volunteers.local_name, groups.name as group_name, stages.name as stage_name, sectors.name as sector_name, sites.name as site_name, political_regions.name as region_name');
 		$this->db->where($data['where']);
 		if (isset($data['limit'])) {
 			$this->db->limit($data['limit'], $data['offset']);
 		}
 		$this->db->from('people');
+		$this->db->join('volunteers', 'volunteers.id = people.group_id', 'left');
 		$this->db->join('groups', 'groups.id = people.group_id', 'left');
-		$this->db->join('stages', 'stages.id = people.stage_id', 'left');
-		$this->db->join('sectors', 'sectors.id = people.sector_id', 'left');
-		$this->db->join('sites', 'sites.id = people.site_id', 'left');
+		$this->db->join('stages', 'stages.id = volunteers.stage_id', 'left');
+		$this->db->join('sectors', 'sectors.id = volunteers.sector_id', 'left');
+		$this->db->join('sites', 'sites.id = volunteers.site_id', 'left');
+		$this->db->join('political_regions', 'political_regions.id = sites.parent_id', 'left');
 		$this->db->order_by($data['order_by']['column'], $data['order_by']['order']);
     	$query = $this->db->get();
-		//print_r($query->result_array());
+		//print_r($query->row_array());
+		print $this->db->last_query();
 		
 		if (isset($data['limit']) && $data['limit'] == 1) {
 			return $query->row_array();
@@ -140,7 +143,7 @@ class People_model extends CI_Model {
 		return $result;
 	}
 	
-	function deleteUser($id)
+	function delete($id)
 	{
 		$this->db->where('id', $id);
 		$this->db->delete('people');
@@ -176,12 +179,20 @@ class People_model extends CI_Model {
 		return true;
 	}
 	
-	function update($data)
+	public function update($data, $column = 'id')
 	{
-		$this->db->where('id', $data['id']);
-		$this->db->update('people', $data);
-		
-		return true;
+	    $data['edited'] = time();
+	    $this->db->where($column, $data[$column]);
+		//echo 'column: '.$column.'. query data '; print_r($data);
+	    if ($this->db->update('people', $data))
+	    {
+			return $data[$column];
+	    }
+	    else
+	    {
+			//echo $this->db->last_query();
+			return false;
+	    }
 	}
 	
 	function updateActivity($email)
@@ -212,5 +223,19 @@ class People_model extends CI_Model {
 		{
 			return false;
 		}
+	}
+	
+	public function create($data)
+	{
+		$data['altered_id'] = $this->userdata['id'];
+		$data['created'] = time();
+	    if ($this->db->insert('people', $data))
+	    {
+			return $this->db->insert_id();
+	    }
+		else
+	    {
+			return false;
+	    }
 	}
 }

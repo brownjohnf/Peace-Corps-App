@@ -19,14 +19,15 @@ if ($this->session->flashdata('success'))
 
 	<div id="backtrack">
 	<?php foreach ($backtrack as $key => $value): ?>
-		<?php echo anchor($key, $value); ?>&nbsp;>&nbsp;
+		<?php echo anchor($key, $value).'&nbsp;&gt; '; ?>
 	<? endforeach; ?>
 	</div>
 	
 	<table id="datatable">
 		<thead>
 			<tr>
-				<th>Controls</th>
+				<th>Edit</th>
+				<th>ID</th>
 				<th>PC ID</th>
 				<th>Facebook ID</th>
 				<th>First Name</th>
@@ -41,12 +42,14 @@ if ($this->session->flashdata('success'))
 				<th>Stage</th>
 				<th>COS</th>
 				<th>Project</th>
+				<th>Delete</th>
 			</tr>
 		</thead>
 		<tbody>
 		<?php foreach ($table as $row): ?>
 			<tr>
 				<td><?php echo anchor('user/edit/'.$row['id'], 'Edit'); ?></td>
+				<td class=""><?=$row['id']?></td>
 				<td class=""><?=$row['pc_id']?></td>
 				<td class=""><?=$row['fb_id']?></td>
 				<td class=""><?php echo anchor('profile/view/'.url_title($row['lname'].'-'.$row['fname'], 'dash', true), $row['fname']); ?></td>
@@ -61,6 +64,7 @@ if ($this->session->flashdata('success'))
 				<td class=""><?=$row['stage_name']?></td>
 				<td class=""><?=$row['cos']?></td>
 				<td class=""><?=$row['project']?></td>
+				<td class=""><?php echo anchor('user/delete/'.$row['id'], 'Delete'); ?></td>
 			</tr>
 		<?php endforeach; ?>
 		</tbody>

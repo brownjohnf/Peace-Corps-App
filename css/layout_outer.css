@@ -54,13 +54,13 @@ table {
 
 #footer_outer {
 	text-align: left;
-	height: 300px;
+	height: 260px;
 }
 
 #footer_lower_inner > div#legal {
 	margin-top: 20px;
 	margin-left: 0;
-	width: 500px;
+	width: 550px;
 	float: left;
 	clear: left;
 }
@@ -76,7 +76,7 @@ table {
 }
 
 #outer_container {
-	margin: 00px 0 -300px 0;
+	margin: 0 0 -260px 0;
 	border: 0px solid #000000;
 	text-align: left; /* this overrides the text-align: center on the body element. */
 	min-height: 100%;
@@ -106,11 +106,6 @@ table {
 
 #google_search input[type=text] {
 	width: 768px;
-}
-
-#google_search input[type=submit] {
-	position: relative;
-	right: 0px;
 }
 
 #site_title {
@@ -145,22 +140,31 @@ ul.hmenu li a
 	padding: 15px 12px 15px 12px;
 	float: left;
 	width: auto;
-	letter-spacing: 1px;
 }
 /* end of horizontal menu formatting */
 
 #user_menu {
 	float: right;
 }
+#main_menu li a {
+	letter-spacing: 1px;
+}
 #main_menu {
     float: left;
 }
-
-#baobab {
-		position: absolute;
-		top: -200px;
-		right: -100px;
+/*
+#footer_outer img#baobab {
+	position: absolute;
+	top: -200px;
+	right: -100px;
+	display: none;
 }
+#footer_outer img#baskets {
+	position: absolute;
+	top: -190px;
+	right: -100px;
+}
+*/
 #user_image {
 	padding: 0;
 }
@@ -169,31 +173,25 @@ ul.hmenu li a
 	height: 50px;
 }
 
-#splash_footer div {
-	width: 310px;
-	margin: 0 12px 0 0;
-	padding: 0 12px 0 0;
-	border-right: 1px solid #333;
-	float: left;
+.splash_text h1 {
+	margin-bottom: 10px;
 }
-
-#splash_footer div:last-child {
-	margin: 0px;
-	padding: 0px;
-	border: none;
-}
-
-#splash_footer div p {
+.splash_text p {
 	text-align: justify;
-	margin-top: 10px;
 }
-
-#splash_footer div ul {
-	margin-top: 10px;
-	padding: 0;
-	list-style: none;
+.splash_text {
+	color: #fff;
+	margin: 0px;
 }
-
-#splash_footer div h2 {
-	border: none;
+#splash_text_right {
+	padding: 12px 0 12px 12px;
+}
+#splash_text_left {
+	padding: 12px 12px 12px 0px;
+}
+#slider_container {
+	background-color: #999;
+}
+#splash_footer_clear {
+	height: 300px;
 }

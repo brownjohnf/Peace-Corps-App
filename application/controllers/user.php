@@ -7,6 +7,12 @@ class User extends MY_Controller {
 	
 	function __construct() {
 	    parent::__construct();
+		
+		if ($this->userdata['group']['name'] != 'admin')
+		{
+			$this->session->set_flashdata('error', 'You do not have appropriate permissions for this action.');
+			redirect('feed/page');
+		}
 	}
 	
 	public function view()
@@ -15,11 +21,11 @@ class User extends MY_Controller {
 		
 		if ($this->uri->segment(4))
 		{
-			$data['table'] = $this->people_model->selectUsers(array('where' => array('people.'.$this->uri->segment(3) => $this->uri->segment(4))));
+			$data['table'] = $this->people_model->selectUsers(array('fields' => 'people.id, people.pc_id, people.fname, people.lname, people.gender, people.email, people.phone, people.address, people.blog_address, people.blog_name, people.blog_description, people.is_user, people.is_admin, people.is_moderator, people.created, people.edited, people.last_activity', 'where' => array('volunteers.'.$this->uri->segment(3) => $this->uri->segment(4))));
 		}
 		else
 		{
-			$data['table'] = $this->people_model->selectUsers();
+			$data['table'] = $this->people_model->selectUsers(array('fields' => 'people.id, people.pc_id, people.fname, people.lname, people.gender, people.email, people.phone, people.address, people.blog_address, people.blog_name, people.blog_description, people.is_user, people.is_admin, people.is_moderator, people.created, people.edited, people.last_activity'));
 		}
 		
 		//print_r($data);
@@ -31,11 +37,11 @@ class User extends MY_Controller {
 	    // print the page
 		$this->output->set_header("Cache-Control: max-age=300, public, must-revalidate");
 		
-		$this->load->view('head', array('page_title' => $data['title'], 'stylesheets' => array('demo_table.css', 'layout_outer.css', 'layout_inner.css', 'theme.css'), 'scripts' => array('jquery.dataTables.min.js', 'user.js', 'basic.js', 'jquery.url.js')));
+		$this->load->view('head', array('page_title' => $data['title'], 'stylesheets' => array('demo_table.css', 'layout_outer.css', 'layout_inner.css', 'theme.css'), 'scripts' => array('jquery.dataTables.min.js', 'user.js')));
 		$this->load->view('header');
 		//$this->load->view('main_open');
-		//$this->load->view('left_column');
-		$this->load->view('user_list_view', $data);
+		$this->load->view('left_column');
+		$this->load->view('table_view', $data);
 		//$this->load->view('main_close');
 		$this->load->view('footer', array('footer' => 'Footer Here'));
 	}
@@ -149,15 +155,81 @@ class User extends MY_Controller {
 	{
 		if (! $this->people_model->delete($this->uri->segment(3, null)))
 		{
-			$error = "Couldn't delete page.";
+			$error[] = "Couldn't delete page.";
 		}
 		if (! $this->permission_model->purge_by_user($this->uri->segment(3, null)))
 		{
-			$error = "Couldn't purge page references.";
+			$error[] = "Couldn't purge page references.";
 		}
 		if (isset($error)) {
-			$this->session->set_flashdata('error', $error);
+			$this->session->set_flashdata('error', implode(' ', $error));
 		}
 		redirect('user/view');
+	}
+	
+	public function upload()
+	{
+		$data['form_title'] = 'Upload Users';
+		
+		$this->load->view('head', array('page_title' => 'Upload Photo', 'stylesheets' => array('layout_outer.css', 'layout_inner.css', 'theme.css')));
+		$this->load->view('header');
+		$this->load->view('main_open');
+		$this->load->view('left_column');
+		$this->load->view('user_upload_form', $data);
+		$this->load->view('main_close');
+		$this->load->view('footer', array('footer' => 'Footer Here'));
+	}
+	
+	public function do_upload()
+	{
+		ini_set("memory_limit","128M");
+		$this->config->load('upload_users', true);
+		$config = $this->config->item('upload_users');
+		$this->load->library('upload', $config);
+
+		if ( ! $this->upload->do_upload())
+		{
+			$this->session->set_flashdata('error', $this->upload->display_errors());
+			redirect('user/upload');
+		}
+		else
+		{
+			$this->load->library('user_class');
+			$this->load->model(array('user_model', 'site_model', 'sector_model', 'region_model', 'stage_model', 'group_model', 'volunteer_model', 'people_model'));
+			if (! $this->user_class->upload($this->upload->data()))
+			{
+				$this->session->set_flashdata('error', 'Your data could not be saved. Please try again.');
+				redirect('user/upload');
+			}
+			else
+			{
+				$this->session->set_flashdata('success', 'Your users were successfully added.');
+				redirect('user/view');
+			}
+		}
+	}
+	
+	public function stage()
+	{
+		$this->load->model('stage_model');
+		
+		$data['table'] = $this->stage_model->read();
+		$data['title'] = 'Stages';
+		$data['backtrack'] = array('admin' => 'Admin Panel', 'user' => 'Users', 'user/stage' => 'Stages');
+		$data['edit_target'] = 'stage/edit/';
+		$data['extra_targets'][] = array('path' => 'user/view/stage_id/', 'column' => 'id', 'text' => 'View Members');
+		$data['extra_targets'][] = array('path' => 'stage/delete/', 'column' => 'id', 'text' => 'Delete');
+		
+		
+	    // print the page
+		$this->output->set_header("Cache-Control: max-age=300, public, must-revalidate");
+		
+		$this->load->view('head', array('page_title' => $data['title'], 'stylesheets' => array('layout_outer.css', 'layout_inner.css', 'theme.css', 'demo_table.css'), 'scripts' => array('jquery.dataTables.min.js', 'datatable_initiate.js')));
+		$this->load->view('header');
+		//$this->load->view('main_open');
+		$this->load->view('left_column');
+		$this->load->view('table_view', $data);
+		//$this->load->view('main_close');
+		$this->load->view('footer');
 	}
 }

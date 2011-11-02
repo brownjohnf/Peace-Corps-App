@@ -61,7 +61,7 @@ class Module_class
 			return false;
 		}
 		
-		if ($tags = $this->ci->common_class->parse_tags(strip_tags(Markdown($data['content']), '<b><i><em><ul><a>')))
+		if ($tags = $this->ci->tag_class->parse_tags(strip_tags(Markdown($data['content']), '<b><i><em><ul><a>')))
 		{
 			$input['tags'] = $tags['string'];
 			// set data to be sent to the tag function
@@ -114,7 +114,7 @@ class Module_class
 		$input['content'] = $data['content'];
 		$input['profile_photo'] = $data['profile_photo'];
 		
-		if ($tags = $this->ci->common_class->parse_tags(strip_tags(Markdown($data['content']), '<b><i><em><u><a>')))
+		if ($tags = $this->ci->tag_class->parse_tags(strip_tags(Markdown($data['content']), '<b><i><em><u><a>')))
 		{
 			$input['tags'] = $tags['string'];
 			// set data to be sent to the tag function
@@ -313,13 +313,13 @@ class Module_class
 	    {
 			if (str_word_count($result['content']) > 50)
 			{
-				$message = $this->ci->common_class->tags_to_links(word_limiter(strip_tags(Markdown($result['content'], '<b><i><u><em>')), 50));
+				$message = $this->ci->tag_class->tags_to_links(word_limiter(strip_tags(Markdown($result['content'], '<b><i><u><em>')), 50));
 			    $item['message'] = $message['text'];
 			    $item['message_truncated'] = 'yes';
 			}
 			else
 			{
-				$message = $this->ci->common_class->tags_to_links(strip_tags(Markdown($result['content']), '<b><i><u><em>'));
+				$message = $this->ci->tag_class->tags_to_links(strip_tags(Markdown($result['content']), '<b><i><u><em>'));
 			    $item['message'] = $message['text'];
 			    $item['message_truncated'] = 'no';
 			}
@@ -342,10 +342,21 @@ class Module_class
 			
 			$item['full_url'] = 'page/view/'.$result['url'];
 			$item['author'] = $result['title'];
-			$item['tags'] = explode('#', trim($result['tags'], '#'));
-			//print_r($item['tags']);
+			
+			if ($tags = $this->ci->tag_model->read(array('fields' => 'tag', 'where' => array('source' => 'module', 'source_id' => $result['id']))))
+			{
+				foreach ($tags as $tag)
+				{
+					$item['tags'][] = $tag['tag'];
+				}
+			}
+			else
+			{
+				$tags = null;
+			}
+			
 			$item['elapsed'] = $this->ci->common_class->elapsed_time($result['updated']).' ago';
-			if ($this->ci->userdata['group']['name'] == 'Admin' || $this->ci->permission_class->is_actor(array('page_id' => $result['id'], 'user_id' => $this->ci->userdata['id'])))
+			if ($this->ci->userdata['group']['name'] == 'admin' || $this->ci->permission_class->is_actor(array('page_id' => $result['id'], 'user_id' => $this->ci->userdata['id'])))
 			{
 				$item['controls'] = anchor('page/edit/'.$result['id'], img('img/edit_icon_black.png'), array('class' => 'edit'));
 			}
@@ -375,7 +386,7 @@ class Module_class
 	    // assign values to return array
 	    $return['id'] = $result['id'];
 	    $return['title'] = $result['title'];
-		$lesson_plan = $this->ci->common_class->tags_to_links($result['lesson_plan']);
+		$lesson_plan = $this->ci->tag_class->tags_to_links($result['lesson_plan']);
 	    $return['lesson_plan'] = Markdown($lesson_plan['string']);
 		
 		/*
@@ -390,7 +401,7 @@ class Module_class
 		}
 		*/
 		
-		if ($this->ci->userdata['group']['name'] == 'Admin' || $this->ci->permission_class->is_actor(array('page_id' => $result['id'], 'user_id' => $this->ci->userdata['id'])))
+		if ($this->ci->userdata['group']['name'] == 'admin' || $this->ci->permission_class->is_actor(array('page_id' => $result['id'], 'user_id' => $this->ci->userdata['id'])))
 		{
 			$return['controls'] = anchor('page/edit/'.$result['id'], img('img/edit_icon_black.png'), array('class' => 'edit')).anchor('page/create/'.$result['id'], img('img/create_icon_black.png'), array('class' => 'create')).anchor('page/delete/'.$result['id'], img('img/delete_icon_black.png'), array('class' => 'delete'));
 		}

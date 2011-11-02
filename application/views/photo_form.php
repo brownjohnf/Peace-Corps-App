@@ -25,10 +25,15 @@
     </div>
 </h1>
 
+<p>Select a photo to upload. You may only upload one photo at a time. Use appropriate discretion when selecting content to upload. All photos must be at least 980 pixels wide for best quality.</p>
+
 <?php echo form_open_multipart('photo/upload');?>
 
-<label>File*</label>
-<input type="file" name="userfile" size="20" />
+<label>Photo* ( .jpg | .png | .gif )</label>
+<input type="file" name="userfile" size="20" /><br /><br />
+
+<label>Caption</label>
+<input type="text" name="caption" />
 
 <br /><br />
 

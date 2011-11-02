@@ -7,8 +7,12 @@ class MY_Controller extends CI_Controller
 		
 		$this->load->database();
 		$this->load->helper(array('url', 'file', 'array', 'html'));
-		$this->load->library(array('auth', 'form_validation', 'page_class', 'common_class'));
+		$this->load->library(array('auth', 'form_validation', 'page_class', 'common_class', 'admin_class'));
 		$this->load->model(array('facebook_model'));
+		
+		// REDIRECT OPTION
+		//header('Location: http://pcsenegal.com');
+		//die();
 		
 		//print_r($this->session->userdata('fb_data'));
 		
@@ -26,28 +30,26 @@ class MY_Controller extends CI_Controller
 		{
 			if ($this->auth->is_user())
 			{
-				$this->session->unset_userdata('notice');
-				if ($this->userdata['group']['name'] == 'Admin')
+				if ($messages = $this->admin_class->read_site_messages())
+				{
+					foreach ($messages as $message)
+					{
+						$this->session->set_flashdata($message['type'], $message['content']);
+					}
+				}
+				if ($this->userdata['group']['name'] == 'admin')
 				{
 					//$this->user_menu[] = anchor('feed', 'Admin Panel');
 				}
 			}
 			else
 			{
-				$this->session->set_userdata('notice', "You are signed in, but not currently registered with us. Consider registering to receive our latest Facebook notices and updates.");
+				$this->session->set_userdata('alert', "You are signed in, but not currently registered with us. Consider registering to receive our latest Facebook notices and updates.");
 				//$this->userdata = array('group' => array('id' => 0, 'name' => 'Guest'), 'fname' => 'Guest', 'lname' => 'Guest', 'flname' => 'Guest', 'lfname' => 'Guest', 'id' => 0);
 			}
 			$this->user_menu[] = anchor('', img('https://graph.facebook.com/'.$this->fb_data['uid'].'/picture'), array('id' => 'user_image'));
 			$this->user_menu[] = anchor('profile/view/'.$this->userdata['url'], $this->fb_data['me']['name'].', '.$this->userdata['group']['name']);
 		}
-		//echo '<pre>'; print_r($this->fb_data); echo '</pre>';
-		
-		/* alert tests 
-		$this->session->set_flashdata('alert', 'This is a test-generated alert.');
-		$this->session->set_userdata('message', 'This is a test-generated message.');
-		$this->session->set_flashdata('error', 'This is a test-generated error.');
-		$this->session->set_flashdata('success', 'This is a test-generated success.');
-		$this->session->unset_userdata('message');*/
-		
+		//echo '<pre>'; print_r($this->userdata); echo '</pre>';
     }
 }
