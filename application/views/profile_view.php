@@ -27,22 +27,37 @@
 			<?php if (isset($controls)): echo $controls; endif; ?>
 		</div>
 	</h1>
-	
+
 	<div>
-		<p>a.k.a <?=$local_name?>
-		<p><?=$group?> | <?=$sector_name?> | <?=$project?></p>
-		<p><?=$stage_name?>&nbsp;Stage<br><?=$site_name?><br>COS: <?=$cos?></p>
+		<p>alias <?=$local_name?>
+		<p>
+			<?=$group?><br>
+			<?=$sector_name?><br>
+			<?=$focus?><br>
+			<?=$project?>
+		</p>
+		<p>
+			<?=$stage_name?>&nbsp;Stage<br>
+			COS: <?=$cos?></p>
 	</div>
-	
+
 	<div>
 		<h3>Contact Info</h3>
-		<?php if ($this->auth->is_user()): ?>
-		<p><?=$phone1?><br><?=$email1?>
-		<?php else: ?>
-		<p>You must be a member of Peace Corps Senegal and logged in to access this information.</p>
+		<p>
+		<?php if ($this->userdata['is_user']): if(! is_null($phone1) || ! is_null($email1)): ?>
+		<?=$site_name?>, <?=$region_name?><br>
+		<?=$phone1?><br>
+		<?php if (isset($phone2)): echo $phone2.'<br>'; endif; ?>
+		<?=$email1?>
+		<?php if (isset($email2)): echo '<br>'.$email2; endif; ?>
+		<?php else: echo $fname; ?>
+		 has no contact info on record.
+		<?php if ($this->userdata['is_admin']): echo anchor('user/edit/'.$id, 'Add info'); endif; endif; else: ?>
+		You must be a member of Peace Corps Senegal and logged in to access this information.
 		<?php endif; ?>
+		</p>
 	</div>
-	
+
 	<div>
 		<h3>Social Contacts</h3>
 		<p>
@@ -51,13 +66,13 @@
 				<?=$social_contact?>&nbsp;<br>
 			<?php endforeach; ?>
 			<?php endif; ?>
-			
+
 			<?php if ($blog_address): ?>
 			<?php echo anchor('blog/view/'.$url_name, $blog_name); ?>&nbsp;[blog]
 			<?php endif; ?>
 		</p>
 	</div>
-	
+
 	<?php if (isset($author_for)): ?>
 	<div>
 		<h3>Authorship</h3>
@@ -71,7 +86,7 @@
 		</ul>
 	</div>
 	<?php endif; ?>
-	
+
 	<?php if (($this->userdata['group']['name'] == 'admin' || $this->userdata['id'] == $id) && isset($actor_for)): ?>
 	<div>
 		<h3>Acting Privileges</h3>
@@ -85,7 +100,7 @@
 		</ul>
 	</div>
 	<?php endif; ?>
-	
+
 	<?php if ($this->userdata['group']['name'] == 'admin'): ?>
 	<div>
 		<h3>Admin</h3>

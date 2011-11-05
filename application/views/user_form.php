@@ -18,6 +18,13 @@
         $history = $this->session->userdata('history');
     ?>
 
+
+	<div id="backtrack">
+	<?php foreach ($backtrack as $key => $value): ?>
+		<?php echo anchor($key, $value).'&nbsp;&gt; '; ?>
+	<? endforeach; ?>
+	</div>
+
 <h1><?=$form_title?><div class="controls"><?=$controls?></div></h1>
 <?php echo form_open('user/'.$target); ?>
 
@@ -26,7 +33,7 @@
 <label>First Name*</label><?php echo form_input('fname', set_value('fname', $fname)); ?><br />
 <label>Last Name*</label><?php echo form_input('lname', set_value('lname', $lname)); ?><br />
 <label>Gender</label><?php echo form_dropdown('gender', array(0 => 'unknown', 1 => 'male', 2 => 'female'), set_value('gender', $gender)); ?><br />
-<label>Project</label><?php echo form_input('project', set_value('project', $project)); ?><br />
+<label>Project (what are you up to?)</label><?php echo form_input('project', set_value('project', $project)); ?><br />
 <label>Primary Email (required to log in, must be the same as used w/Facebook)</label><?php echo form_input('email1', set_value('email1', $email1)); ?><br />
 <label>Secondary Email</label><?php echo form_input('email2', set_value('email2', $email2)); ?><br />
 <label>Primary Phone</label><?php echo form_input('phone1', set_value('phone1', $phone1)); ?><br />
@@ -38,12 +45,12 @@
 <label>Blog Description</label><?php echo form_textarea('blog_description', set_value('blog_description', $blog_description)); ?><br />
 <label>Blog Address</label><?php echo form_input('blog_address', set_value('blog_address', $blog_address)); ?><br />
 
-<label>Focus</label><?php echo form_input('focus', set_value('focus', $focus)); ?><br />
+<label>Focus (where are you focused, as a Volunteer?)</label><?php echo form_input('focus', set_value('focus', $focus)); ?><br />
 
 <h2>Sharing</h2>
-<label>Administrator</label><?php echo form_checkbox('is_admin', '1', set_checkbox('is_admin', '1', false)); ?><br />
-<label>Volunteer</label><?php echo form_checkbox('is_user', '1', set_checkbox('is_user', '1', false)); ?><br />
-<label>Staff</label><?php echo form_checkbox('is_moderator', '1', set_checkbox('is_moderator', '1', false)); ?><br />
+<label>Administrator</label><?php echo form_checkbox('is_admin', '1', set_checkbox('is_admin', '1', $is_admin)); ?><br />
+<label>Volunteer</label><?php echo form_checkbox('is_user', '1', set_checkbox('is_user', '1', $is_user)); ?><br />
+<label>Staff</label><?php echo form_checkbox('is_moderator', '1', set_checkbox('is_moderator', '1', $is_moderator)); ?><br />
 
 <label>Group*</label>
 <?php echo form_dropdown('group_id', $groups, set_value('group_id', $group_id)); ?><br />

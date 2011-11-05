@@ -8,9 +8,9 @@
 	$topmenu = array(
 					 anchor('page/view/about-us','About Us', array('name' => 'page')),
 					 anchor('feed','Updates', array('name' => 'feed')),
-					 //anchor('resource','Learning', array('name' => 'resource')),
+					 anchor('resource','Learning', array('name' => 'resource')),
 					 anchor('photo/gallery','Photos', array('name' => 'photo')),
-					 //anchor('feed/video','Videos', array('name' => 'video')),
+					 anchor('feed/video','Videos', array('name' => 'video')),
 					 anchor('feed/blog', 'Blogs', array('name' => 'blog'))
 					 );
 ?>
@@ -33,7 +33,7 @@
 			</div><!-- end #header_inner -->
 			<br class="clearfloat" />
 		</div><!-- END #header_outer -->
-		
+
 <?php
 if ($this->uri->rsegment(1) != 'home')
 {

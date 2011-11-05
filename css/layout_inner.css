@@ -6,7 +6,7 @@
    the COPYRIGHT file.
 */
 
-#main_inner { 
+#main_inner {
 	width: 980px;  /* using 20px less than a full 800px width allows for browser chrome and avoids a horizontal scroll bar */
 	margin: 0 auto; /* the auto margins (in conjunction with a width) center the page */
 	text-align: left; /* this overrides the text-align: center on the body element. */
@@ -252,4 +252,7 @@ span#insert_photo {
 
 #leftbar ul.leftmenu > li ul {
 	display: none;
+}
+#datatable {
+	width: 100%;
 }

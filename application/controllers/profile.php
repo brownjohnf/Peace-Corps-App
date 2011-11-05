@@ -4,13 +4,13 @@
 #   the COPYRIGHT file.
 
 class Profile extends MY_Controller {
-	
+
 	function __construct()
 	{
 	    parent::__construct();
 		$this->load->library(array('permission_class', 'profile_class'));
 	}
-	
+
 	public function view()
 	{
 		// retrieve profile
@@ -24,13 +24,13 @@ class Profile extends MY_Controller {
 			{
 				$data['actor_for'] = $actorship;
 			}
-			
+
 			$data['title'] = 'Profile';
 			$data['backtrack'] = array('feed/profile' => 'Profiles', 'profile/view/'.$this->uri->segment(3) => $data['full_name']);
-			
+
 			$data2['profile_photo'] = $data['profile_photo'];
-			
-			
+
+
 			// print the profile
 			$this->load->view('head', array('page_title' => $data['title'], 'stylesheets' => array('layout_outer.css', 'layout_inner.css', 'theme.css'), 'scripts' => array('basic.js', 'jquery.url.js')));
 			$this->load->view('header');
@@ -44,7 +44,7 @@ class Profile extends MY_Controller {
 			$data['title'] = 'Profile';
 			$data['data'] = "<h1>Missing Profile</h1><p>I'm sorry, but there doesn't appear to be a user with that name.</p>";
 			$data['backtrack'] = array('feed/profile' => 'Profiles');
-			
+
 			// print the error
 			$this->load->view('head', array('page_title' => $data['title'], 'stylesheets' => array('layout_outer.css', 'layout_inner.css', 'theme.css'), 'scripts' => array('basic.js', 'jquery.url.js')));
 			$this->load->view('header');
@@ -53,7 +53,7 @@ class Profile extends MY_Controller {
 			$this->load->view('right_column');
 			$this->load->view('basic_view', $data);
 		}
-		
+
 		$this->load->view('main_close');
 		$this->load->view('footer', array('footer' => 'Footer Here'));
 	}

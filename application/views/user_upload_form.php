@@ -46,12 +46,12 @@
     <li>local_name, Local Name</li>
     <li>gender, Gender</li>
 </ul>
-<p>If any of the preceding information, DO NOT upload a file. You'll most likely damage something. Read a tutorial on CSV and come back.</p>
+<p>If you do not completely understand any of the preceding information, DO NOT upload a file. You'll most likely damage something. Read a tutorial on CSV and come back.</p>
 
 <?php echo form_open_multipart('user/do_upload');?>
 
 <label>File* ( .csv )</label>
-<input type="file" name="userfile" size="20" /><br /><br />
+<input type="file" name="userfile" /><br /><br />
 
 <br /><br />
 

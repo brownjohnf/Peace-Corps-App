@@ -6,11 +6,11 @@
 class Volunteer_model extends CI_Model {
 
 	public function __construct() {
-		
+
 		parent::__construct();
-		
+
 	}
-	
+
 	public function create($data)
 	{
 		$data['altered_id'] = $this->userdata['id'];
@@ -24,7 +24,7 @@ class Volunteer_model extends CI_Model {
 			return false;
 	    }
 	}
-	
+
 	public function read($data = array())
 	{
 		if (! array_key_exists('where', $data))
@@ -46,19 +46,19 @@ class Volunteer_model extends CI_Model {
 		if (isset($data['limit']) && $data['limit'] == 1)
 		{
 			return $query->row_array();
-		}	
+		}
 		else
 		{
 			return $query->result_array();
 		}
 	}
-	
+
 	// takes array, returns ID
 	public function update($data = array(), $column = 'id')
 	{
 	    $data['edited'] = time();
 	    $data['altered_id'] = $this->userdata['id'];
-	    
+
 	    $this->db->where($column, $data[$column]);
 		//echo 'column: '.$column.'. query data '; print_r($data);
 	    if ($this->db->update('volunteers', $data))
@@ -72,7 +72,7 @@ class Volunteer_model extends CI_Model {
 			return false;
 	    }
 	}
-	
+
 	function delete($data = array())
 	{
 		$this->db->where($data);

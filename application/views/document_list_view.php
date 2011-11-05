@@ -22,38 +22,30 @@ if ($this->session->flashdata('success'))
 		<?php echo anchor($key, $value).'&nbsp;&gt; '; ?>
 	<? endforeach; ?>
 	</div>
-	
+
 	<table id="datatable">
 		<thead>
 			<tr>
-				<th>Edit</th>
-				<th>ID</th>
 				<th>Title</th>
 				<th>Tags</th>
-				<th>Filename</th>
 				<th>Extension</th>
-				<th>Filetype</th>
-				<th>Delete</th>
+				<th>Edited</th>
 			</tr>
 		</thead>
 		<tbody>
 		<?php foreach ($table as $row): ?>
 			<tr>
-				<td><?php echo anchor('document/edit/'.$row['id'], 'Edit'); ?></td>
-				<td class=""><?=$row['id']?></td>
-				<td class=""><?=$row['title']?></td>
+				<td><?php echo anchor($row['url'], $row['title']); ?></td>
 				<td class=""><?=$row['tags']?></td>
-				<td class=""><?=$row['name']?></td>
 				<td class=""><?=$row['ext']?></td>
-				<td class=""><?=$row['type']?></td>
-				<td><?php echo anchor('document/delete/'.$row['id'], 'Delete'); ?></td>
+				<td class=""><?=$row['edited']?></td>
 			</tr>
 		<?php endforeach; ?>
 		</tbody>
 	</table>
-	
+
 </div>
 <!-- This clearing element should immediately follow the #content div in order to force the #main_inner div to contain all child floats -->
 		<br class="clearfloat" />
-	
+
 		<div id="bottom_of_page">

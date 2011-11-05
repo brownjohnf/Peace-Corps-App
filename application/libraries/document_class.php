@@ -19,43 +19,78 @@ class Document_class
 		$input['ext'] = $data['ext'];
 		$input['type'] = $data['type'];
 		$input['user_id'] = $data['user_id'];
-		
-		
+
+
 		if (! $id = $this->ci->document_model->create($input))
 		{
 			$this->ci->session->set_flashdata('error', 'Failed to add record to links table. [005]');
 			return false;
 		}
-		
+
 		foreach ($tags['array'] as $tag)
 		{
 			$tag_input[] = array('tag' => $tag, 'source' => 'documents', 'source_id' => $id, 'updated' => time());
 		}
-		
+
 		if (! $this->ci->tag_model->create($tag_input))
 		{
 			die('failed to add tags to tag table');
 		}
 		return $id;
 	}
-	
+
+	public function view()
+	{
+		if (! $results = $this->ci->document_model->read(array('fields' => 'id, title, tags, ext, edited', 'order_by' => array('column' => 'edited', 'order' => 'desc'))))
+		{
+			die('failed to read documents table');
+		}
+
+		foreach ($results as $doc)
+		{
+			if ($doc['tags'] != '')
+			{
+				$tags = explode('#', trim($doc['tags'], '#'));
+				foreach ($tags as $tag)
+				{
+					$tag_ret[] = '<span class="hash">#</span>'.anchor('tag/feed/'.urlencode($tag), $tag);
+				}
+				$row['tags'] = implode(' ', $tag_ret);
+			}
+			else
+			{
+				$row['tags'] = null;
+			}
+
+			$row['title'] = $doc['title'];
+			$row['url'] = base_url().'document/download/'.$doc['id'].'/'.url_title(str_replace('.', '', $doc['title']), 'underscore');
+			$row['edited'] = date('d M Y', $doc['edited']);
+			$row['ext'] = $doc['ext'];
+
+			unset($tag_ret);
+			$return[] = $row;
+		}
+
+		return $return;
+	}
+
 	public function edit($data)
 	{
 		$tags = $this->ci->tag_class->tag_input($data['tags']);
 	    $input['tags'] = $tags['string'];
 	    $input['title'] = $data['title'];
 		$input['id'] = $data['id'];
-		
+
 		// update the document entry, or die
 		if (! $this->ci->document_model->update($input)) {
 			die('Failed to update document table. Check your data and try again. [002]');
 		}
-		
+
 		foreach ($tags['array'] as $tag)
 		{
 			$tag_input[] = array('tag' => $tag, 'source' => 'documents', 'source_id' => $input['id'], 'updated' => time());
 		}
-		
+
 		if (! $this->ci->tag_model->create($tag_input))
 		{
 			die('failed to add tags to tag table');
@@ -70,7 +105,7 @@ class Document_class
 		$data['name'] = null;
 		$data['ext'] = null;
 		$data['type'] = null;
-	    
+
 	    return $data;
 	}
 	public function full_form($id)
