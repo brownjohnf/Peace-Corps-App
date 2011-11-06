@@ -4,7 +4,7 @@
 #   the COPYRIGHT file.
 ?>
 
-<div id="document_list_view" class="content">
+<div id="profile_list_view" class="content">
 
 <?php
 if ($this->session->flashdata('error'))
@@ -26,21 +26,25 @@ if ($this->session->flashdata('success'))
 	<table id="datatable">
 		<thead>
 			<tr>
+				<?php if ($this->userdata['is_admin']): ?>
+				<th>Edit</th>
+				<?php endif; ?>
 				<th>Title</th>
+				<th>Description</th>
 				<th>Tags</th>
-				<th>Extension</th>
-				<th>Size</th>
-				<th>Edited</th>
+				<th>Updated</th>
 			</tr>
 		</thead>
 		<tbody>
 		<?php foreach ($table as $row): ?>
 			<tr>
-				<td><?php echo anchor($row['url'], $row['title']); ?></td>
+				<?php if ($this->userdata['is_admin']): ?>
+				<td class=""><?=$row['edit']?></td>
+				<?php endif; ?>
+				<td class=""><?=$row['title']?></td>
+				<td class=""><?=$row['description']?></td>
 				<td class=""><?=$row['tags']?></td>
-				<td class=""><?=$row['ext']?></td>
-				<td class=""><?=$row['size']?></td>
-				<td class=""><?=$row['edited']?></td>
+				<td class=""><?=$row['updated']?></td>
 			</tr>
 		<?php endforeach; ?>
 		</tbody>
@@ -50,4 +54,4 @@ if ($this->session->flashdata('success'))
 <!-- This clearing element should immediately follow the #content div in order to force the #main_inner div to contain all child floats -->
 		<br class="clearfloat" />
 
-		<div id="bottom_of_page">
+		<!--<div id="bottom_of_page">-->

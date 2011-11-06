@@ -7,13 +7,13 @@
 		<!-- rightbar -->
 		<div id="rightbar">
 			<?php //print_r($this->userdata); ?>
-			
+
 			<?php if (isset($profile_photo)): ?>
 			<div id="profile_photo">
 				<?php echo img($profile_photo); ?>
 			</div>
 			<?php endif; ?>
-			
+
 			<?php if (isset($user_info)): ?>
 			<div>
 				<h2><?=$name?></h2>
@@ -24,7 +24,7 @@
 				</p>
 			</div>
 			<?php endif; ?>
-			
+
 			<?php if (isset($links)): ?>
 			<div class="links">
 				<h2>Suggested Reading</h2>
@@ -35,7 +35,7 @@
 				</p>
 			</div>
 			<?php endif; ?>
-			
+
 			<?php if (isset($authors)): ?>
 			<div class="authors">
 				<h3>Authors</h3>
@@ -46,7 +46,7 @@
 				</p>
 			</div>
 			<?php endif; ?>
-			
+
 
 			<?php if (isset($tags) && is_array($tags)): ?>
 			<div class="tags">
@@ -58,17 +58,17 @@
 				</p>
 			</div>
 			<?php endif; ?>
-	
+
 			<div id ="social">
 				<h2>Share</h2>
-				
-				
+				<br>
+
 				<!-- facebook like interface -->
-				<div id="fb-root"></div>
+				<div id="fb-root" style="display:none;"></div>
 				<script src="http://connect.facebook.net/en_US/all.js#appId=269078833104121&amp;xfbml=1"></script>
 				<fb:like href="<?php echo site_url(); ?>" send="true" layout="box_count" width="55" show_faces="true" action="like" font="arial"></fb:like>
 				<!-- END facebook like interface -->
-				
+
 				<!-- Google plusone button -->
 				<!-- Place this tag where you want the +1 button to render -->
 				<div class="g-plusone" data-size="tall"></div>
@@ -81,12 +81,12 @@
 				  })();
 				</script>
 				<!-- END google plusone button -->
-				
+
 				<!-- tweet this page -->
 				<a href="https://twitter.com/share" class="twitter-share-button" data-count="vertical" data-via="hedrickchris">Tweet</a>
 				<script type="text/javascript" src="//platform.twitter.com/widgets.js"></script>
 				<!-- END tweet this page -->
-				
+
 				<br /><br />
 				<!-- Diaspora* share button -->
 				<div id="diaspora_share">
@@ -189,17 +189,17 @@
 					}
 				</script>
 				<!-- END Dispora* share button -->
-				
-				
+
+
 			</div>
-			
+
 			<div>
 				<h2>Follow Us</h2>
 				<br>
-				<!-- follow hedrickchris -->
-				<a href="http://twitter.com/hedrickchris" class="twitter-follow-button" data-show-count="false">Follow @hedrickchris</a>
+				<!-- follow pc_senegal -->
+				<a href="http://twitter.com/pc_senegal" class="twitter-follow-button" data-show-count="false">Follow @PC_Senegal</a>
 				<script src="http://platform.twitter.com/widgets.js" type="text/javascript"></script>
-				<!-- END follow hedrickchris -->
+				<!-- END follow pc_senegal -->
 				<br><br>
 				<!-- youtube button -->
 				<a href="http://www.youtube.com/subscription_center?add_user=pcsenegaladmin&feature=creators_cornier-http%3A//s.ytimg.com/yt/img/creators_corner/Subscribe_to_my_videos/YT_Subscribe_160x27_red.png">
@@ -207,9 +207,9 @@
 				</a>
 				<img src="http://www.youtube-nocookie.com/gen_204?feature=creators_cornier-http%3A//s.ytimg.com/yt/img/creators_corner/Subscribe_to_my_videos/YT_Subscribe_160x27_red.png" style="display: none"/>
 				<!-- END youtube button -->
-				
+
 			</div>
 			<!-- END social links -->
-			
+
 		</div>
 		<!-- END rightbar -->

@@ -5,15 +5,32 @@
 
 class Video_model extends CI_Model {
 
-	public function __construct() {
-		
-		parent::__construct();
-		
-	}
-	
-	public function read($data)
+	public function __construct()
 	{
-		$default = array('fields' => '*', 'where' => array('id like' => '%'), 'order_by' => array('column' => 'title', 'order' => 'asc'), 'offset' => 0);
+
+		parent::__construct();
+
+	}
+
+	public function create($data)
+	{
+		$data['created'] = time();
+		$data['edited'] = $data['created'];
+	    if ($this->db->insert('videos', $data))
+	    {
+			return $this->db->insert_id();
+	    }
+	}
+
+	public function read($data = array())
+	{
+		if (! array_key_exists('where', $data))
+		{
+			$data['where'] = array();
+		}
+		$default = array('fields' => '*', 'where' => array('id like' => '%', 'delete' => 0), 'order_by' => array('column' => 'title', 'order' => 'asc'), 'offset' => 0);
+		// sets it to only read non-deleted pages by default
+		$data['where'] = array_merge($default['where'], $data['where']);
 		$data = array_merge($default, $data);
 		//echo '<pre>'; print_r($data); echo '</pre>';
 		$this->db->select($data['fields']);
@@ -24,16 +41,16 @@ class Video_model extends CI_Model {
 		$this->db->order_by($data['order_by']['column'], $data['order_by']['order']);
 		$query = $this->db->get('videos');
 
-		if ($data['limit'] == 1)
+		if (isset($data['limit']) && $data['limit'] == 1)
 		{
 			return $query->row_array();
-		}	
+		}
 		else
 		{
 			return $query->result_array();
 		}
 	}
-	
+
 	function delete($id)
 	{
 		$this->db->where('id', $id);
@@ -41,9 +58,10 @@ class Video_model extends CI_Model {
 			return true;
 		}
 	}
-	
+
 	function update($data)
 	{
+		$data['edited'] = time();
 		$this->db->where('id', $data['id']);
 		if ($this->db->update('videos', $data)) {
 			return true;

@@ -26,6 +26,7 @@
 <h1><?=$form_title?><div class="controls"><?=$controls?></div></h1>
 <?php echo form_open('page/'.$target); ?>
 
+<?php echo form_checkbox('case_study', '1', set_checkbox('case_study', '1', false)); ?>&nbsp;Is this a case study?<br />
 <label>Title*</label><?php echo form_input('title', set_value('title', $title)); ?><br />
 <label>Description*</label><?php echo form_input('description', set_value('description', $description)); ?><br />
 <label>Content*</label><br><?php echo form_textarea('content', set_value('content', $content)); ?><br />

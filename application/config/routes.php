@@ -51,6 +51,10 @@ $route['welcome'] = 'home/welcome';
 $route['admin/site/messages/edit'] = 'admin/edit_site_messages';
 $route['admin/site/messages'] = 'admin/edit_site_messages';
 $route['admin/site'] = 'admin/edit_site_messages';
+$route['profile'] = 'profile/search';
+$route['casestudy/create'] = 'page/create';
+$route['link'] = 'link/search';
+$route['video'] = 'video/search';
 
 
 /* End of file routes.php */

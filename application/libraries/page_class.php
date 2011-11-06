@@ -15,34 +15,44 @@ class Page_class
 	}
 	public function create($data)
 	{
+		if (array_key_exists('case_study', $data))
+		{
+			$input['case_study'] = 1;
+			$input['parent_id'] = 0;
+			$source = 'case_study';
+		}
+		else
+		{
+	    	$input['parent_id'] = $data['parent_id'];
+	    	$source = 'page';
+		}
 		$input['title'] = $data['title'];
 	    $input['url'] = url_title($data['title'], 'dash', true);
 	    $input['group_id'] = $data['group_id'];
-	    $input['parent_id'] = $data['parent_id'];
 	    $input['description'] = $data['description'];
 	    $input['content'] = $data['content'];
 	    $input['profile_photo'] = $data['profile_photo'];
 	    $input['visibility'] = $data['visibility'];
-		
+
 		if ($this->ci->userdata['group']['name'] != 'admin')
 		{
 			$data['actors'][] = $this->ci->userdata['id'];
 		}
-		
+
 	    $input['updated'] = time();
 	    $input['created'] = time();
-		
+
 		if (! $page_id = $this->ci->page_model->create($input))
 		{
 			$this->ci->session->set_flashdata('error', 'Failed to add record to content table. [005]');
 			return false;
 		}
-		
+
 		if ($tags = $this->ci->tag_class->parse_tags(strip_tags(Markdown($data['content']), '<b><i><em><ul><a>')))
 		{
 			// set data to be sent to the tag function
-			$tag_input = array('source' => 'page', 'source_id' => $page_id, 'to_add' => $tags['array']);
-			
+			$tag_input = array('source' => $source, 'source_id' => $page_id, 'to_add' => $tags['array']);
+
 			$this->ci->load->library('tag_class');
 			//print_r($tag_input);
 			// add the tags to the tag table
@@ -50,7 +60,41 @@ class Page_class
 				die('tag_class->tag returned false.');
 			}
 		}
-		
+
+		// if auto-links were requested, apply them
+		if (array_key_exists('auto_link_parent', $data) && $data['parent_id'] != 0) {
+			$auto_links[] = $data['parent_id'];
+		}
+		if (array_key_exists('auto_link_sibling', $data)) {
+			$query_array[] = "parent_id = $data[parent_id]";
+		}
+		if (array_key_exists('auto_link_child', $data)) {
+			$query_array[] = "parent_id = $data[id]";
+		}
+
+		// if auto-links need to be looked up, do so
+		if (isset($query_array))
+		{
+			$query_string = '('.implode(' OR ', $query_array).") AND (id != $page_id OR 'delete' IS FALSE)";
+			if ($results = $this->ci->page_model->read(array('fields' => 'id', 'where' => $query_string)))
+			{
+				foreach ($results as $result)
+				{
+					$auto_links[] = $result['id'];
+				}
+			}
+		}
+
+		// if there is any auto-data to submit
+		if (isset($auto_links) && isset($data['links']))
+		{
+			$data['links'] = array_merge($data['links'], $auto_links);
+		}
+		elseif (isset($auto_links))
+		{
+			$data['links'] = $auto_links;
+		}
+
 		if (isset($data['authors']))
 		{
 			foreach ($data['authors'] as $author)
@@ -62,7 +106,7 @@ class Page_class
 				}
 			}
 		}
-		
+
 		if (isset($data['actors']))
 		{
 			foreach ($data['actors'] as $actor)
@@ -74,7 +118,7 @@ class Page_class
 				}
 			}
 		}
-		
+
 		if (isset($data['links']))
 		{
 			foreach ($data['links'] as $link)
@@ -86,28 +130,39 @@ class Page_class
 				}
 			}
 		}
-		
-		
+
+
 		return $input['url'];
 	}
-	
+
 	public function edit($data)
 	{
+		if (array_key_exists('case_study', $data))
+		{
+			$input['case_study'] = 1;
+			$input['parent_id'] = 0;
+			$source = 'case_study';
+		}
+		else
+		{
+			$source = 'page';
+			$input['parent_id'] = $data['parent_id'];
+		}
+
 		$input['id'] = $data['id'];
 		$input['title'] = $data['title'];
 		$input['url'] = url_title($data['title'], 'dash', true);
 		$input['group_id'] = $data['group_id'];
-		$input['parent_id'] = $data['parent_id'];
 		$input['description'] = $data['description'];
 		$input['content'] = $data['content'];
 		$input['profile_photo'] = $data['profile_photo'];
 		$input['visibility'] = $data['visibility'];
-		
+
 		if ($tags = $this->ci->tag_class->parse_tags(strip_tags(Markdown($data['content']), '<b><i><em><u><a>')))
 		{
 			// set data to be sent to the tag function
-			$tag_input = array('source' => 'page', 'source_id' => $data['id'], 'to_add' => $tags['array']);
-			
+			$tag_input = array('source' => $source, 'source_id' => $data['id'], 'to_add' => $tags['array']);
+
 			$this->ci->load->library('tag_class');
 			//print_r($tag_input);
 			// add the tags to the tag table
@@ -118,18 +173,18 @@ class Page_class
 		else
 		{
 			// need to delete any tags that were attached to this page
-			
+
 			// delete all tags currently registered to this source
 			if (! $this->ci->tag_model->delete(array('source' => 'page', 'source_id' => $data['id']))) {
 				die('tag_model->delete returned false');
 			}
 		}
-		
+
 		// if the page is marked as updated, set the current time
 		if (array_key_exists('updated', $data)) {
 			$input['updated'] = time();
 		}
-		
+
 		// if auto-links were requested, apply them
 		if (array_key_exists('auto_link_parent', $data) && $data['parent_id'] != 0) {
 			$auto_links[] = $data['parent_id'];
@@ -140,7 +195,7 @@ class Page_class
 		if (array_key_exists('auto_link_child', $data)) {
 			$query_array[] = "parent_id = $data[id]";
 		}
-		
+
 		// if auto-links need to be looked up, do so
 		if (isset($query_array))
 		{
@@ -153,7 +208,7 @@ class Page_class
 				}
 			}
 		}
-		
+
 		// if there is any auto-data to submit
 		if (isset($auto_links) && isset($data['links']))
 		{
@@ -163,12 +218,12 @@ class Page_class
 		{
 			$data['links'] = $auto_links;
 		}
-		
+
 		// update the page entry, or die
 		if (! $this->ci->page_model->update($input)) {
 			die('Failed to update content table. Check your data and try again. [002]');
 		}
-		
+
 		if ($cur_authors = $this->ci->permission_class->authors($data['id'])) {
 			foreach ($cur_authors as $key => $value)
 			{
@@ -183,7 +238,7 @@ class Page_class
 			{
 				$auth_to_del = $current_authors;
 			}
-		
+
 			foreach ($auth_to_del as $author) {
 				if (! $this->ci->permission_model->delete_author(array('page_id' => $data['id'], 'user_id' => $author)))
 				{
@@ -207,7 +262,7 @@ class Page_class
 				}
 			}
 		}
-		
+
 		if ($cur_actors = $this->ci->permission_class->actors($data['id']))
 		{
 			foreach ($cur_actors as $key => $value)
@@ -223,7 +278,7 @@ class Page_class
 			{
 				$act_to_del = $current_actors;
 			}
-		
+
 			foreach ($act_to_del as $actor)
 			{
 				if (! $this->ci->permission_model->delete_actor(array('page_id' => $data['id'], 'user_id' => $actor)))
@@ -248,7 +303,7 @@ class Page_class
 				}
 			}
 		}
-		
+
 		// update/delete/add links to other pages
 		if ($cur_links = $this->ci->page_model->read_page_links(array('where' => array('page_id' => $data['id']))))
 		{
@@ -265,7 +320,7 @@ class Page_class
 			{
 				$links_to_del = $current_links;
 			}
-		
+
 			foreach ($links_to_del as $link)
 			{
 				if (! $this->ci->page_model->delete_page_link(array('page_id' => $data['id'], 'link_id' => $link)))
@@ -291,7 +346,7 @@ class Page_class
 			}
 		}
 		// end link edits
-		
+
 		return $input['url'];
 	}
 	public function blank_form()
@@ -306,44 +361,47 @@ class Page_class
 		$data['profile_photo'] = null;
 		$data['group_id'] = 6;
 		$data['visibility'] = 1;
-		
-		
+
+
 		$data['profile_photo_info'] = array('src' => base_url().'img/blank.png', 'height' => 75, 'id' => 'profile_photo_preview');
-	    
+
 	    $users = $this->ci->people_model->read(array('fields' => 'id, lname, fname'));
 	    $groups = $this->ci->permission_model->read_groups(array('fields' => 'id, name'));
 	    $parents = $this->ci->page_model->read(array('fields' => 'id, title', 'order_by' => array('column' => 'title', 'order' => 'asc')));
-	    
+
 	    foreach ($users as $user) {
 			$data['users'][$user['id']] = $user['lname'].', '.$user['fname'];
 	    }
-	    
+
 		foreach ($groups as $group) {
 			$data['groups'][$group['id']] = $group['name'];
 	    }
-		
-		$data['parents'][0] = 'No Parent';
+
+		$data['parents'][0] = 'No Parent / Case Study';
 	    foreach ($parents as $parent) {
 			$data['parents'][$parent['id']] = $parent['title'];
 	    }
 		$data['links'] = $data['parents'];
 		unset($data['links'][0]);
-	    
+
 	    return $data;
 	}
 	public function full_form($id)
 	{
 	    // fetch the page data
-	    $page = $this->ci->page_model->read(array('fields' => 'id, parent_id, title, content, description, group_id, profile_photo, url, visibility', 'where' => array('id' => $id), 'limit' => 1));
+	    if (! $page = ($this->ci->page_model->read(array('fields' => 'id, parent_id, title, content, description, group_id, profile_photo, url, visibility', 'where' => array('id' => $id), 'limit' => 1))))
+	    {
+	    	return false;
+	    }
 	    // fetch empty data and list populations
 	    $blank_data = $this->blank_form();
 	    // merge the two, to create a populated set of data, with list options
 	    $data = array_merge($blank_data, $page);
-			
+
 		$photo_data = $this->ci->photo_model->read(array('where' => array('imagename' => $data['profile_photo'], 'height' => 180, 'width' => 180), 'limit' => 1));
-			
+
 		$data['profile_photo_info'] = array('src' => base_url().'uploads/'.$photo_data['filename'].$photo_data['extension'], 'width' => $photo_data['width'], 'height' => $photo_data['height'], 'id' => 'profile_photo_preview');
-	    
+
 	    // grab page authors
 	    if ($authors = $this->ci->permission_class->authors($data['id']))
 	    {
@@ -353,7 +411,7 @@ class Page_class
 			    $data['set_authors'][] = $author_id;
 			}
 	    }
-	    
+
 	    // grab page actors
 	    if ($actors = $this->ci->permission_class->actors($data['id']))
 	    {
@@ -363,7 +421,7 @@ class Page_class
 			    $data['set_actors'][] = $actor_id;
 			}
 	    }
-	    
+
 	    // grab page links
 	    if ($links = $this->ci->page_model->read_page_links(array('where' => array('page_id' => $data['id']))))
 	    {
@@ -373,15 +431,18 @@ class Page_class
 			    $data['set_links'][] = $link['link_id'];
 			}
 	    }
-	    
+
 	    return $data;
 	}
 	public function feed($id = '%')
 	{
 	    $fields = 'id, updated, title, description, content, url, tags, profile_photo';
-	    
+
 	    // get content results
-	    $results = $this->ci->page_model->read(array('fields' => $fields, 'where' => array('id like' => $id), 'limit' => 10));
+	    if (! $results = $this->ci->page_model->read(array('fields' => $fields, 'where' => array('id like' => $id, 'case_study' => 0), 'limit' => 10)))
+	    {
+	    	die('no page found for the id: ['.$id.']');
+	    }
 	    foreach ($results as $result)
 	    {
 			if (str_word_count($result['content']) > 50)
@@ -396,12 +457,12 @@ class Page_class
 			    $item['message'] = $message['text'];
 			    $item['message_truncated'] = 'no';
 			}
-			
+
 			$item['subject'] = $result['description'];
 			$item['edit_path'] = 'page/edit/'.$result['id'];
 			$item['delete_path'] = 'page/delete/'.$result['id'];
-			
-			
+
+
 			if ($result['profile_photo'] != '')
 			{
 				$photo_data = $this->ci->photo_model->read(array('where' => array('imagename' => $result['profile_photo'], 'width' => 50, 'height' => 50), 'limit' => 1));
@@ -411,11 +472,11 @@ class Page_class
 			{
 				$item['profile_photo'] = base_url().'img/blank.png';
 			}
-			
-			
+
+
 			$item['full_url'] = 'page/view/'.$result['url'];
 			$item['author'] = $result['title'];
-			
+
 			if ($tags = $this->ci->tag_model->read(array('fields' => 'tag', 'where' => array('source' => 'page', 'source_id' => $result['id']))))
 			{
 				foreach ($tags as $tag)
@@ -427,7 +488,7 @@ class Page_class
 			{
 				$item['tags'] = null;
 			}
-			
+
 			$item['elapsed'] = $this->ci->common_class->elapsed_time($result['updated']).' ago';
 			if ($this->ci->userdata['group']['name'] == 'admin' || $this->ci->permission_class->is_actor(array('page_id' => $result['id'], 'user_id' => $this->ci->userdata['id'])))
 			{
@@ -437,29 +498,31 @@ class Page_class
 			{
 				$item['controls'] = null;
 			}
-			
+
 			$return[$result['updated']] = $item;
 	    }
 	    return $return;
 	}
 	public function view($url)
 	{
-	    $fields = 'id, title, content, parent_id, tags, profile_photo';
-	    
-	    $query = array('fields' => $fields, 'where' => array('url' => $url), 'limit' => 1);
 	    // get content results
-	    $result = $this->ci->page_model->read($query);
-	    
+	    if (! $result = $this->ci->page_model->read(array('fields' => 'id, title, content, parent_id, tags, profile_photo', 'where' => array('url' => $url), 'limit' => 1)))
+	    {
+	    	$this->ci->session->set_flashdata('error', 'There is no page with that name. page_class');
+	    	redirect('feed/page');
+	    	die();
+	    }
+
 	    // assign values to return array
 	    $return['id'] = $result['id'];
 	    $return['title'] = $result['title'];
 		$message = $this->ci->tag_class->tags_to_links($result['content']);
-		
+
 	    $return['content'] = Markdown($message['text']);
 	    //$return['tags'] = explode('#', trim($result['tags'], '#'));
 		$return['tags'] = $message['array'];
 	    $return['parent_id'] = $result['parent_id'];
-		
+
 		if ($result['profile_photo'] != '')
 		{
 			$photo_data = $this->ci->photo_model->read(array('where' => array('imagename' => $result['profile_photo'], 'width' => 180, 'height' => 180), 'limit' => 1));
@@ -469,7 +532,7 @@ class Page_class
 		{
 			$return['profile_photo'] = base_url().'img/blank.png';
 		}
-		
+
 		if ($this->ci->userdata['group']['name'] == 'admin' || $this->ci->permission_class->is_actor(array('page_id' => $result['id'], 'user_id' => $this->ci->userdata['id'])))
 		{
 			$return['controls'] = anchor('page/edit/'.$result['id'], img('img/edit_icon_black.png'), array('class' => 'edit')).anchor('page/create/'.$result['id'], img('img/create_icon_black.png'), array('class' => 'create')).anchor('page/delete/'.$result['id'], img('img/delete_icon_black.png'), array('class' => 'delete'));
@@ -478,19 +541,19 @@ class Page_class
 		{
 			$return['controls'] = null;
 		}
-	    
+
 	    // retrieve authorship info
 	    $return['authors'] = $this->ci->permission_class->authors($result['id']);
-		
+
 	    // retrieve actors
 	    $return['actors'] = $this->ci->permission_class->actors($result['id']);
-		
+
 		// retrieve page links
 		$return['links'] = $this->ci->page_class->links($result['id']);
-		
+
 	    return $return;
 	}
-	
+
 	public function links($page_id)
 	{
 		if ($links = $this->ci->page_model->read_page_links(array('where' => array('page_id' => $page_id))))
@@ -503,10 +566,10 @@ class Page_class
 		}
 		return null;
 	}
-	
+
 	private function _menu_r($parent_id, $maxdepth = 0, $curdepth = 0)
 	{
-		$pages = $this->ci->page_model->read(array('fields' => 'id, title, url, visibility', 'where' => array('parent_id' => $parent_id), 'order_by' => array('column' => 'title', 'order' => 'asc')));
+		$pages = $this->ci->page_model->read(array('fields' => 'id, title, url, visibility', 'where' => array('parent_id' => $parent_id, 'case_study' => 0), 'order_by' => array('column' => 'title', 'order' => 'asc')));
 		foreach ($pages as $page)
 		{
 			if ($page['visibility'] == 1)
@@ -517,7 +580,7 @@ class Page_class
 			{
 				$class = array('class' => 'invisible');
 			}
-			
+
 			if ($this->ci->userdata['group']['name'] == 'admin')
 			{
 				$controls = '<div class="controls">'.anchor('page/edit/'.$page['id'], img('img/edit_icon_black.png'), array('class' => 'edit')).'</div>';
@@ -526,8 +589,8 @@ class Page_class
 			{
 				$controls = null;
 			}
-			
-			if ($this->ci->page_model->read(array('fields' => 'id', 'where' => array('parent_id' => $page['id']))) && $curdepth < $maxdepth)
+
+			if ($this->ci->page_model->read(array('fields' => 'id', 'where' => array('parent_id' => $page['id'], 'case_study' => 0))) && $curdepth < $maxdepth)
 			{
 				$menu[$controls.anchor('page/view/'.$page['url'], $page['title'], $class)] = $this->_menu_r($page['id'], $maxdepth, $curdepth + 1);
 			}
@@ -538,7 +601,7 @@ class Page_class
 		}
 		return $menu;
 	}
-	
+
 	public function menu($depth = null, $parent_id = 0)
 	{
 		if (is_null($depth))
@@ -547,6 +610,7 @@ class Page_class
 		}
 		// new approach
 		$return = $this->_menu_r($parent_id, $depth);
+		$return[] = anchor('feed/casestudy', 'Case Studies', array('class' => 'visible'));
 	    return ul($return, array('id' => 'page_menu', 'class' => 'leftmenu'));
 	}
 }

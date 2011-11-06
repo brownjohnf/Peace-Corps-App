@@ -7,12 +7,16 @@
 		<div id="leftbar">
 			<img id="logo" src="<?php echo base_url(); ?>img/pc_logo.png">
 
-			<?php if ($this->uri->segment(1, null) == 'feed'): ?>
+			<?php if ($this->uri->segment(1) == 'feed'): ?>
 			<h2>Updates</h2>
 			<div>
 				<ul class="leftmenu">
 					<li><?=anchor('feed', 'All')?></li>
-					<li><?=anchor('feed/page', 'Content')?></li>
+					<li><?=anchor('feed/page', 'Pages')?></li>
+					<li><?=anchor('feed/casestudy', 'Case Studies')?></li>
+					<li><?=anchor('feed/document', 'Documents')?></li>
+					<li><?=anchor('feed/link', 'Links')?></li>
+					<li><?=anchor('feed/video', 'Videos')?></li>
 					<li><?=anchor('feed/blog', 'Blogs')?></li>
 					<li><?=anchor('feed/tag', 'Recent Tags')?></li>
 				</ul>
@@ -35,11 +39,35 @@
 			    <?php echo $this->page_class->menu(); ?>
 			</div>
 
+			<?php if ($this->userdata['is_user']): ?>
+			<h2>Volunteer</h2>
+			<div>
+			    <ul class="leftmenu">
+					<li><?=anchor('photo/gallery/me', 'My Photos')?>
+						<ul>
+							<li><?=anchor('photo/add', 'Upload Photo')?></li>
+						</ul>
+					</li>
+					<li><?=anchor('profile', 'Profiles')?>
+						<ul>
+							<li><?=anchor('profile/view/'.$this->userdata['url'], 'My Profile')?></li>
+						</ul>
+					</li>
+					<li><?=anchor('resource', 'Resources')?>
+						<ul>
+							<li><?=anchor('module', 'Modules')?></li>
+							<li><?=anchor('link/view', 'Links')?></li>
+							<li><?=anchor('document/view', 'Documents')?></li>
+						</ul>
+					</li>
+			    </ul>
+			</div>
+			<?php endif; ?>
+
 			<?php if ($this->userdata['is_admin']): ?>
 			<h2>Admin</h2>
 			<div>
 			    <ul class="leftmenu">
-
 					<li><?=anchor('photo/gallery/me', 'My Photos')?>
 						<ul>
 							<li><?=anchor('photo/add', 'Upload Photo')?></li>
@@ -64,7 +92,7 @@
 									<li><?=anchor('link/create', 'New Link')?></li>
 								</ul>
 							</li>
-							<li><?=anchor('document/view', 'Documents')?>
+							<li><?=anchor('document/admin', 'Documents')?>
 								<ul>
 									<li><?=anchor('document/add', 'Upload Document')?></li>
 								</ul>

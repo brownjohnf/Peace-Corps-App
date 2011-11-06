@@ -11,7 +11,7 @@ class Common_class
 	{
 		$this->ci =& get_instance();
 	}
-	
+
 	public function elapsed_time($time1, $time2 = false)
 	{
 	    // if only one argument is passed, assume that it should be compared to the current time
@@ -30,29 +30,29 @@ class Common_class
 	    // php 'knows' them
 	    $intervals = array('year', 'month', 'day', 'hour', 'minute', 'second');
 	    $diffs =array();
-	    
+
 	    // loop through all intervals
 	    foreach ($intervals as $interval)
 		{
 			// set default diff to 0
 			$diffs[$interval] = 0;
-		
+
 			// create temp time
 			$ttime = strtotime('+1 '.$interval, $time1);
-		
+
 			// loop until temp time is smaller than time2
 			while ($time2 >= $ttime)
 			{
 			    $time1 = $ttime;
 			    $diffs[$interval]++;
-			    
+
 			    // create new temp time from time1 and interval
 			    $ttime = strtotime('+1 '.$interval, $time1);
 			}
 	    }
 	    $count = 0;
 	    $times = array();
-	    
+
 	    // loop through all diffs
 	    foreach ($diffs as $interval => $value)
 	    {
@@ -65,7 +65,7 @@ class Common_class
 			    {
 					$interval .= 's';
 			    }
-		    
+
 			    // add value and interval to times array
 			    $times[] = $value.' '.$interval;
 			    $count++;
@@ -80,7 +80,7 @@ class Common_class
 	// given a parent id and table name, calculates the path down from the top-level parent item
 	public function backtrack($parent_id, $table)
 	{
-	    $data = null;
+	    $data = array();
 	    $fields = 'parent_id, title, url';
 	    while ($parent_id != 0)
 	    {
@@ -88,16 +88,9 @@ class Common_class
 			$data['page/view/'.$response['url']] = $response['title'];
 			$parent_id = $response['parent_id'];
 	    }
-		if (is_array($data))
-	    {
-			return array_reverse($data);
-	    }
-	    else
-	    {
-			return $data;
-	    }
+		return array_reverse($data);
 	}
-	
+
 	//flattens a multi-dimensional array (recursive implode)
     public function r_implode($glue, $pieces)
     {
@@ -107,12 +100,12 @@ class Common_class
     		{
       			$retVal[] = '<ul>'.$this->r_implode($glue, $r_pieces).'</ul>';
     		}
-    		else	
+    		else
     		{
       			$retVal[] = '<li>'.$r_pieces.'';
     		}
   	}
 	    return '</li>'.implode($glue, $retVal);
-	
+
     }
 }

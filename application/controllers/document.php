@@ -32,8 +32,13 @@ class Document extends MY_Controller {
 		$this->load->view('footer');
 	}
 
-	public function view()
+	public function admin()
 	{
+		if (! $this->userdata['is_admin'])
+		{
+			$this->session->set_flashdata('error', 'You do not have appropriate permissions for this action. [upload photo]');
+			redirect('document');
+		}
 		if (is_numeric($this->uri->segment(3)))
 		{
 			$data['table'] = $this->document_model->read(array('where' => array('id' => $this->uri->segment(3))));
@@ -58,10 +63,10 @@ class Document extends MY_Controller {
 
 		$this->load->view('head', array('page_title' => $data['title'], 'stylesheets' => array('demo_table.css', 'layout_outer.css', 'layout_inner.css', 'theme.css'), 'scripts' => array('jquery.dataTables.min.js', 'document.js')));
 		$this->load->view('header');
-		$this->load->view('main_open');
+		//$this->load->view('main_open');
 		$this->load->view('left_column');
 		$this->load->view('table_view', $data);
-		$this->load->view('main_close');
+		//$this->load->view('main_close');
 		$this->load->view('footer');
 	}
 
@@ -77,10 +82,10 @@ class Document extends MY_Controller {
 
 	public function add()
 	{
-		if (! $this->auth->is_user())
+		if (! $this->userdata['is_admin'])
 		{
-			$this->session->set_flashdata('error', 'You do not have appropriate permissions for this action. [upload photo]');
-			redirect('resource');
+			$this->session->set_flashdata('error', 'You do not have appropriate permissions for this action. [upload document]');
+			redirect('document');
 		}
 		$data = $this->document_class->blank_form();
 
@@ -99,10 +104,10 @@ class Document extends MY_Controller {
 
 	function do_upload()
 	{
-		if (! $this->auth->is_user())
+		if (! $this->userdata['is_admin'])
 		{
 			$this->session->set_flashdata('error', 'You do not have appropriate permissions for this action. [upload document]');
-			redirect('resource');
+			redirect('admin');
 		}
 		ini_set("memory_limit","128M");
 		$this->config->load('file', true);
@@ -124,11 +129,12 @@ class Document extends MY_Controller {
 			$data['name'] = $upload_data['raw_name'];
 			$data['ext'] = $upload_data['file_ext'];
 			$data['type'] = $upload_data['file_type'];
+			$data['size'] = $upload_data['file_size'];
 			$data['user_id'] = $this->userdata['id'];
 
 			if ($id = $this->document_class->create($data))
 			{
-				$this->session->set_flashdata('success', 'You have successfully uploaded your document. Please edit its metadata, if you have not already done so.');
+				$this->session->set_flashdata('success', 'You have successfully uploaded your document. Please edit its metadata, if you have not already done so. This is optional; the data you see below is already saved.');
 				redirect('document/edit/'.$id);
 			}
 			else
@@ -147,6 +153,11 @@ class Document extends MY_Controller {
 
 	public function edit()
 	{
+		if (! $this->userdata['is_admin'])
+		{
+			$this->session->set_flashdata('error', 'You do not have appropriate permissions for this action. [upload document]');
+			redirect('document');
+		}
 	    if ($this->uri->segment(3, null) == null && $this->input->post('id') == null)
 	    {
 			$this->session->set_flashdata('error', 'You must specify a document to edit, or simply create a new one here. [007]');
@@ -180,7 +191,7 @@ class Document extends MY_Controller {
 		    if ($id = $this->document_class->edit($this->input->post()))
 		    {
 			    $this->session->set_flashdata('success', 'Document data successfully edited.');
-			    redirect('document/view/'.$id);
+			    redirect('document/admin/'.$id);
 			}
 		    else
 		    {
@@ -191,6 +202,11 @@ class Document extends MY_Controller {
 
 	public function delete()
 	{
+		if (! $this->userdata['is_admin'])
+		{
+			$this->session->set_flashdata('error', 'You do not have appropriate permissions for this action. [upload photo]');
+			redirect('document');
+		}
 		$this->load->model('resource_model');
 		if (! $this->document_model->delete(array('id' => $this->uri->segment(3))))
 		{
@@ -207,7 +223,7 @@ class Document extends MY_Controller {
 		if (isset($error)) {
 			$this->session->set_flashdata('error', implode(' ', $error));
 		}
-		redirect('document/view');
+		redirect('document/admin');
 	}
 
 	// validation callback function for checking tags

@@ -13,13 +13,13 @@ class Blog_class
 		$this->ci->load->model(array('page_model', 'people_model'));
 		$this->ci->load->library(array('permission_class', 'common_class'));
 	}
-	
+
 	public function feed()
 	{
 		$this->ci->load->model('tag_model');
 		// grab all users with blogs
 		$results = $this->ci->people_model->selectUsers(array('where' => array('blog_address !=' => '')));
-		
+
 		// populate the standard feed harness
 		foreach ($results as $result)
 		{
@@ -31,16 +31,16 @@ class Blog_class
 			{
 				$tags = $this->ci->tag_class->tags_to_links('There is currently no #description registered.');
 			}
-			
+
 			$item['message'] = $tags['text'];
 			$item['message_truncated'] = 'no';
-			$item['subject'] = anchor('profile/view/'.url_title($result['lname'].'-'.$result['fname'], 'dash', true), $result['fname'].'&nbsp;'.$result['lname']).',&nbsp;'.$result['group_name'];
+			$item['subject'] = '<span style="color:orange;font-size:120%;">Blog!</span> '.anchor('profile/view/'.url_title($result['lname'].'-'.$result['fname'], 'dash', true), $result['fname'].'&nbsp;'.$result['lname']).',&nbsp;'.$result['group_name'];
 			$item['full_url'] = base_url().'blog/view/'.url_title($result['lname'].'-'.$result['fname'], 'dash', true);
 			$item['author'] = $result['blog_name'];
 			$item['tags'] = $tags['array'];
-			
-			
-		
+
+
+
 			if (isset($result['fb_id'])) {
 				$item['profile_photo'] = 'http://graph.facebook.com/'.$result['fb_id'].'/picture';
 			} else {
@@ -48,7 +48,7 @@ class Blog_class
 			}
 
 			$a = get_headers(prep_url($result['blog_address']), 1);
-			
+
 			if (array_key_exists('Last-Modified', $a))
 			{
 				$item['elapsed'] = $this->ci->common_class->elapsed_time(strtotime($a['Last-Modified']));
@@ -58,37 +58,37 @@ class Blog_class
 				$item['elapsed'] = null;
 				$a['Last-Modified'] = date(time());
 			}
-			
+
 			$item['controls'] = null;
 			$item['comments'] = null;
 			$item['info'] = null;
-			
+
 			$return[strtotime($a['Last-Modified'])] = $item;
 		}
 		return $return;
 	}
-	
+
 	public function view($names)
 	{
 		$names_array = explode('-', trim($names));
 	    $query = array('where' => array('lname like' => urldecode($names_array[0]), 'fname like' => urldecode($names_array[1])), 'limit' => 1, 'offset' => 0);
-		
+
 	    // get profile info
 	    if (! $result = $this->ci->people_model->selectUsers($query)) {
 			$this->ci->session->set_flashdata('error', 'No user was found by that name.');
 			return false;
 			die();
 		}
-		
+
 		if (! $result['blog_address']) {
 			$this->ci->session->set_flashdata('error', 'This user does not have a blog.');
 			return false;
 			die();
 		}
-		
+
 		$return = $result;
 		$return['blog_address'] = prep_url($result['blog_address']);
-		
+
 		if (isset($result['fb_id']) && is_numeric($result['fb_id'])) {
 			$return['social'][] = anchor('http://facebook.com/profile.php?id='.$result['fb_id'], 'Facebook', array('target' => '_blank'));
 			$return['profile_photo'] = 'http://graph.facebook.com/'.$result['fb_id'].'/picture?type=large';
@@ -98,19 +98,19 @@ class Blog_class
 		} else {
 			$return['profile_photo'] = base_url().'img/blank.png';
 		}
-		
+
 		$address_array = explode('.', $result['blog_address']);
 		$blog_type = $address_array[count($address_array) - 2];
-		
+
 
 		$count = 0;
 		switch ($blog_type)
 		{
 			case 'blogspot':
 				$return['feed'] = prep_url($result['blog_address'].'/feeds/posts/default');
-		
+
 				$rss = simplexml_load_file($return['feed']);
-				
+
 				foreach ($rss->entry as $item)
 				{
 					if ($count > 5) {
@@ -156,5 +156,5 @@ class Blog_class
 		$return['blog_data'] = $data;
 	    return $return;
 	}
-	
+
 }

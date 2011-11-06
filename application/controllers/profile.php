@@ -11,6 +11,86 @@ class Profile extends MY_Controller {
 		$this->load->library(array('permission_class', 'profile_class'));
 	}
 
+	public function search()
+	{
+		$this->load->model(array('people_model', 'sector_model', 'stage_model', 'region_model'));
+
+		if ($this->uri->segment(4))
+		{
+			$results = $this->people_model->selectUsers(array('fields' => 'people.fname, people.lname, people.email1, people.phone1, people.edited', 'where' => array($this->uri->segment(3) => $this->uri->segment(4))));
+		}
+		else
+		{
+			$results = $this->people_model->selectUsers(array('fields' => 'people.fname, people.lname, people.email1, people.phone1, people.edited'));
+		}
+
+		if (! $results)
+		{
+			die('no table data');
+		}
+
+		foreach ($results as $result)
+		{
+			$table['fname'] = anchor('profile/view/'.strtolower($result['lname'].'-'.$result['fname']), $result['fname']);
+			$table['lname'] = anchor('profile/view/'.strtolower($result['lname'].'-'.$result['fname']), $result['lname']);
+			$table['email1'] = $result['email1'];
+			$table['phone1'] = $result['phone1'];
+			$table['local_name'] = $result['local_name'];
+			$table['stage_name'] = $result['stage_name'];
+			$table['sector_short'] = strtoupper($result['sector_short']);
+			$table['site_name'] = $result['site_name'];
+			$table['region_name'] = $result['region_name'];
+
+			$data['table'][] = $table;
+		}
+
+		if (! $results = $this->sector_model->read(array('fields' => 'id, name')))
+		{
+			die('failed to read sectors');
+		}
+		foreach ($results as $result)
+		{
+			$sectors[] = anchor('profile/search/sectors.id/'.$result['id'], $result['name']);
+		}
+
+		if (! $results = $this->stage_model->read(array('fields' => 'id, name')))
+		{
+			die('failed to read stages');
+		}
+		foreach ($results as $result)
+		{
+			$stages[] = anchor('profile/search/stages.id/'.$result['id'], $result['name']);
+		}
+
+		if (! $results = $this->region_model->read(array('fields' => 'id, name')))
+		{
+			die('failed to read regions');
+		}
+		foreach ($results as $result)
+		{
+			$regions[] = anchor('profile/search/political_regions.id/'.$result['id'], $result['name']);
+		}
+
+		$data['sectors'] = array_unique($sectors);
+		$data['stages'] = array_unique($stages);
+		$data['regions'] = array_unique($regions);
+
+		$data['title'] = 'User Profiles';
+		$data['backtrack'] = array('' => 'Home', 'profile' => 'Profiles');
+
+
+	    // print the page
+		$this->output->set_header("Cache-Control: max-age=300, public, must-revalidate");
+
+		$this->load->view('head', array('page_title' => $data['title'], 'stylesheets' => array('demo_table.css', 'layout_outer.css', 'layout_inner.css', 'theme.css'), 'scripts' => array('jquery.dataTables.min.js', 'profile_list.js')));
+		$this->load->view('header');
+		$this->load->view('main_open');
+		$this->load->view('left_column');
+		$this->load->view('profile_list_view', $data);
+		$this->load->view('main_close');
+		$this->load->view('footer', array('footer' => 'Footer Here'));
+	}
+
 	public function view()
 	{
 		// retrieve profile

@@ -6,22 +6,30 @@
 class Link_model extends CI_Model {
 
 	public function __construct() {
-		
+
 		parent::__construct();
-		
+
 	}
-	
+
 	public function create($data)
 	{
+		$data['created'] = time();
+		$data['updated'] = $data['created'];
 	    if ($this->db->insert('links', $data))
 	    {
 			return $this->db->insert_id();
 	    }
 	}
-	
+
 	public function read($data = array())
 	{
-		$default = array('fields' => '*', 'where' => array('id like' => '%'), 'order_by' => array('column' => 'title', 'order' => 'asc'), 'offset' => 0);
+		if (! array_key_exists('where', $data))
+		{
+			$data['where'] = array();
+		}
+		$default = array('fields' => '*', 'where' => array('id like' => '%', 'delete' => 0), 'order_by' => array('column' => 'title', 'order' => 'asc'), 'offset' => 0);
+		// sets it to only read non-deleted pages by default
+		$data['where'] = array_merge($default['where'], $data['where']);
 		$data = array_merge($default, $data);
 		//echo '<pre>'; print_r($data); echo '</pre>';
 		$this->db->select($data['fields']);
@@ -35,13 +43,13 @@ class Link_model extends CI_Model {
 		if (isset($data['limit']) && $data['limit'] == 1)
 		{
 			return $query->row_array();
-		}	
+		}
 		else
 		{
 			return $query->result_array();
 		}
 	}
-	
+
 	function delete($id)
 	{
 		$this->db->where('id', $id);
@@ -49,9 +57,10 @@ class Link_model extends CI_Model {
 			return true;
 		}
 	}
-	
+
 	function update($data)
 	{
+		$data['updated'] = time();
 		$this->db->where('id', $data['id']);
 		if ($this->db->update('links', $data)) {
 			return true;

@@ -19,11 +19,11 @@
     ?>
 
 
-	<div id="backtrack">
-	<?php foreach ($backtrack as $key => $value): ?>
-		<?php echo anchor($key, $value).'&nbsp;&gt; '; ?>
-	<? endforeach; ?>
-	</div>
+<div id="backtrack">
+<?php foreach ($backtrack as $key => $value): ?>
+	<?php echo anchor($key, $value).'&nbsp;&gt; '; ?>
+<? endforeach; ?>
+</div>
 
 <h1><?=$form_title?><div class="controls"><?=$controls?></div></h1>
 <?php echo form_open('user/'.$target); ?>

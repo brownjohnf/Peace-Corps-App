@@ -14,11 +14,11 @@
 		?>
 		<!-- clearing element, keeps the footer pushed down to the bottom, and ensures that the images on top of it keep clear of the page content. -->
 
-		</div>
-		<!-- end #bottom_of_page -->
-		
+		<!--</div>
+		 end #bottom_of_page -->
+
 		<!-- close #main_inner -->
 	</div>
-	
+
 	<!-- close #main_outer -->
 </div>

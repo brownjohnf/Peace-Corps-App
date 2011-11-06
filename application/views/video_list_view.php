@@ -4,7 +4,7 @@
 #   the COPYRIGHT file.
 ?>
 
-<div id="document_list_view" class="content">
+<div id="video_list_view" class="content">
 
 <?php
 if ($this->session->flashdata('error'))
@@ -27,20 +27,20 @@ if ($this->session->flashdata('success'))
 		<thead>
 			<tr>
 				<th>Title</th>
+				<th>Description</th>
 				<th>Tags</th>
-				<th>Extension</th>
-				<th>Size</th>
-				<th>Edited</th>
+				<th>Go To</th>
+				<th>Updated</th>
 			</tr>
 		</thead>
 		<tbody>
 		<?php foreach ($table as $row): ?>
 			<tr>
-				<td><?php echo anchor($row['url'], $row['title']); ?></td>
+				<td><?php echo anchor('video/view/'.$row['id'].'/'.$row['title'], $row['title']); ?></td>
+				<td class=""><?=$row['description']?></td>
 				<td class=""><?=$row['tags']?></td>
-				<td class=""><?=$row['ext']?></td>
-				<td class=""><?=$row['size']?></td>
-				<td class=""><?=$row['edited']?></td>
+				<td class=""><?php echo anchor_popup($row['link'], 'External'); ?></td>
+				<td><?=$row['edited']?></td>
 			</tr>
 		<?php endforeach; ?>
 		</tbody>
@@ -49,5 +49,3 @@ if ($this->session->flashdata('success'))
 </div>
 <!-- This clearing element should immediately follow the #content div in order to force the #main_inner div to contain all child floats -->
 		<br class="clearfloat" />
-
-		<div id="bottom_of_page">
