@@ -13,15 +13,34 @@ class Link extends MY_Controller {
 
 	public function search()
 	{
+		$fields = 'title, url, tags, updated';
 		if ($this->uri->segment(4))
 		{
-			$data['table'] = $this->link_model->read(array('where' => array($this->uri->segment(3) => $this->uri->segment(4))));
+			$results = $this->link_model->read(array('fields' => $fields, 'where' => array($this->uri->segment(3) => $this->uri->segment(4))));
 		}
 		else
 		{
-			$data['table'] = $this->link_model->read();
+			$results = $this->link_model->read(array('fields' => $fields));
 		}
-
+		
+		foreach ($results as $result)
+		{
+			if ($result['tags'] != '')
+			{
+				$tags = explode('#', trim($result['tags'], '#'));
+				foreach ($tags as $tag)
+				{
+					$tag_ret[] = '<span class="hash">#</span>'.anchor('tag/feed/'.urlencode($tag), $tag);
+				}
+				$tag_output = implode(' ', $tag_ret);
+			}
+			else
+			{
+				$tag_output = null;
+			}
+			
+			$data['table'][] = array('title' => $result['title'], 'url' => $result['url'], 'tags' => $tag_output, 'edited' => date('m D Y', $result['updated']));
+		}
 		//print_r($data);
 
 		$data['title'] = 'Links';
@@ -61,16 +80,18 @@ class Link extends MY_Controller {
 
 		$data['title'] = 'Links';
 		$data['backtrack'] = array('resource' => 'Resources', 'link/view' => 'Links', 'link/view/' => 'View');
+		$data['edit_target'] = 'link/edit/';
+		$data['extra_targets'][] = array('path' => 'link/delete/', 'column' => 'id', 'text' => 'Delete');
 
 
 	    // print the page
 		$this->output->set_header("Cache-Control: max-age=300, public, must-revalidate");
 
-		$this->load->view('head', array('page_title' => $data['title'], 'stylesheets' => array('demo_table.css', 'layout_outer.css', 'layout_inner.css', 'theme.css'), 'scripts' => array('jquery.dataTables.min.js', 'link.js')));
+		$this->load->view('head', array('page_title' => $data['title'], 'stylesheets' => array('demo_table.css', 'layout_outer.css', 'layout_inner.css', 'theme.css'), 'scripts' => array('jquery.dataTables.min.js', 'datatable_initiate.js')));
 		$this->load->view('header');
 		$this->load->view('main_open');
 		$this->load->view('left_column');
-		$this->load->view('link_list_view', $data);
+		$this->load->view('table_view', $data);
 		$this->load->view('main_close');
 		$this->load->view('footer');
 	}
@@ -113,7 +134,7 @@ class Link extends MY_Controller {
 		{
 		    if ($id = $this->link_class->create($this->input->post()))
 		    {
-				$this->session->set_flashdata('message', 'Link successfully created.');
+				$this->session->set_flashdata('success', 'Link successfully created.');
 		        redirect('link/search/id/'.$id);
 		    }
 		    else

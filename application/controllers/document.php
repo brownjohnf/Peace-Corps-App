@@ -92,6 +92,7 @@ class Document extends MY_Controller {
 		$data['form_title'] = 'Upload Document';
 		$data['target'] = 'do_upload';
 		$data['backtrack'] = array('resource' => 'Resources', 'document' => 'Documents', 'document/add' => 'Upload');
+		$data['controls'] = anchor('document', img('/img/cancel_icon.png'), array('class' => 'cancel'));
 
 		$this->load->view('head', array('page_title' => $data['form_title'], 'stylesheets' => array('layout_outer.css', 'layout_inner.css', 'theme.css')));
 		$this->load->view('header');

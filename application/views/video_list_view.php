@@ -4,7 +4,7 @@
 #   the COPYRIGHT file.
 ?>
 
-<div id="video_list_view" class="content">
+<div id="video_list_view" class="content standard_list_view">
 
 <?php
 if ($this->session->flashdata('error'))
@@ -26,7 +26,7 @@ if ($this->session->flashdata('success'))
 	<table id="datatable">
 		<thead>
 			<tr>
-				<th>Title</th>
+				<th>View</th>
 				<th>Description</th>
 				<th>Tags</th>
 				<th>Go To</th>
@@ -36,7 +36,7 @@ if ($this->session->flashdata('success'))
 		<tbody>
 		<?php foreach ($table as $row): ?>
 			<tr>
-				<td><?php echo anchor('video/view/'.$row['id'].'/'.$row['title'], $row['title']); ?></td>
+				<td><?php echo anchor('video/view/'.$row['id'].'/'.url_title($row['title'], 'underscore'), $row['title']); ?></td>
 				<td class=""><?=$row['description']?></td>
 				<td class=""><?=$row['tags']?></td>
 				<td class=""><?php echo anchor_popup($row['link'], 'External'); ?></td>

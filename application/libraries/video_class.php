@@ -112,7 +112,7 @@ class Video_class
 				break;
 			default:
 				$return['embed'] = $result['embed'];
-				$return['link'] = anchor($result['link'], 'original medium');
+				$return['link'] = anchor_popup($result['link'], 'original medium');
 		}
 
 		return $return;

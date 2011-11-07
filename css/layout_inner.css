@@ -256,3 +256,20 @@ span#insert_photo {
 #datatable {
 	width: 100%;
 }
+
+.content table:not(#datatable) tr td {
+	text-align: justify;
+	vertical-align: top;
+	padding: 10px;
+}
+
+.content table:not(#datatable) thead th {
+	text-align: center;
+	padding: 10px;
+}
+
+.content table:not(#datatable), .content table:not(#datatable) td, .content table:not(#datatable) th {
+	margin: 5px;
+	border: 1px solid lightgray;
+	border-collapse: collapse;
+}

@@ -26,21 +26,19 @@ if ($this->session->flashdata('success'))
 	<table id="datatable">
 		<thead>
 			<tr>
-				<th>Edit</th>
-				<th>ID</th>
 				<th>Title</th>
+				<th>Tags</th>
 				<th>URL</th>
-				<th>Delete</th>
+				<th>Updated</th>
 			</tr>
 		</thead>
 		<tbody>
 		<?php foreach ($table as $row): ?>
 			<tr>
-				<td><?php echo anchor('link/edit/'.$row['id'], 'Edit'); ?></td>
-				<td class=""><?=$row['id']?></td>
 				<td class=""><?=$row['title']?></td>
+				<td class=""><?=$row['tags']?></td>
 				<td class=""><?php echo anchor($row['url'], $row['url']); ?></td>
-				<td><?php echo anchor('link/delete/'.$row['id'], 'Delete'); ?></td>
+				<td class=""><?=$row['edited']?></td>
 			</tr>
 		<?php endforeach; ?>
 		</tbody>

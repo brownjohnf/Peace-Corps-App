@@ -46,7 +46,7 @@
 
 <?php echo form_hidden('id', set_value('id', $id)); ?>
 <label>If you're sure...</label>
-<?php echo form_submit('submit', 'Upload/Save Doc Data!'); ?>
+<?php echo form_submit('submit', 'Upload/Save Doc Data!').'&nbsp;&nbsp;&nbsp;or&nbsp;'.anchor('document/add', 'Upload another doc'); ?>
 
 <?php echo form_close(); ?>
 </div>

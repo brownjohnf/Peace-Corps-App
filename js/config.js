@@ -5,7 +5,7 @@
 
 
 //var base_url = 'http://pcsenegal.com/';
-var base_url = 'http://alpha.pcsenegal.org/';
+var base_url = 'http://pcsenegal.org/';
 
 var upload_dir = base_url + 'uploads/';
 var doc_dir = base_url + 'uploads/docs/';

@@ -215,7 +215,7 @@ class Photo extends MY_Controller {
 				if ($margin > 5) {
 					$margin = 3;
 				}
-				$data['photos'][] = array('src' => base_url().'uploads/'.$result['filename'].$result['extension'], 'height' => $result['height'], 'width' => $result['width'], 'id' => $result['filename'].$result['extension'], 'class' => 'gallery_photo', 'onClick' => "embed_photo('".base_url().'uploads/'.$result['imagename'].$tail.$result['extension']."');", 'style' => 'margin:'.$margin.'px;');
+				$data['photos'][] = array('src' => base_url().'uploads/'.$result['filename'].$result['extension'], 'height' => $result['height'], 'width' => $result['width'], 'id' => $result['filename'].$result['extension'], 'class' => 'gallery_photo', 'onClick' => "embed_photo('/uploads/".$result['imagename'].$tail.$result['extension']."');", 'style' => 'margin:'.$margin.'px;');
 			}
 		}
 

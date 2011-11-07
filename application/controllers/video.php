@@ -61,6 +61,8 @@ class Video extends MY_Controller {
 
 		$data['title'] = 'Videos';
 		$data['backtrack'] = array('resource' => 'Resources', 'video' => 'Videos', 'link/admin' => 'Admin');
+		$data['edit_target'] = 'video/edit/';
+		$data['extra_targets'][] = array('path' => 'video/delete/', 'column' => 'id', 'text' => 'Delete');
 
 
 	    // print the page
@@ -145,7 +147,7 @@ class Video extends MY_Controller {
 		{
 		    if ($id = $this->video_class->create($this->input->post()))
 		    {
-				$this->session->set_flashdata('message', 'Video successfully created.');
+				$this->session->set_flashdata('success', 'Video successfully created!');
 		        redirect('video/view/'.$id.'/'.url_title($this->input->post('title'), 'underscore'));
 		    }
 		    else

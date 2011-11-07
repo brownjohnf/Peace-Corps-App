@@ -17,6 +17,21 @@ class Auth
 
 	public function is_user()
 	{
+		$default_array = array(
+								'group' => array(
+												'id' => 0, 
+												'name' => 'Guest'), 
+								'fname' => 'Guest', 
+								'lname' => 'Guest', 
+								'flname' => 'Guest', 
+								'lfname' => 'Guest', 
+								'id' => 0,
+								'url' => '',
+								'is_admin' => false, 
+								'is_moderator' => false, 
+								'is_user' => false, 
+								'is_logged_in' => true);
+								
 		if ($result = $this->ci->people_model->selectUsers(array('where' => array('email1' => $this->ci->fb_data['me']['email']), 'limit' => 1)))
 		{
 			$this->ci->userdata = array(
@@ -47,7 +62,7 @@ class Auth
 		}
 		else
 		{
-			$this->ci->userdata = array('group' => array('id' => 0, 'name' => 'Guest'), 'fname' => 'Guest', 'lname' => 'Guest', 'flname' => 'Guest', 'lfname' => 'Guest', 'id' => 0, 'is_admin' => false, 'is_moderator' => false, 'is_user' => false, 'is_logged_in' => true);
+			$this->ci->userdata = $default_array;
 			return false;
 		}
 	}

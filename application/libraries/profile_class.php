@@ -18,11 +18,16 @@ class Profile_class
 		{
 			$query = array('where' => array('people.id' => $url), 'limit' => 1);
 		}
-		else
+		elseif ($url != '')
 		{
 			$names = $this->ci->uri->segment(3);
 			$names_array = explode('-', trim($names));
 	    	$query = array('where' => array('lname like' => urldecode($names_array[0]), 'fname like' => urldecode($names_array[1])), 'limit' => 1);
+	    }
+	    else
+	    {
+	    	return false;
+	    	die();
 	    }
 
 	    // get profile info

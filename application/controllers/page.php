@@ -225,7 +225,7 @@ class Page extends MY_Controller {
 
 	public function delete()
 	{
-		if ($this->userdata['group']['name'] != 'admin')
+		if (! $this->userdata['is_admin'])
 		{
 			$this->session->set_flashdata('error', 'You do not have appropriate permissions for this action.');
 			redirect('feed/page');
@@ -263,6 +263,11 @@ class Page extends MY_Controller {
 
 	public function tree()
 	{
+		if (! $this->userdata['is_admin'])
+		{
+			$this->session->set_flashdata('error', 'You do not have appropriate permissions for this action.');
+			redirect('feed/page');
+		}
 		$data['data'] = $this->page_class->menu();
 		$data['title'] = 'Page Tree';
 		$data['backtrack'] = array('' => 'Home', 'feed/page' => 'Pages', 'page/tree' => 'Page Tree');

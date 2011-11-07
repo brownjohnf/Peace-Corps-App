@@ -567,21 +567,15 @@ class Page_class
 		return null;
 	}
 
-	private function _menu_r($parent_id, $maxdepth = 0, $curdepth = 0)
+	private function _menu_r($where_add = array(), $parent_id, $maxdepth = 0, $curdepth = 0)
 	{
-		$pages = $this->ci->page_model->read(array('fields' => 'id, title, url, visibility', 'where' => array('parent_id' => $parent_id, 'case_study' => 0), 'order_by' => array('column' => 'title', 'order' => 'asc')));
+		$where = array_merge(array('parent_id' => $parent_id, 'delete' => 0), $where_add);
+		$pages = $this->ci->page_model->read(array('fields' => 'id, title, url, visibility', 'where' => $where, 'order_by' => array('column' => 'title', 'order' => 'asc')));
 		foreach ($pages as $page)
 		{
-			if ($page['visibility'] == 1)
-			{
-				$class = array('class' => 'visible');
-			}
-			else
-			{
-				$class = array('class' => 'invisible');
-			}
+			$class = ($page['visibility'] == 1 ? null : array('class' => 'invisible'));
 
-			if ($this->ci->userdata['group']['name'] == 'admin')
+			if ($this->ci->userdata['is_admin'])
 			{
 				$controls = '<div class="controls">'.anchor('page/edit/'.$page['id'], img('img/edit_icon_black.png'), array('class' => 'edit')).'</div>';
 			}
@@ -589,10 +583,10 @@ class Page_class
 			{
 				$controls = null;
 			}
-
-			if ($this->ci->page_model->read(array('fields' => 'id', 'where' => array('parent_id' => $page['id'], 'case_study' => 0))) && $curdepth < $maxdepth)
+			$where['parent_id'] = $page['id'];
+			if ($curdepth < $maxdepth && $this->ci->page_model->read(array('fields' => 'id', 'where' => $where)))
 			{
-				$menu[$controls.anchor('page/view/'.$page['url'], $page['title'], $class)] = $this->_menu_r($page['id'], $maxdepth, $curdepth + 1);
+				$menu[$controls.anchor('page/view/'.$page['url'], $page['title'], $class)] = $this->_menu_r($where_add, $page['id'], $maxdepth, $curdepth + 1);
 			}
 			else
 			{
@@ -602,15 +596,10 @@ class Page_class
 		return $menu;
 	}
 
-	public function menu($depth = null, $parent_id = 0)
+	public function menu($where_add = array(), $parent_id = 0, $maxdepth = 99)
 	{
-		if (is_null($depth))
-		{
-			$depth = 99999;
-		}
 		// new approach
-		$return = $this->_menu_r($parent_id, $depth);
-		$return[] = anchor('feed/casestudy', 'Case Studies', array('class' => 'visible'));
+		$return = $this->_menu_r($where_add, $parent_id, $maxdepth);
 	    return ul($return, array('id' => 'page_menu', 'class' => 'leftmenu'));
 	}
 }

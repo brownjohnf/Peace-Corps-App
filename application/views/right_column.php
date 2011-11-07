@@ -66,7 +66,7 @@
 				<!-- facebook like interface -->
 				<div id="fb-root" style="display:none;"></div>
 				<script src="http://connect.facebook.net/en_US/all.js#appId=269078833104121&amp;xfbml=1"></script>
-				<fb:like href="<?php echo site_url(); ?>" send="true" layout="box_count" width="55" show_faces="true" action="like" font="arial"></fb:like>
+				<fb:like href="<?php echo current_url(); ?>" send="true" layout="box_count" width="55" show_faces="true" action="like" font="arial"></fb:like>
 				<!-- END facebook like interface -->
 
 				<!-- Google plusone button -->
