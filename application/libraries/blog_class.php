@@ -34,8 +34,8 @@ class Blog_class
 
 			$item['message'] = $tags['text'];
 			$item['message_truncated'] = 'no';
-			$item['subject'] = '<span style="color:orange;font-size:120%;">Blog!</span> '.anchor('profile/view/'.url_title($result['lname'].'-'.$result['fname'], 'underscore', true), $result['fname'].'&nbsp;'.$result['lname']).',&nbsp;'.$result['group_name'];
-			$item['full_url'] = base_url().'blog/view/'.url_title($result['lname'].'-'.$result['fname'], 'underscore', true);
+			$item['subject'] = '<span style="color:orange;font-size:120%;">Blog!</span> '.anchor('profile/view/'.url_title($result['lname'].'-'.$result['fname'], 'dash', true), $result['fname'].'&nbsp;'.$result['lname']).',&nbsp;'.$result['group_name'];
+			$item['full_url'] = base_url().'blog/view/'.url_title($result['lname'].'-'.$result['fname'], 'dash', true);
 			$item['author'] = $result['blog_name'];
 			$item['tags'] = $tags['array'];
 
@@ -51,7 +51,7 @@ class Blog_class
 
 			if (array_key_exists('Last-Modified', $a))
 			{
-				$item['elapsed'] = $this->ci->common_class->elapsed_time(strtotime($a['Last-Modified']));
+				$item['elapsed'] = $this->ci->common_class->elapsed_time(strtotime($a['Last-Modified'])).' ago';
 			}
 			else
 			{
@@ -71,7 +71,7 @@ class Blog_class
 	public function view($names)
 	{
 		$names_array = explode('-', trim($names));
-	    $query = array('where' => array('lname like' => urldecode($names_array[0]), 'fname like' => urldecode($names_array[1])), 'limit' => 1, 'offset' => 0);
+	    $query = array('where' => array('lname like' => urldecode($names_array[0]), 'fname like' => '%'.urldecode($names_array[1]).'%'), 'limit' => 1, 'offset' => 0);
 
 	    // get profile info
 	    if (! $result = $this->ci->people_model->selectUsers($query)) {

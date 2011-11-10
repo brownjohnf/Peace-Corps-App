@@ -40,13 +40,13 @@
 		<div class="blog_content">
 			<?=$item['content']?>
 		</div>
-		<div class="feed_info">INFO</div>
+		<div class="feed_info"></div>
 		<div class="feed_tags">
 			<?php if ($item['tags']): foreach ($item['tags'] as $tag): ?>
 			<span class="hash">#</span><?php echo anchor('feed/tag/'.$tag, $tag, array('class' => 'tag')); ?></span>
 			<?php endforeach; endif; ?>
 		</div>
-		<div class="feed_comments">COMMENTS</div>
+		<div class="feed_comments"></div>
 	</div>
 </div>
 <?php endforeach; ?>

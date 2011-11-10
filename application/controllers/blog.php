@@ -43,7 +43,7 @@ class Blog extends MY_Controller {
 			redirect('feed/blog');
 		}
 		$data['title'] = $data['fname'].'&nbsp;'.$data['lname']."'s Recent Blog Posts";
-		$data['backtrack'] = array('feed/blog' => 'Blogs', 'profile/view/'.url_title($data['lname'].'-'.$data['fname'], 'underscore', true) => $data['fname'].'&nbsp;'.$data['lname']);
+		$data['backtrack'] = array('feed/blog' => 'Blogs', 'profile/view/'.url_title($data['lname'].'-'.$data['fname'], 'dash', true) => $data['fname'].'&nbsp;'.$data['lname']);
 		$data['controls'] = null;
 		
 		$data2['profile_photo'] = $data['profile_photo'];

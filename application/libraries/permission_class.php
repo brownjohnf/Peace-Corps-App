@@ -21,7 +21,7 @@ class Permission_class
 		    {
 				$user = $this->ci->people_model->read(array('fields' => 'fname, lname', 'where' => array('people.id' => $auth['user_id']), 'limit' => '1'));
 				$authors[$auth['user_id']]['name'] = $user['fname'].'&nbsp;'.$user['lname'];
-				$authors[$auth['user_id']]['url'] = url_title($user['lname'].'-'.$user['fname'], 'underscore', true);
+				$authors[$auth['user_id']]['url'] = url_title($user['lname'].'-'.$user['fname'], 'dash', true);
 		    }
 		    return $authors;
 
@@ -40,7 +40,7 @@ class Permission_class
 		    {
 				$user = $this->ci->people_model->read(array('fields' => 'fname, lname', 'where' => array('people.id' => $act['user_id']), 'limit' => '1'));
 				$actors[$act['user_id']]['name'] = $user['fname'].'&nbsp;'.$user['lname'];
-				$actors[$act['user_id']]['url'] = url_title($user['lname'].'-'.$user['fname'], 'underscore', true);
+				$actors[$act['user_id']]['url'] = url_title($user['lname'].'-'.$user['fname'], 'dash', true);
 		    }
 		    return $actors;
 

@@ -128,7 +128,7 @@
 			<?php endif; ?>
 
 			<div>
-				<?php echo anchor('page/view/donate', img(array('src' => base_url().'img/donate_w170.png', 'width' => '190px'))); ?>
+				<?php echo anchor('page/view/donate', img(array('src' => base_url().'img/donate_w190.png', 'width' => '190px'))); ?>
 			</div>
 			<div>
 				<a href="#google_search" id="google_anchor"><?php echo img(array('src' => base_url().'img/google_search.png', 'width' => '190px')); ?></a>

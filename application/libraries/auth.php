@@ -43,7 +43,7 @@ class Auth
 			                            'flname' => $result['fname'].' '.$result['lname'],
 			                            'lfname' => $result['lname'].', '.$result['fname'],
 			                            'id' => $result['id'],
-			                            'url' => url_title($result['lname'].'-'.$result['fname'], 'underscore', true),
+			                            'url' => url_title($result['lname'].'-'.$result['fname'], 'dash', true),
 			                            'is_admin' => $result['is_admin'],
 			                            'is_user' => $result['is_user'],
 			                            'is_moderator' => $result['is_moderator'],

@@ -52,8 +52,8 @@ if ($this->session->flashdata('success'))
 				<td class=""><?=$row['id']?></td>
 				<td class=""><?=$row['pc_id']?></td>
 				<td class=""><?=$row['fb_id']?></td>
-				<td class=""><?php echo anchor('profile/view/'.url_title($row['lname'].'-'.$row['fname'], 'underscore', true), $row['fname']); ?></td>
-				<td class=""><?php echo anchor('profile/view/'.url_title($row['lname'].'-'.$row['fname'], 'underscore', true), $row['lname']); ?></td>
+				<td class=""><?php echo anchor('profile/view/'.url_title($row['lname'].'-'.$row['fname'], 'dash', true), $row['fname']); ?></td>
+				<td class=""><?php echo anchor('profile/view/'.url_title($row['lname'].'-'.$row['fname'], 'dash', true), $row['lname']); ?></td>
 				<td class=""><?=$row['group_name']?></td>
 				<td class=""><?=$row['sector_name']?></td>
 				<td class=""><?=$row['email1']?></td>

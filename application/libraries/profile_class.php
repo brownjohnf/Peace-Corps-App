@@ -40,7 +40,7 @@ class Profile_class
 	    // assign values to return array
 	    $return['fname'] = $result['fname'];
 		$return['full_name'] = $result['fname'].'&nbsp;'.$result['lname'];
-		$return['url_name'] = url_title($result['lname'].'-'.$result['fname'], 'underscore', true);
+		$return['url_name'] = url_title($result['lname'].'-'.$result['fname'], 'dash', true);
 		$return['group'] = $result['group_label'];
 		$return['project'] = $result['project'];
 		$return['focus'] = $result['focus'];
