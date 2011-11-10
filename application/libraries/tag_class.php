@@ -10,15 +10,15 @@ class Tag_class
 	public function __construct() {
 		$this->ci =& get_instance();
 		$this->ci->load->model('tag_model');
-		$this->ci->load->library('page_class');
+		$this->ci->load->library(array('page_class', 'casestudy_class', 'document_class', 'link_class', 'video_class'));
 	}
 
 	// generates a feed of recently modified tags
-	public function feed($tag = null)
+	public function feed($tag = null, $filter = null)
 	{
 		// set search criteria, if any
 		if ($tag) {
-			$where = array('tag' => strtolower($tag));
+			$where = array('tag like' => '%'.strtolower($tag).'%');
 		} else {
 			$where = array('tag like' => '%');
 		}
@@ -30,60 +30,90 @@ class Tag_class
 		// for each tag found that matches the search query (each one either in a diff page, or diff places on the same page)
 		foreach ($results as $result)
 		{
-			if ($result['source'] == 'page')
+			// if there's a filter set, and this resource isn't in it, continue to the next
+			if (is_array($filter) && ! in_array($result['source'], $filter))
 			{
-				// generate a set of page feed data for the given page, in which this tag occurs, and for each one:
-				foreach ($this->ci->page_class->feed($result['source_id']) as $key => $value)
-				{
-					// process the tags found in the blurb
-					$message = $this->ci->tag_class->tags_to_links($result['blurb']);
-					// set the message equal to this processed blurb
-					$value['message'] = $message['text'];
-					// add this tag blurb to the return array
-					$return[$key] = $value;
-					//print_r($message);
-				}
+				continue;
 			}
-			elseif ($result['source'] == 'case_study')
+			
+			switch ($result['source'])
 			{
-				// generate a set of page feed data for the given page, in which this tag occurs, and for each one:
-				foreach ($this->ci->casestudy_class->feed($result['source_id']) as $key => $value)
-				{
-					// process the tags found in the blurb
-					$message = $this->ci->tag_class->tags_to_links($result['blurb']);
-					// set the message equal to this processed blurb
-					$value['message'] = $message['text'];
-					// add this tag blurb to the return array
-					$return[$key] = $value;
-					//print_r($message);
-				}
-			}
-			elseif ($result['source'] == 'documents')
-			{
-				foreach ($this->ci->document_class->feed($result['source_id']) as $key => $value)
-				{
-					$return[$key] = $value;
-				}
-			}
-			elseif ($result['source'] == 'links')
-			{
-				foreach ($this->ci->link_class->feed($result['source_id']) as $key => $value)
-				{
-					$return[$key] = $value;
-				}
-			}
-			elseif ($result['source'] == 'videos')
-			{
-				foreach ($this->ci->video_class->feed($result['source_id']) as $key => $value)
-				{
-					$return[$key] = $value;
-				}
+				case 'page':
+					// generate a set of page feed data for the given page, in which this tag occurs, and for each one:
+					foreach ($this->ci->page_class->feed($result['source_id']) as $key => $value)
+					{
+						// process the tags found in the blurb
+						$message = $this->ci->tag_class->tags_to_links($result['blurb']);
+						// set the message equal to this processed blurb
+						$value['message'] = $message['text'];
+						$value['source'] = 'Page';
+						// add this tag blurb to the return array
+						$return[$key] = $value;
+						//print_r($message);
+					}
+					break;
+			
+				case 'case_study':
+			
+					// generate a set of page feed data for the given page, in which this tag occurs, and for each one:
+					foreach ($this->ci->casestudy_class->feed($result['source_id']) as $key => $value)
+					{
+						// process the tags found in the blurb
+						$message = $this->ci->tag_class->tags_to_links($result['blurb']);
+						// set the message equal to this processed blurb
+						$value['message'] = $message['text'];
+						$value['source'] = 'Case Study';
+						// add this tag blurb to the return array
+						$return[$key] = $value;
+						//print_r($message);
+					}
+					break;
+			
+				case 'documents':
+			
+					foreach ($this->ci->document_class->feed($result['source_id']) as $key => $value)
+					{
+						$value['source'] = 'Document';
+						$return[$key] = $value;
+					}
+					break;
+			
+				case 'links':
+			
+					foreach ($this->ci->link_class->feed($result['source_id']) as $key => $value)
+					{
+						$value['source'] = 'Link';
+						$return[$key] = $value;
+					}
+					break;
+			
+				case 'videos':
+			
+					foreach ($this->ci->video_class->feed($result['source_id']) as $key => $value)
+					{
+						$value['source'] = 'Video';
+						$return[$key] = $value;
+					}
+					break;
 			}
 		}
 		//print_r($return);
 		krsort($return);
 
 		return $return;
+	}
+	
+	public function resource_list_by_tag($tags = array(), $filter = null)
+	{
+		foreach ($tags as $tag)
+		{
+			$results = $this->feed($tag, $filter);
+			foreach ($results as $result)
+			{
+				$return[$result['source']][$result['full_url']] = $result['author'];
+			}
+		}
+		return (isset($return) ? $return : null);
 	}
 
 	// extracts tags from text and inserts them into the database

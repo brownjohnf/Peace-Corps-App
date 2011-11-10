@@ -37,6 +37,19 @@
 			</div>
 			<?php endif; ?>
 
+			<?php if (isset($resource_list)): ?>
+			<div class="links">
+				<?php foreach ($resource_list as $key => $resource): ?>
+				<h2><?=$key?></h2>
+				<p>
+					<?php $count = count($resource); foreach ($resource as $url => $title): ?>
+					<?php echo anchor($url, $title); if ($count > 1) echo '<br />'; $count--;?>
+					<?php endforeach; ?>
+				</p>
+				<?php endforeach; ?>
+			</div>
+			<?php endif; ?>
+
 			<?php if (isset($authors)): ?>
 			<div class="authors">
 				<h3>Authors</h3>

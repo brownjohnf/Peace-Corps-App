@@ -32,7 +32,18 @@ class Page extends MY_Controller {
 	    $data['backtrack'] = array('' => 'Home', 'feed/page' => 'Pages');
 	    $data['backtrack'] = $data['backtrack'] + $this->common_class->backtrack($data['parent_id'], 'pages');
 	    $data['backtrack']['page/view/'.$url] = $data['title'];
-
+	    
+	    $switch = ($data['case_study'] == true ? 'page' : 'case_study');
+	    
+	    // find relevant case studies by tag
+	    $res = null;
+	    //print_r($data['tags']);
+	    if (is_array($data['tags']))
+	    {
+	    	$res = $this->tag_class->resource_list_by_tag($data['tags'], array($switch));
+	    	//print_r($res);
+		}
+		
 	    // print the page
 		$this->output->set_header("Cache-Control: max-age=300, public, must-revalidate");
 
@@ -40,7 +51,7 @@ class Page extends MY_Controller {
 		$this->load->view('header');
 		$this->load->view('main_open');
 		$this->load->view('left_column');
-		$this->load->view('right_column', array('authors' => $data['authors'], 'tags' => $data['tags'], 'profile_photo' => $data['profile_photo'], 'links' => $data['links']));
+		$this->load->view('right_column', array('authors' => $data['authors'], 'tags' => $data['tags'], 'profile_photo' => $data['profile_photo'], 'links' => $data['links'], 'resource_list' => $res));
 		$this->load->view('page_view', $data);
 		$this->load->view('main_close');
 		$this->load->view('footer', array('footer' => 'Footer Here'));
@@ -53,14 +64,7 @@ class Page extends MY_Controller {
 			$this->session->set_flashdata('error', 'You do not have appropriate permissions for this action. [create]');
 			redirect('feed/page');
 		}
-		if ($this->userdata['group']['name'] != 'admin')
-		{
-			$locked = 'disabled';
-		}
-		else
-		{
-			$locked = null;
-		}
+		$locked = ($this->userdata['is_admin'] ? null : 'disabled');
 
 	    $this->load->helper('form');
 	    $this->load->helper('url');
@@ -146,14 +150,7 @@ class Page extends MY_Controller {
 			$this->session->set_flashdata('error', 'You do not have appropriate permissions for this action. [edit]');
 			redirect('feed/page');
 		}
-		elseif ($this->userdata['group']['name'] != 'admin')
-		{
-			$locked = 'disabled';
-		}
-		else
-		{
-			$locked = null;
-		}
+		$locked = ($this->userdata['is_admin'] ? null : 'readonly');
 
 	    $this->load->helper('form');
 	    $this->load->helper('url');
@@ -180,10 +177,10 @@ class Page extends MY_Controller {
 				$this->session->set_flashdata('error', 'The page you are trying to edit does not exist.');
 				redirect('page/create');
 			}
-			if (($actor_for = $this->permission_class->page_by_actor($this->userdata['id'])) && $this->userdata['group']['name'] != 'admin')
-			{
-				$data['parents'] = array_intersect_key($data['parents'], $actor_for);
-			}
+			//if (($actor_for = $this->permission_class->page_by_actor($this->userdata['id'])) && $this->userdata['group']['name'] != 'admin')
+			//{
+			//	$data['parents'] = array_intersect_key($data['parents'], $actor_for);
+			//}
 			$data['locked'] = $locked;
 	        $data['target'] = 'edit/'.$this->uri->segment(3);
 			$data['form_title'] = 'Edit Page';

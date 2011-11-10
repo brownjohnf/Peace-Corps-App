@@ -236,7 +236,7 @@ class Photo extends MY_Controller {
 
 		$imagename = $this->input->post('img');
 		$this->load->model('photo_model');
-		$result = $this->photo_model->read(array('where' => array('imagename' => $imagename), 'limit' => 1, 'width' => 180, 'height' => 180));
-		$this->output->set_output(base_url().'uploads/'.$result['filename'].$result['extension']);
+		$result = $this->photo_model->read(array('where' => array('imagename' => $imagename), 'limit' => 1, 'width' => 50, 'height' => 50));
+		$this->output->set_output('/uploads/'.$result['filename'].$result['extension']);
 	}
 }

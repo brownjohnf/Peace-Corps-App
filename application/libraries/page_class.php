@@ -34,9 +34,9 @@ class Page_class
 	    $input['profile_photo'] = $data['profile_photo'];
 	    $input['visibility'] = $data['visibility'];
 
-		if ($this->ci->userdata['group']['name'] != 'admin')
+		if (! $this->ci->userdata['is_admin'])
 		{
-			$data['actors'][] = $this->ci->userdata['id'];
+			$data['actors'] = array($this->ci->userdata['id']);
 		}
 
 	    $input['updated'] = time();
@@ -145,6 +145,7 @@ class Page_class
 		}
 		else
 		{
+			$input['case_study'] = 0;
 			$source = 'page';
 			$input['parent_id'] = $data['parent_id'];
 		}
@@ -361,7 +362,7 @@ class Page_class
 		$data['profile_photo'] = null;
 		$data['group_id'] = 6;
 		$data['visibility'] = 1;
-
+		$data['case_study'] = false;
 
 		$data['profile_photo_info'] = array('src' => base_url().'img/blank.png', 'height' => 75, 'id' => 'profile_photo_preview');
 
@@ -383,25 +384,30 @@ class Page_class
 	    }
 		$data['links'] = $data['parents'];
 		unset($data['links'][0]);
-
+		
 	    return $data;
 	}
 	public function full_form($id)
 	{
 	    // fetch the page data
-	    if (! $page = ($this->ci->page_model->read(array('fields' => 'id, parent_id, title, content, description, group_id, profile_photo, url, visibility', 'where' => array('id' => $id), 'limit' => 1))))
+	    if (! $page = ($this->ci->page_model->read(array('fields' => 'id, parent_id, title, content, description, group_id, profile_photo, url, visibility, case_study', 'where' => array('id' => $id), 'limit' => 1))))
 	    {
 	    	return false;
 	    }
 	    // fetch empty data and list populations
 	    $blank_data = $this->blank_form();
+	    
+	    // remove this page from the list of possible parents (causes infinite loop)
+		unset($blank_data['parents'][$page['id']]);
+		
 	    // merge the two, to create a populated set of data, with list options
 	    $data = array_merge($blank_data, $page);
 
-		$photo_data = $this->ci->photo_model->read(array('where' => array('imagename' => $data['profile_photo'], 'height' => 180, 'width' => 180), 'limit' => 1));
+		$photo_data = $this->ci->photo_model->read(array('where' => array('imagename' => $data['profile_photo'], 'height' => 50, 'width' => 50), 'limit' => 1));
 
 		$data['profile_photo_info'] = array('src' => base_url().'uploads/'.$photo_data['filename'].$photo_data['extension'], 'width' => $photo_data['width'], 'height' => $photo_data['height'], 'id' => 'profile_photo_preview');
-
+		
+		
 	    // grab page authors
 	    if ($authors = $this->ci->permission_class->authors($data['id']))
 	    {
@@ -431,6 +437,8 @@ class Page_class
 			    $data['set_links'][] = $link['link_id'];
 			}
 	    }
+	    
+	    $data['case_study'] = ($data['case_study'] == 1 ? true : false);
 
 	    return $data;
 	}
@@ -506,7 +514,7 @@ class Page_class
 	public function view($url)
 	{
 	    // get content results
-	    if (! $result = $this->ci->page_model->read(array('fields' => 'id, title, content, parent_id, tags, profile_photo', 'where' => array('url' => $url), 'limit' => 1)))
+	    if (! $result = $this->ci->page_model->read(array('fields' => 'id, title, content, parent_id, tags, profile_photo, case_study', 'where' => array('url' => $url), 'limit' => 1)))
 	    {
 	    	$this->ci->session->set_flashdata('error', 'There is no page with that name. page_class');
 	    	redirect('feed/page');
@@ -522,6 +530,7 @@ class Page_class
 	    //$return['tags'] = explode('#', trim($result['tags'], '#'));
 		$return['tags'] = $message['array'];
 	    $return['parent_id'] = $result['parent_id'];
+	    $return['case_study'] = $result['case_study'];
 
 		if ($result['profile_photo'] != '')
 		{

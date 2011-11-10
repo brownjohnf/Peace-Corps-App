@@ -203,12 +203,6 @@
 	box-shadow: 0 0 5px black;
 	float: left;
 }
-#profile_photo_preview {
-	float: right;
-}
-input[name=profile_photo] {
-	width: 50% !important;
-}
 h2 {
 	clear: left;
 }
@@ -272,4 +266,22 @@ span#insert_photo {
 	margin: 5px;
 	border: 1px solid lightgray;
 	border-collapse: collapse;
+}
+
+#page_form form > div.left {
+	float: left;
+	width: 380px;
+}
+
+#page_form form >div.right {
+	float: right;
+	width: 380px;
+}
+
+#page_form form > div.left input[type=text], #page_form form > div.left select, #page_form form > div.right input[type=text], #page_form form > div.right select {
+	width: 90%;
+}
+
+#page_form form label {
+	clear: both;
 }
