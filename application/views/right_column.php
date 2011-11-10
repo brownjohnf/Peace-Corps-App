@@ -13,14 +13,15 @@
 				<?php echo img($profile_photo); ?>
 			</div>
 			<?php endif; ?>
-
+			
+			<?php if (isset($profile_id) && $profile_id == $this->userdata['id']): echo anchor('profile/edit/'.$profile_id, 'Edit Profile'); endif; ?>
 			<?php if (isset($user_info)): ?>
 			<div>
 				<h2><?=$name?></h2>
 				<p>
 					<?php echo anchor('profile/view/'.$this->uri->segment(3, null), 'View Profile'); ?><br>
 					<?php echo anchor($blog_url, 'Go to blog', array('target' => '_blank')); ?><br>
-					<?php if ($this->userdata['group']['name'] == 'admin'): echo anchor('user/edit/'.$id, 'Edit User'); endif; ?>
+					<?php if ($this->userdata['is_admin']): echo anchor('user/edit/'.$id, 'Edit User'); endif; ?>
 				</p>
 			</div>
 			<?php endif; ?>

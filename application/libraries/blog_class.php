@@ -34,8 +34,8 @@ class Blog_class
 
 			$item['message'] = $tags['text'];
 			$item['message_truncated'] = 'no';
-			$item['subject'] = '<span style="color:orange;font-size:120%;">Blog!</span> '.anchor('profile/view/'.url_title($result['lname'].'-'.$result['fname'], 'dash', true), $result['fname'].'&nbsp;'.$result['lname']).',&nbsp;'.$result['group_name'];
-			$item['full_url'] = base_url().'blog/view/'.url_title($result['lname'].'-'.$result['fname'], 'dash', true);
+			$item['subject'] = '<span style="color:orange;font-size:120%;">Blog!</span> '.anchor('profile/view/'.url_title($result['lname'].'-'.$result['fname'], 'underscore', true), $result['fname'].'&nbsp;'.$result['lname']).',&nbsp;'.$result['group_name'];
+			$item['full_url'] = base_url().'blog/view/'.url_title($result['lname'].'-'.$result['fname'], 'underscore', true);
 			$item['author'] = $result['blog_name'];
 			$item['tags'] = $tags['array'];
 

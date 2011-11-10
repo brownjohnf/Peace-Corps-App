@@ -21,11 +21,11 @@ class User extends MY_Controller {
 
 		if ($this->uri->segment(4))
 		{
-			$data['table'] = $this->people_model->selectUsers(array('fields' => 'people.id, people.fname, people.lname, people.gender, people.email1, people.email2, people.phone1, people.phone2, people.address, people.blog_address, people.blog_name, people.blog_description, people.is_user, people.is_admin, people.is_moderator, people.created, people.edited, people.last_activity', 'where' => array($this->uri->segment(3) => $this->uri->segment(4))));
+			$data['table'] = $this->people_model->selectUsers(array('fields' => 'people.id, people.fb_id, people.fname, people.lname, people.gender, people.email1, people.email2, people.phone1, people.phone2, people.address, people.blog_address, people.blog_name, people.blog_description, people.is_user, people.is_admin, people.is_moderator, people.created, people.edited, people.last_activity', 'where' => array($this->uri->segment(3) => $this->uri->segment(4))));
 		}
 		else
 		{
-			$data['table'] = $this->people_model->selectUsers(array('fields' => 'people.id, people.fname, people.lname, people.gender, people.email1, people.email2, people.phone1, people.phone2, people.address, people.blog_address, people.blog_name, people.blog_description, people.is_user, people.is_admin, people.is_moderator, people.created, people.edited, people.last_activity'));
+			$data['table'] = $this->people_model->selectUsers(array('fields' => 'people.id, people.fb_id, people.fname, people.lname, people.gender, people.email1, people.email2, people.phone1, people.phone2, people.address, people.blog_address, people.blog_name, people.blog_description, people.is_user, people.is_admin, people.is_moderator, people.created, people.edited, people.last_activity'));
 		}
 
 		//print_r($data);

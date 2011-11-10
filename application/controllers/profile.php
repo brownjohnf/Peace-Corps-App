@@ -109,6 +109,7 @@ class Profile extends MY_Controller {
 			$data['backtrack'] = array('feed/profile' => 'Profiles', 'profile/view/'.$this->uri->segment(3) => $data['full_name']);
 
 			$data2['profile_photo'] = $data['profile_photo'];
+			$data2['profile_id'] = $data['id'];
 
 
 			// print the profile
@@ -136,5 +137,63 @@ class Profile extends MY_Controller {
 
 		$this->load->view('main_close');
 		$this->load->view('footer', array('footer' => 'Footer Here'));
+	}
+
+	public function edit()
+	{
+	    if ($this->uri->segment(3, null) == null && $this->input->post('id') == null)
+	    {
+			$this->session->set_flashdata('error', 'You must specify a profile to edit.');
+			redirect('profile');
+	    }
+	    elseif ($this->userdata['id'] != $this->uri->segment(3))
+	    {
+	    	$this->session->set_flashdata('error', 'You are not authorized to edit this profile.');
+	    	redirect('profile');
+	    }
+
+	    $this->load->helper(array('form', 'url'));
+	    $this->load->library(array('form_validation', 'user_class'));
+
+		$this->form_validation->set_error_delimiters('<div class="error">', '</div>');
+
+	    $this->form_validation->set_rules('fname', 'First Name', 'required');
+	    $this->form_validation->set_rules('lname', 'Last Name', 'required|alpha_numeric');
+	    $this->form_validation->set_rules('email1', 'Email1', 'required|valid_email');
+	    $this->form_validation->set_rules('email2', 'Email2', 'valid_email');
+	    $this->form_validation->set_rules('phone1', 'Phone1', 'numeric');
+	    $this->form_validation->set_rules('phone2', 'Phone2', 'numeric');
+	    $this->form_validation->set_rules('gender', 'Gender', 'numeric');
+
+		if ($this->form_validation->run() == false)
+		{
+			$data = $this->profile_class->full_form($this->uri->segment(3));
+
+	        $data['target'] = 'edit/'.$this->uri->segment(3);
+			$data['form_title'] = 'Edit Profile';
+			$data['controls'] = anchor('profile', img(base_url().'img/cancel_icon.png'), array('class' => 'cancel'));
+			$data['backtrack'] = array('profile' => 'Profiles', 'profile/edit/'.$this->uri->segment(3) => 'Edit my profile');
+
+			$this->load->view('head', array('page_title' => $data['form_title'], 'stylesheets' => array('layout_outer.css', 'layout_inner.css', 'theme.css')));
+			$this->load->view('header');
+			$this->load->view('main_open');
+			$this->load->view('left_column');
+			//$this->load->view('right_column');
+			$this->load->view('profile_form', $data);
+			$this->load->view('main_close');
+			$this->load->view('footer');
+		}
+		else
+		{
+		    if ($id = $this->profile_class->edit($this->input->post()))
+		    {
+			    $this->session->set_flashdata('success', 'Profile successfully edited.');
+			    redirect('profile/view/'.$id);
+			}
+		    else
+		    {
+		        die("we've hit a serious database error trying to update the user. ask Jack. [010]");
+	        }
+	    }
 	}
 }

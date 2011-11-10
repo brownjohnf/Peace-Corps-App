@@ -137,7 +137,7 @@
 	height: 300px;
 }
 
-#page_form input[type=text], #page_form textarea, #site_messages_form input[type=text], #site_messages_form textarea, .wide_form textarea, .wide_form input[type=textarea] {
+#page_form input[type=text], #page_form textarea, #site_messages_form input[type=text], #site_messages_form textarea, .wide_form textarea, .wide_form input[type=text] {
 	width: 748px;
 }
 #page_view, #feed_view, #photo_form, #profile_view, #blank_view, #module_view, #user_form, #blog_view, #module_list_view, .standard_view {

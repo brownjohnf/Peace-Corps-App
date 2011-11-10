@@ -90,7 +90,7 @@ class Photo extends MY_Controller {
 		{
 			$owner_id = '%';
 		}
-		$results = $this->photo_model->read(array('where' => array('height' => 180, 'owner_id like' => $owner_id), 'order_by' => array('column' => 'width', 'order' => 'desc')));
+		$results = $this->photo_model->read(array('fields' => 'width, filename, extension, height, caption, imagename', 'where' => array('height' => 180, 'owner_id like' => $owner_id), 'order_by' => array('column' => 'width', 'order' => 'desc')));
 		foreach ($results as $result)
 		{
 			if ($result['width'] != 180)
@@ -100,7 +100,7 @@ class Photo extends MY_Controller {
 				if ($margin > 5) {
 					$margin = 3;
 				}
-				$data['photos'][] = array('src' => base_url().'uploads/'.$result['filename'].$result['extension'], 'height' => '180px', 'width' => $result['width'], 'style' => 'margin: 3px '.$margin.'px;', 'alt' => $result['caption']);
+				$data['photos'][] = array('data' => array('src' => '/uploads/'.$result['filename'].$result['extension'], 'height' => '180px', 'width' => $result['width'], 'style' => 'margin: 3px '.$margin.'px;', 'alt' => $result['caption']), 'link' => '/uploads/'.$result['imagename'].'_lrg'.$result['extension']);
 			}
 		}
 
@@ -186,7 +186,7 @@ class Photo extends MY_Controller {
 		$data['controls'] = null;
 		$data['title'] = 'Select a Photo';
 
-		$this->load->view('gallery_view', $data);
+		$this->load->view('photo_modal_view', $data);
 	}
 
 	// for use in the embedded photo modal, is a basic gallery, no header, footer, etc.
@@ -222,7 +222,7 @@ class Photo extends MY_Controller {
 		$data['controls'] = null;
 		$data['title'] = 'Select a Photo';
 
-		$this->load->view('gallery_view', $data);
+		$this->load->view('photo_modal_view', $data);
 	}
 
 	// for ajax requests using the page edit photo select tool

@@ -335,7 +335,7 @@ class User_class
 	    {
 	    	if ($value == '')
 	    	{
-	    		unset($input[$key]);
+	    		$input[$key] = null;
 	    	}
 	    }
 
@@ -364,7 +364,7 @@ class User_class
 	    {
 	    	if ($value == '')
 	    	{
-	    		unset($input[$key]);
+	    		$input[$key] = null;
 	    	}
 	    }
 
@@ -375,6 +375,7 @@ class User_class
 
 		return $data['id'];
 	}
+	
 	public function blank_form()
 	{
 		$this->ci->load->model(array(

@@ -36,7 +36,7 @@
 
 foreach ($photos as $photo)
 {
-    echo anchor_popup($photo['link'], img($photo['data']));
+    echo img($photo);
 }
 
 ?>
