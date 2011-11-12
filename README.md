@@ -16,7 +16,7 @@ I want it to function like one big social resource repository, but without any c
 * Requires users have Facebook (coming soon: OpenID support)
 * No installer (easy config, but must be done by hand)
 * Weak support for bulk editing/creating users. It exists, but is not robust.
-* This is under-development software. Bugs are continually located and corrected.Right now the weakest part of the site is bulk user management (it exists, but I've really only used it once, to set the thing up the first time, so it's not very robust) and installation. There's currently no install script. Configuration is dead easy (create the databases from SQL export, change about 5 lines of code), but by hand. Install script is in the pipes. It's also still in beta, and I'm cleaning things up every day.
+* This is under-development software. Bugs are continually located and corrected.
 
 ## Features
 
