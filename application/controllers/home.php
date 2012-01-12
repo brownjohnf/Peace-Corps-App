@@ -32,6 +32,13 @@ class Home extends MY_Controller {
 
 $data['splash'] = array(
 					array(
+						'visual' => '<iframe width="658" height="390" src="http://www.youtube.com/embed/Ia8xgXyXBo4?rel=0&wmode=Opaque" frameborder="0" allowfullscreen></iframe>',
+						'width' => '658px',
+						'title' => "Senegal's Race for Education",
+						'text' => "Support Tambacounda's Race For Education on 4 March 2012!",
+						'link' => anchor('/video/view/10/Senegals_Race_for_Education', '<i>Learn more</i>')
+						),
+					array(
 						'visual' => img(array('src' => base_url().'uploads/1ca600fea348193c11d5880ce48fd278_splash.jpg', 'width' => '658px', 'height' => '390px')),
 						'width' => '658px',
 						'title' => "We've got a new look!",

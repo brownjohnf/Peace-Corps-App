@@ -28,6 +28,7 @@
 
 <div>
 <?=$content?>
+<br class="clearfloat" />
 </div>
 
 
@@ -38,6 +39,7 @@
         <?php $count = count($actors); foreach ($actors as $actor_id => $actor): ?>
         <?php echo anchor('profile/view/'.$actor['url'], $actor['name']); if ($count > 1) echo '&nbsp;|&nbsp;'; $count--;?>
         <?php endforeach; ?>
+		<br class="clearfloat" />
     </p>
 <?php endif; ?>
 </div>
