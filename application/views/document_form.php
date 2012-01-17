@@ -30,7 +30,7 @@
 <?php echo form_open_multipart('document/'.$target); ?>
 
 <?php if ($target == 'do_upload'): ?>
-<label>File* ( .pdf | .txt )</label>
+<label>File* ( .pdf | .txt | .csv | .md | .ppt | .mp3 )</label>
 <?php echo form_upload('userfile'); ?>
 <?php endif; ?>
 
