@@ -6,6 +6,6 @@
 if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
 $config['upload_path'] = 'uploads/docs';
-$config['allowed_types'] = 'pdf|txt|md|csv';
+$config['allowed_types'] = 'pdf|txt|md|csv|mp3|ppt';
 $config['max_size']	= '0';
 $config['file_name'] = md5(time().rand());
